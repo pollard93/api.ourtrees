@@ -1,8 +1,8 @@
 version: '3'
 
 services:
-  core-prisma:
-    image: madebyprism/core-prisma-${STAGE}:${VERSION}
+  api-ourtrees:
+    image: madebyprism/api-ourtrees-${STAGE}:${VERSION}
     build:
       context: .
       dockerfile: Dockerfile.${STAGE}

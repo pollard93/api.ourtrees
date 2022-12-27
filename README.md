@@ -4,7 +4,7 @@
 Install node, npm, docker and docker-compose, yarn and run `yarn install`
 
 ##### Update name
-Search and replace `core-prisma`
+Search and replace `api-ourtrees`
 
 ##### Add .env
 `cp .env.template .env`

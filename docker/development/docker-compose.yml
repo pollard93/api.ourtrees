@@ -3,7 +3,7 @@ services:
 
   mysql:
     image: mysql:5.7
-    container_name: mysql.core-prisma
+    container_name: mysql.api-ourtrees
     ports:
       - "3306:3306"
     restart: unless-stopped
@@ -14,7 +14,7 @@ services:
 
   minio:
     image: minio/minio
-    container_name: minio.core-prisma
+    container_name: minio.api-ourtrees
     ports:
       - "9000:9000"
     restart: unless-stopped

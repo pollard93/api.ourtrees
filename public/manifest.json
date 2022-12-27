@@ -1,6 +1,6 @@
 {
-  "name": "core-prisma",
-  "short_name": "core-prisma",
+  "name": "api-ourtrees",
+  "short_name": "api-ourtrees",
   "description": "prisma api with authentication",
   "dir": "auto",
   "lang": "en-GB",

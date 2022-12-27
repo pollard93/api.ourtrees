@@ -1,7 +1,7 @@
 {
-  "name": "core-prisma",
+  "name": "api-ourtrees",
   "description": "prisma api with authentication",
-  "version": "3.0.0",
+  "version": "1.0.0",
   "author": "Piers Pollard",
   "private": true,
   "dependencies": {
@@ -71,7 +71,7 @@
     "build:docker:production": "export DOCKER_BUILDKIT=1 && export COMPOSE_DOCKER_CLI_BUILD=1 && VERSION=\"$(npx -c 'echo \"$npm_package_version\"')\" STAGE=\"production\" docker-compose build",
     "build:docker:staging": "export DOCKER_BUILDKIT=1 && export COMPOSE_DOCKER_CLI_BUILD=1 && VERSION=\"$(npx -c 'echo \"$npm_package_version\"')\" STAGE=\"staging\" docker-compose build",
     "build:jpegtran": "npm rebuild jpegtran-bin",
-    "dev": "cd docker/development && docker-compose -p 'core-prisma' up",
+    "dev": "cd docker/development && docker-compose -p 'api-ourtrees' up",
     "dev:deploy": "prisma db push --preview-feature",
     "dev:ensure:bucket": "ts-node scripts/ensure:bucket.ts",
     "dev:generate": "yarn prisma generate",

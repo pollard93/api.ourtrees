@@ -1,6 +1,6 @@
 {
   "version": "1.2.7",
-  "name": "core-prisma",
+  "name": "api-ourtrees",
   "description": "prisma api with authentication",
   "icons": {
     "60": "/firefox_app_60x60.png",
