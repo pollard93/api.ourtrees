@@ -1,0 +1,7 @@
+User-agent: *
+Disallow: /
+Allow: /share/
+
+User-agent: Twitterbot
+Disallow: /
+Allow: /share/

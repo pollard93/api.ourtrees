@@ -1,0 +1,16 @@
+.dockerignore
+.env
+.env.template
+.env.template
+.eslintignore
+.eslintrc.json
+.git
+.gitignore
+README.md
+__tests__
+dist
+docker
+log
+node_modules
+pm2
+scripts

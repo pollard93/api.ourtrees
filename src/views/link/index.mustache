@@ -1,0 +1,26 @@
+<!doctype html>
+<html class="no-js" lang="">
+<head>
+  <meta charset="utf-8">
+  <title>{{title}}</title>
+  <link rel="stylesheet" type="text/css" href="/css/styles.css">
+
+  {{> partials/iconMeta}}
+</head>
+<body>
+  <div class="wrap">
+    <div class="logo">
+      <img alt="Made By Prism" src="/images/icon.jpg" />
+    </div>
+
+    {{> partials/appStore}}
+    {{> partials/playStore}}
+  </div>
+
+  <script>
+    window.onload = function(){
+      window.location.href = '{{{deepLink}}}';
+    }
+  </script>
+</body>
+</html>

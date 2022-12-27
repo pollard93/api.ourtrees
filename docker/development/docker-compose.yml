@@ -1,0 +1,30 @@
+version: "3"
+services:
+
+  mysql:
+    image: mysql:5.7
+    container_name: mysql.core-prisma
+    ports:
+      - "3306:3306"
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: prisma
+    volumes:
+      - mysql:/var/lib/mysql
+
+  minio:
+    image: minio/minio
+    container_name: minio.core-prisma
+    ports:
+      - "9000:9000"
+    restart: unless-stopped
+    environment:
+      MINIO_ACCESS_KEY: minio
+      MINIO_SECRET_KEY: minio123
+    volumes:
+      - "data:/data"
+    command: server /export
+
+volumes:
+  mysql:
+  data:

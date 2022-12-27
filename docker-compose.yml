@@ -1,0 +1,8 @@
+version: '3'
+
+services:
+  core-prisma:
+    image: madebyprism/core-prisma-${STAGE}:${VERSION}
+    build:
+      context: .
+      dockerfile: Dockerfile.${STAGE}

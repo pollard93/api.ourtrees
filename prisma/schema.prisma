@@ -1,0 +1,62 @@
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL_WRITE")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id                    String         @id @default(uuid())
+  email                 String         @unique
+  password              String
+  name                  String?
+  facebookId            String?        @unique
+  googleId              String?        @unique
+  profilePicture        File?
+  verified              Boolean        @default(false)
+  notificationsReceived Notification[] @relation(name: "UserNotificationsReceived")
+  createdAt             DateTime       @default(now())
+  updatedAt             DateTime       @updatedAt
+  refreshTokens         RefreshToken[]
+  notificationsSent     Notification[] @relation("UserNotificationsSent")
+}
+
+model RefreshToken {
+  id        String   @id @default(uuid())
+  sessionId String   @unique
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  expires   DateTime
+}
+
+model File {
+  id     String @id @default(uuid())
+  author User   @relation(fields: [userId], references: [id])
+  mime   String
+  path   String
+  userId String
+}
+
+model Notification {
+  id         String                    @id @default(uuid())
+  type       NOTIFICATION_TYPE
+  message    String
+  onOpenType NOTIFICATION_ON_OPEN_TYPE
+  receiver   User                      @relation(name: "UserNotificationsReceived", fields: [receiverId], references: [id])
+  receiverId String
+  sender     User                      @relation(name: "UserNotificationsSent", fields: [senderId], references: [id])
+  senderId   String
+  readDate   DateTime?
+  createdAt  DateTime                  @default(now())
+  updatedAt  DateTime                  @updatedAt
+}
+
+enum NOTIFICATION_TYPE {
+  PASSWORD_CHANGED
+}
+
+enum NOTIFICATION_ON_OPEN_TYPE {
+  SOME_TYPE_TO_OPEN
+}

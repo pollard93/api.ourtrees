@@ -1,0 +1,60 @@
+<!doctype html>
+<html class="no-js" lang="">
+<head>
+  <meta charset="utf-8">
+  <title>{{title}}</title>
+  <link rel="stylesheet" type="text/css" href="/css/styles.css">
+
+  <meta name="description" content="{{description}}" />
+  <meta name="robots" content="max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <link rel="canonical" href="{{url}}" />
+
+  <meta property="fb:app_id" content="233563547770081" />
+
+  <meta property="og:locale" content="en_GB" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="{{title}}" />
+  <meta property="og:description" content="{{description}}" />
+  <meta property="og:url" content="{{url}}" />
+  <meta property="og:site_name" content="Made By Prism" />
+  <meta property="og:image" content="{{imageUrl}}" />
+  <meta property="og:image:url" content="{{imageUrl}}" />
+  <meta property="og:image:secure_url" content="{{imageUrl}}" />
+  <meta property="og:image:alt" content="{{title}}" />
+  <meta property="og:image:width" content="1024" />
+  <meta property="og:image:height" content="1024" />
+
+  <meta name="twitter:text:title" content="{{title}}">
+  <meta name="twitter:card" content="app">
+  <meta name="twitter:site" content="@madebyprism">
+  <meta name="twitter:description" content="{{description}}">
+  <meta name="twitter:app:country" content="UK">
+  <meta name="twitter:app:name:iphone" content="Made By Prism">
+  <meta name="twitter:app:id:iphone" content="TODO!">
+  <meta name="twitter:app:url:iphone" content="{{deepLink}}">
+  <meta name="twitter:app:name:ipad" content="Made By Prism">
+  <meta name="twitter:app:id:ipad" content="TODO!">
+  <meta name="twitter:app:url:ipad" content="{{deepLink}}">
+  <meta name="twitter:app:name:googleplay" content="Made By Prism">
+  <meta name="twitter:app:id:googleplay" content="Made By Prism">
+  <meta name="twitter:app:url:googleplay" content="{{playStoreUrl}}">
+
+  {{> partials/iconMeta}}
+</head>
+<body>
+  <div class="wrap">
+    <div class="logo">
+      <img alt="Made By Prism" src="/images/icon.jpg" />
+    </div>
+
+    {{> partials/appStore}}
+    {{> partials/playStore}}
+  </div>
+
+  <script>
+    window.onload = function(){
+      window.location.href = '{{{deepLink}}}';
+    }
+  </script>
+</body>
+</html>

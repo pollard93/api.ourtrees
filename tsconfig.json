@@ -1,0 +1,32 @@
+{
+  "compilerOptions": {
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "target": "ES2019",
+    "strictNullChecks": false,
+    "allowUnreachableCode": true,
+    "esModuleInterop": true,
+    "module": "commonjs",
+    "outDir": "./dist/",
+    "sourceMap": true,
+    "lib": [
+      "ES2019",
+      "dom",
+      "esnext.asynciterable"
+    ],
+    "baseUrl": "./src",
+    "paths": {
+      "*": [
+        "*",
+        "dist/*"
+      ]
+    }
+  },
+  "include": [
+    "./src/index.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "./src/test/**/*"
+  ]
+}

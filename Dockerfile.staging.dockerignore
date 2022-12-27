@@ -1,0 +1,13 @@
+.dockerignore
+.env
+.env.template
+.env.template
+.git
+.gitignore
+Dockerfile
+README.md
+__tests__
+dist
+docker
+log
+node_modules

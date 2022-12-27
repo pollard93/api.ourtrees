@@ -1,0 +1,26 @@
+# Create a build with an edited package.json
+FROM endeveit/docker-jq AS depsBuild
+
+COPY package.json /tmp
+RUN jq '{ dependencies, devDependencies, peerDependencies }' < /tmp/package.json > /tmp/deps.json
+
+# Production
+FROM node:12.16-alpine
+
+RUN apk update
+RUN apk add --no-cache git autoconf automake gawk build-base nasm
+
+WORKDIR /home/node/app
+
+# Use deps.json from depsBuild as package.json
+COPY --from=depsBuild /tmp/deps.json ./package.json
+COPY yarn.lock ./
+RUN yarn install --pure-lockfile --network-concurrency 1
+
+COPY . .
+
+RUN yarn build
+
+EXPOSE 4000
+
+CMD [ "yarn", "start:server:pm2" ]
