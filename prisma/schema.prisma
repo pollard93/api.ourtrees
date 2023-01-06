@@ -8,19 +8,28 @@ generator client {
 }
 
 model User {
-  id                    String         @id @default(uuid())
-  email                 String         @unique
-  password              String
-  name                  String?
-  facebookId            String?        @unique
-  googleId              String?        @unique
-  profilePicture        File?
-  verified              Boolean        @default(false)
-  notificationsReceived Notification[] @relation(name: "UserNotificationsReceived")
-  createdAt             DateTime       @default(now())
-  updatedAt             DateTime       @updatedAt
-  refreshTokens         RefreshToken[]
-  notificationsSent     Notification[] @relation("UserNotificationsSent")
+  id                                  String                               @id @default(uuid())
+  email                               String                               @unique
+  password                            String
+  name                                String?
+  facebookId                          String?                              @unique
+  googleId                            String?                              @unique
+  profilePicture                      File?
+  verified                            Boolean                              @default(false)
+  notificationsReceived               Notification[]                       @relation(name: "UserNotificationsReceived")
+  refreshTokens                       RefreshToken[]
+  notificationsSent                   Notification[]                       @relation("UserNotificationsSent")
+  treeDataCareDifficultyVotes         TreeDataCareDifficultyVote[]         @relation("UserTreeDataCareDifficultyVote")
+  treeDataCareWaterVotes              TreeDataCareWaterVote[]              @relation("UserTreeDataCareWaterVote")
+  treeDataCareSunlightVotes           TreeDataCareSunlightVote[]           @relation("UserTreeDataCareSunlightVote")
+  treeDataCarePlantingVotes           TreeDataCarePlantingVote[]           @relation("UserTreeDataCarePlantingVote")
+  treeDataCareObtainingSeedsContents  TreeDataCareObtainingSeedsContent[]  @relation("UserTreeDataCareObtainingSeedsContent")
+  treeDataCareObtainingSeedsVotes     TreeDataCareObtainingSeedsVote[]     @relation("UserTreeDataCareObtainingSeedsVote")
+  treeDataCareHowToPlantSeedsContents TreeDataCareHowToPlantSeedsContent[] @relation("UserTreeDataCareHowToPlantSeedsContent")
+  treeDataCareHowToPlantSeedsVotes    TreeDataCareHowToPlantSeedsVote[]    @relation("UserTreeDataCareHowToPlantSeedsVote")
+  treeDataCareWhenToReleaseVotes      TreeDataCareWhenToReleaseVote[]      @relation("UserTreeDataCareWhenToReleaseVote")
+  createdAt                           DateTime                             @default(now())
+  updatedAt                           DateTime                             @updatedAt
 }
 
 model RefreshToken {
@@ -59,4 +68,182 @@ enum NOTIFICATION_TYPE {
 
 enum NOTIFICATION_ON_OPEN_TYPE {
   SOME_TYPE_TO_OPEN
+}
+
+model TreeData {
+  id                          String                               @id @default(uuid())
+  careDifficultyVotes         TreeDataCareDifficultyVote[]         @relation(name: "TreeDataCareDifficultyVotes")
+  careWaterVotes              TreeDataCareWaterVote[]              @relation(name: "TreeDataCareWaterVotes")
+  careSunlightVotes           TreeDataCareSunlightVote[]           @relation(name: "TreeDataCareSunlightVotes")
+  carePlantingVotes           TreeDataCarePlantingVote[]           @relation(name: "TreeDataCarePlantingVotes")
+  careObtainingSeedsContents  TreeDataCareObtainingSeedsContent[]  @relation(name: "TreeDataCareObtainingSeedsContents")
+  careObtainingSeedsVotes     TreeDataCareObtainingSeedsVote[]     @relation(name: "TreeDataCareObtainingSeedsVotes")
+  careHowToPlantSeedsContents TreeDataCareHowToPlantSeedsContent[] @relation(name: "TreeDataCareHowToPlantSeedsContents")
+  careHowToPlantSeedsVotes    TreeDataCareHowToPlantSeedsVote[]    @relation(name: "TreeDataCareHowToPlantSeedsVotes")
+  careWhenToReleaseVotes      TreeDataCareWhenToReleaseVote[]      @relation(name: "TreeDataCareWhenToReleaseVotes")
+}
+
+model TreeDataCareDifficultyVote {
+  id         String                    @id @default(uuid())
+  treeData   TreeData                  @relation(name: "TreeDataCareDifficultyVotes", fields: [treeDataId], references: [id])
+  treeDataId String
+  user       User                      @relation(name: "UserTreeDataCareDifficultyVote", fields: [userId], references: [id])
+  userId     String
+  type       TREE_CARE_DIFFICULTY_TYPE
+
+  @@unique([userId, treeDataId])
+}
+
+enum TREE_CARE_DIFFICULTY_TYPE {
+  EASY
+  MODERATE
+  HARD
+}
+
+model TreeDataCareWaterVote {
+  id         String               @id @default(uuid())
+  treeData   TreeData             @relation(name: "TreeDataCareWaterVotes", fields: [treeDataId], references: [id])
+  treeDataId String
+  user       User                 @relation(name: "UserTreeDataCareWaterVote", fields: [userId], references: [id])
+  userId     String
+  type       TREE_CARE_WATER_TYPE
+
+  @@unique([userId, treeDataId])
+}
+
+enum TREE_CARE_WATER_TYPE {
+  EASY
+  MODERATE
+  HARD
+}
+
+model TreeDataCareSunLightVote {
+  id         String                  @id @default(uuid())
+  treeData   TreeData                @relation(name: "TreeDataCareSunLightVotes", fields: [treeDataId], references: [id])
+  treeDataId String
+  user       User                    @relation(name: "UserTreeDataCareSunLightVote", fields: [userId], references: [id])
+  userId     String
+  type       TREE_CARE_SUNLIGHT_TYPE
+
+  @@unique([userId, treeDataId])
+}
+
+enum TREE_CARE_SUNLIGHT_TYPE {
+  EASY
+  MODERATE
+  HARD
+}
+
+model TreeDataCarePlantingVote {
+  id          String   @id @default(uuid())
+  treeData    TreeData @relation(name: "TreeDataCarePlantingVotes", fields: [treeDataId], references: [id])
+  treeDataId  String
+  user        User     @relation(name: "UserTreeDataCarePlantingVote", fields: [userId], references: [id])
+  userId      String
+  monthsStart Int
+  monthsEnd   Int
+
+  @@unique([userId, treeDataId])
+}
+
+model TreeDataCareObtainingSeedsContent {
+  id         String                           @id @default(uuid())
+  treeData   TreeData                         @relation(name: "TreeDataCareObtainingSeedsContents", fields: [treeDataId], references: [id])
+  treeDataId String
+  user       User                             @relation(name: "UserTreeDataCareObtainingSeedsContent", fields: [userId], references: [id])
+  userId     String
+  votes      TreeDataCareObtainingSeedsVote[] @relation(name: "TreeDataCareObtainingSeedsContentToVotes")
+
+  @@unique([userId, treeDataId])
+}
+
+model TreeDataCareObtainingSeedsVote {
+  id         String                            @id @default(uuid())
+  content    TreeDataCareObtainingSeedsContent @relation(name: "TreeDataCareObtainingSeedsContentToVotes", fields: [contentId], references: [id])
+  contentId  String
+  treeData   TreeData                          @relation(name: "TreeDataCareObtainingSeedsVotes", fields: [treeDataId], references: [id])
+  treeDataId String
+  user       User                              @relation(name: "UserTreeDataCareObtainingSeedsVote", fields: [userId], references: [id])
+  userId     String
+
+  @@unique([userId, treeDataId])
+}
+
+model TreeDataCareHowToPlantSeedsContent {
+  id         String                            @id @default(uuid())
+  treeData   TreeData                          @relation(name: "TreeDataCareHowToPlantSeedsContents", fields: [treeDataId], references: [id])
+  treeDataId String
+  user       User                              @relation(name: "UserTreeDataCareHowToPlantSeedsContent", fields: [userId], references: [id])
+  userId     String
+  votes      TreeDataCareHowToPlantSeedsVote[] @relation(name: "TreeDataCareHowToPlantSeedsContentToVotes")
+
+  @@unique([userId, treeDataId])
+}
+
+model TreeDataCareHowToPlantSeedsVote {
+  id         String                             @id @default(uuid())
+  content    TreeDataCareHowToPlantSeedsContent @relation(name: "TreeDataCareHowToPlantSeedsContentToVotes", fields: [contentId], references: [id])
+  contentId  String
+  treeData   TreeData                           @relation(name: "TreeDataCareHowToPlantSeedsVotes", fields: [treeDataId], references: [id])
+  treeDataId String
+  user       User                               @relation(name: "UserTreeDataCareHowToPlantSeedsVote", fields: [userId], references: [id])
+  userId     String
+
+  @@unique([userId, treeDataId])
+}
+
+model TreeDataCareGerminationDifficultyVote {
+  id         String                                @id @default(uuid())
+  treeData   TreeData                              @relation(name: "TreeDataCareGerminationDifficultyVotes", fields: [treeDataId], references: [id])
+  treeDataId String
+  user       User                                  @relation(name: "UserTreeDataCareGerminationDifficultyVote", fields: [userId], references: [id])
+  userId     String
+  type       TREE_CARE_GERMINATION_DIFFICULTY_TYPE
+
+  @@unique([userId, treeDataId])
+}
+
+enum TREE_CARE_GERMINATION_DIFFICULTY_TYPE {
+  EASY
+  MODERATE
+  HARD
+}
+
+model TreeDataCareGerminationNotesContent {
+  id         String                             @id @default(uuid())
+  treeData   TreeData                           @relation(name: "TreeDataCareGerminationNotesContents", fields: [treeDataId], references: [id])
+  treeDataId String
+  user       User                               @relation(name: "UserTreeDataCareGerminationNotesContent", fields: [userId], references: [id])
+  userId     String
+  votes      TreeDataCareGerminationNotesVote[] @relation(name: "TreeDataCareGerminationNotesContentToVotes")
+
+  @@unique([userId, treeDataId])
+}
+
+model TreeDataCareGerminationNotesVote {
+  id         String                              @id @default(uuid())
+  content    TreeDataCareGerminationNotesContent @relation(name: "TreeDataCareGerminationNotesContentToVotes", fields: [contentId], references: [id])
+  contentId  String
+  treeData   TreeData                            @relation(name: "TreeDataCareGerminationNotesVotes", fields: [treeDataId], references: [id])
+  treeDataId String
+  user       User                                @relation(name: "UserTreeDataCareGerminationNotesVote", fields: [userId], references: [id])
+  userId     String
+
+  @@unique([userId, treeDataId])
+}
+
+model TreeDataCareWhenToReleaseVote {
+  id          String   @id @default(uuid())
+  treeData    TreeData @relation(name: "TreeDataCareWhenToReleaseVotes", fields: [treeDataId], references: [id])
+  treeDataId  String
+  user        User     @relation(name: "UserTreeDataCareWhenToReleaseVote", fields: [userId], references: [id])
+  userId      String
+  monthsStart Int
+  monthsEnd   Int
+
+  @@unique([userId, treeDataId])
+}
+
+model Tree {
+  id String @id @default(uuid())
 }
