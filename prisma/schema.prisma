@@ -19,6 +19,8 @@ model User {
   notificationsReceived                 Notification[]                          @relation(name: "UserNotificationsReceived")
   refreshTokens                         RefreshToken[]
   notificationsSent                     Notification[]                          @relation("UserNotificationsSent")
+  country                               Country?                                @relation(name: "UserCountries", fields: [countryName], references: [name])
+  countryName                           String?
   treeDataCareDifficultyVotes           TreeDataCareDifficultyVote[]            @relation("UserTreeDataCareDifficultyVote")
   treeDataCareWaterVotes                TreeDataCareWaterVote[]                 @relation("UserTreeDataCareWaterVote")
   treeDataCareSunlightVotes             TreeDataCareSunlightVote[]              @relation("UserTreeDataCareSunlightVote")
@@ -76,6 +78,7 @@ enum NOTIFICATION_ON_OPEN_TYPE {
 model Country {
   name  String     @id
   trees TreeData[] @relation("TreeDataCountries")
+  users User[]     @relation("UserCountries")
 }
 
 model TreeData {

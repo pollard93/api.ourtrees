@@ -16,7 +16,9 @@ export default class EmailListener {
     }
 
     // set up sendgrid
-    this.sendGridClient.setApiKey(process.env.SENDGRID_API_KEY);
+    if (process.env.NODE_ENV !== 'test') {
+      this.sendGridClient.setApiKey(process.env.SENDGRID_API_KEY);
+    }
   }
 
   bindListeners() {
@@ -144,7 +146,7 @@ export default class EmailListener {
             break;
         }
         // eslint-disable-next-line no-empty
-      } catch (e) {}
+      } catch (e) { }
     }
   }
 
@@ -171,6 +173,6 @@ export default class EmailListener {
           break;
       }
       // eslint-disable-next-line no-empty
-    } catch (e) {}
+    } catch (e) { }
   }
 }
