@@ -28,6 +28,9 @@ export class UserSelf {
   @Field(() => Boolean)
   verified: boolean
 
+  @Field(() => String, { nullable: true })
+  countryName?: string | null
+
   @Field(() => FileProfile, { nullable: true })
   profilePicture: FileProfile
 

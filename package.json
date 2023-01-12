@@ -87,6 +87,7 @@
     "test:lint": "./node_modules/.bin/eslint \"{src,__tests__,services,database,scripts}/**/*ts\"",
     "test:notification": "ts-node ./scripts/test:notification.ts",
     "test:unit": "jest --useStderr --forceExit",
+    "test:unit:watch": "jest --useStderr --forceExit",
     "test:unit:reset": "yarn jest --useStderr"
   },
   "keywords": [],

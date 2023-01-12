@@ -18,7 +18,7 @@ type Response = { getCountries: { countries: Country[] } };
 type Variables = undefined;
 
 
-test('should suceed, tests profilePicture', async () => {
+test('should succeed, tests profilePicture', async () => {
   const country = TestUtils.randomString();
   await global.config.db.country.create({
     data: {

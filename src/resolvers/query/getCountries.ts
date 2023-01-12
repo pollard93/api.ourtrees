@@ -5,8 +5,7 @@ import {
   Query,
   UseMiddleware,
   ObjectType,
-  Field,
-  ID
+  Field
 } from 'type-graphql';
 import { Country } from '@prisma/client';
 import { TokenType } from '../../modules/Auth/interfaces';

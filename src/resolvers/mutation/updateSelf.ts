@@ -1,12 +1,14 @@
 import 'reflect-metadata';
 import path from 'path';
-import { Resolver,
+import {
+  Resolver,
   Mutation,
   Arg,
   Ctx,
   UseMiddleware,
   InputType,
-  Field } from 'type-graphql';
+  Field
+} from 'type-graphql';
 import { GraphQLUpload, FileUpload } from 'graphql-upload';
 import { Prisma, User } from '@prisma/client';
 import { FileAuthenticationError } from '../../errors';
@@ -22,6 +24,9 @@ export class UpdateSelfInput {
   @Field({ nullable: true })
   name?: string
 
+  @Field({ nullable: true })
+  countryName?: string
+
   @Field(() => GraphQLUpload, { nullable: true })
   profilePicture?: FileUpload
 }
@@ -34,7 +39,7 @@ export class UpdateSelfResolver {
     accessTokens: [TokenType.GENERAL],
   }))
   async updateSelf(
-    @Arg('data') { name, profilePicture }: UpdateSelfInput,
+    @Arg('data') { name, countryName, profilePicture }: UpdateSelfInput,
     @Ctx() context: Context<TokenType.GENERAL>,
   ): Promise<User> {
     const { id } = context.accessToken.data;
@@ -81,6 +86,11 @@ export class UpdateSelfResolver {
      */
     const updateInput: Prisma.UserUpdateInput = {
       name,
+      country: countryName ? {
+        connect: {
+          name: countryName,
+        },
+      } : undefined,
     };
 
 
