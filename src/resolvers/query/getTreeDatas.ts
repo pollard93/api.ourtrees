@@ -27,6 +27,9 @@ export enum SortOrder {
 class TreeDataWhereInput {
   @Field()
   countryName: string
+
+  @Field({ nullable: true })
+  nameSearch?: string
 }
 
 
@@ -92,6 +95,12 @@ export class GetTreeDatasResolver {
           name: data.where.countryName,
         },
       },
+      ...(data.where.nameSearch ? {
+        OR: [
+          { taxon: { contains: data.where.nameSearch } },
+          { family: { contains: data.where.nameSearch } },
+        ],
+      } : undefined),
     };
 
 
