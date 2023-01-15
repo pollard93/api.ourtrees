@@ -44,6 +44,23 @@ export default class TestUtils {
     return countryName;
   }
 
+  async createTreeData(data?: Partial<Prisma.TreeDataCreateInput>) {
+    return this.db.treeData.create({
+      data: {
+        id: TestUtils.getRandomInt(10000),
+        taxon: TestUtils.randomString(),
+        author: TestUtils.randomString(),
+        family: TestUtils.randomString(),
+        countries: {
+          connect: {
+            name: await this.createCountry(),
+          },
+        },
+        ...data,
+      },
+    });
+  }
+
   static randomEmail() {
     return random.email({ domain: random.domain({ level: 2, tld: 'com' }) });
   }

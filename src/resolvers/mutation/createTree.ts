@@ -16,7 +16,7 @@ import { TreeProfile } from '../../types/TreeProfile';
 
 
 @InputType()
-export class CreateTreeProfileInput {
+export class CreateTreeInput {
   @Field()
   treeDataId: number
 
@@ -29,13 +29,13 @@ export class CreateTreeProfileInput {
 
 
 @Resolver()
-export class CreateTreeProfileResolver {
+export class CreateTreeResolver {
   @Mutation(() => TreeProfile)
   @UseMiddleware(AuthInterceptor({
     accessTokens: [TokenType.GENERAL],
   }))
   async createTree(
-    @Arg('data') { treeDataId, name, cultivationDate }: CreateTreeProfileInput,
+    @Arg('data') { treeDataId, name, cultivationDate }: CreateTreeInput,
     @Ctx() context: Context<TokenType.GENERAL>,
   ): Promise<Tree> {
     const { id: creatorId } = context.accessToken.data;
@@ -45,6 +45,10 @@ export class CreateTreeProfileResolver {
         treeDataId,
         name,
         cultivationDate,
+      },
+      include: {
+        treeData: true,
+        creator: true,
       },
     });
   }
