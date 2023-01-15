@@ -1,6 +1,6 @@
-import { Country } from '@prisma/client';
 import { gql } from 'graphql-request';
 import '../../global-variables';
+import { CountryProfilesPayload } from '../../src/resolvers/query/getTreeDatas';
 import TestUtils from '../utils';
 
 
@@ -14,19 +14,13 @@ const query = gql`
   }
 `;
 
-type Response = { getCountries: { countries: Country[] } };
+type Response = { getCountries: CountryProfilesPayload };
 type Variables = undefined;
 
 
 test('should succeed, tests profilePicture', async () => {
-  const country = TestUtils.randomString();
-  await global.config.db.country.create({
-    data: {
-      name: country,
-    },
-  });
-
   const user = await global.config.utils.createUser();
+  const country = await global.config.utils.createCountry();
 
   const { data } = await global.config.client.rawRequest<Response, Variables>(
     query,

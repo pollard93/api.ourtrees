@@ -15,7 +15,7 @@ import { CountryProfile } from '../../types/CountryProfile';
 
 
 @ObjectType()
-export class CountrYProfilesPayload {
+export class CountryProfilesPayload {
   @Field(() => [CountryProfile])
   countries: CountryProfile[]
 }
@@ -23,7 +23,7 @@ export class CountrYProfilesPayload {
 
 @Resolver()
 export class GetCountriesResolver {
-  @Query(() => CountrYProfilesPayload)
+  @Query(() => CountryProfilesPayload)
   @UseMiddleware(AuthInterceptor({
     accessTokens: [TokenType.GENERAL],
   }))

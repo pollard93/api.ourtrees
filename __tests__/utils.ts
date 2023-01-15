@@ -32,12 +32,28 @@ export default class TestUtils {
     };
   }
 
+  async createCountry() {
+    const countryName = TestUtils.randomString();
+
+    await this.db.country.create({
+      data: {
+        name: countryName,
+      },
+    });
+
+    return countryName;
+  }
+
   static randomEmail() {
     return random.email({ domain: random.domain({ level: 2, tld: 'com' }) });
   }
 
   static randomString() {
     return uuidv4();
+  }
+
+  static getRandomInt(max) {
+    return Math.floor(Math.random() * max);
   }
 
   static getCookie(cookieString: string, name: string) {
