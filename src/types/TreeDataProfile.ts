@@ -4,12 +4,12 @@ import { ObjectType, Field, ID } from 'type-graphql';
 
 @ObjectType()
 export class TreeDataProfile {
-  @Field(() => ID)
-  id: string
+  @Field()
+  id: number
 
-  @Field(() => String)
+  @Field()
   taxon: string
 
-  @Field(() => String)
+  @Field()
   family: string
 }

@@ -1,33 +1,26 @@
 import { gql } from 'graphql-request';
 import '../../global-variables';
 import TestUtils from '../utils';
-import { GetTreeDatasInput, TreeDataProfilesPayLoad } from '../../src/resolvers/query/getTreeDatas';
+import { GetTreeDataInput } from '../../src/resolvers/query/getTreeData';
+import { TreeDataProfile } from '../../src/types/TreeDataProfile';
 
 
 const query = gql`
-  query getTreeDatas($data: GetTreeDatasInput!){
-    getTreeDatas(data: $data){
-      treeDatas {
-        id
-        taxon
-        family
-      }
-      count
+  query getTreeData($data: GetTreeDataInput!){
+    getTreeData(data: $data){
+      id
     }
   }
 `;
 
-type Response = { getTreeDatas: TreeDataProfilesPayLoad };
-type Variables = { data: GetTreeDatasInput };
+type Response = { getTreeData: TreeDataProfile | null };
+type Variables = { data: GetTreeDataInput };
 
 
 test('should succeed', async () => {
   const user = await global.config.utils.createUser();
-  const countryName = await global.config.utils.createCountry();
 
-  // Create 2 treeDatas, one should be received the other should not
-  // Should receive
-  await global.config.db.treeData.create({
+  const treeData = await global.config.db.treeData.create({
     data: {
       id: TestUtils.getRandomInt(10000),
       taxon: TestUtils.randomString(),
@@ -35,19 +28,9 @@ test('should succeed', async () => {
       family: TestUtils.randomString(),
       countries: {
         connect: {
-          name: countryName,
+          name: await global.config.utils.createCountry(),
         },
       },
-    },
-  });
-
-  // Should not receive
-  await global.config.db.treeData.create({
-    data: {
-      id: TestUtils.getRandomInt(10000),
-      taxon: TestUtils.randomString(),
-      author: TestUtils.randomString(),
-      family: TestUtils.randomString(),
     },
   });
 
@@ -55,16 +38,27 @@ test('should succeed', async () => {
     query,
     {
       data: {
-        where: {
-          countryName,
-        },
-        take: 10,
+        id: treeData.id,
       },
     },
     { authorization: `Bearer ${user.token}` },
   );
 
-  // Test response
-  expect(data?.getTreeDatas.treeDatas.length).toEqual(1);
-  expect(data?.getTreeDatas.count).toEqual(1);
+  expect(data?.getTreeData?.id).toEqual(treeData.id);
+});
+
+
+test('should fail', async () => {
+  const user = await global.config.utils.createUser();
+  const { data } = await global.config.client.rawRequest<Response, Variables>(
+    query,
+    {
+      data: {
+        id: TestUtils.getRandomInt(10000),
+      },
+    },
+    { authorization: `Bearer ${user.token}` },
+  );
+
+  expect(data?.getTreeData).toEqual(null);
 });
