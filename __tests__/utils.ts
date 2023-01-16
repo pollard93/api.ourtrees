@@ -61,6 +61,25 @@ export default class TestUtils {
     });
   }
 
+  async createTree(data?: Partial<Prisma.TreeCreateInput>) {
+    return this.db.tree.create({
+      data: {
+        name: TestUtils.randomString(),
+        creator: {
+          connect: {
+            id: (await this.createUser()).user.id,
+          },
+        },
+        treeData: {
+          connect: {
+            id: (await this.createTreeData()).id,
+          },
+        },
+        ...data,
+      },
+    });
+  }
+
   static randomEmail() {
     return random.email({ domain: random.domain({ level: 2, tld: 'com' }) });
   }
