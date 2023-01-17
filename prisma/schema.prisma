@@ -33,9 +33,10 @@ model User {
   treeDataCareGerminationDifficultyVote TreeDataCareGerminationDifficultyVote[] @relation("UserTreeDataCareGerminationDifficultyVote")
   treeDataCareGerminationNotesContent   TreeDataCareGerminationNotesContent[]   @relation("UserTreeDataCareGerminationNotesContent")
   treeDataCareGerminationNotesVote      TreeDataCareGerminationNotesVote[]      @relation("UserTreeDataCareGerminationNotesVote")
+  treesCreated                          Tree[]                                  @relation("UserTreesCreated")
+  treesFollowing                        Tree[]                                  @relation("UserTreesFollowing")
   createdAt                             DateTime                                @default(now())
   updatedAt                             DateTime                                @updatedAt
-  trees                                 Tree[]                                  @relation(name: "UserTreesCreated")
 }
 
 model RefreshToken {
@@ -273,6 +274,7 @@ model Tree {
   creatorId       String
   treeData        TreeData @relation(name: "TreeDataToTrees", fields: [treeDataId], references: [id])
   treeDataId      Int
+  followers       User[]   @relation("UserTreesFollowing")
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 }
