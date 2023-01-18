@@ -30,6 +30,9 @@ class TreeWhereInput {
 
   @Field({ nullable: true })
   creatorId?: string
+
+  @Field({ nullable: true })
+  followerId?: string
 }
 
 
@@ -79,12 +82,13 @@ export class GetTreesResolver {
     const where: Prisma.TreeWhereInput = {
       ...(data.where.creatorId ? { creatorId: data.where.creatorId } : {}),
       ...(data.where.treeDataId ? { treeDataId: data.where.treeDataId } : {}),
+      ...(data.where.followerId ? { followers: { some: { id: data.where.followerId } } } : {}),
     };
 
 
     /**
-     * Get trees and return
-     */
+   * Get trees and return
+   */
     const trees = await context.db.read.tree.findMany({
       where,
       cursor: data?.cursor,
@@ -93,8 +97,8 @@ export class GetTreesResolver {
 
 
     /**
-     * Count
-     */
+   * Count
+   */
     const count = await context.db.read.tree.count({
       where,
     });

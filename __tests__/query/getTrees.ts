@@ -79,7 +79,7 @@ test('should succeed with treeData', async () => {
 });
 
 
-test('should succeed with both', async () => {
+test('should succeed with creator and treeData', async () => {
   const user = await global.config.utils.createUser();
   const treeData = await global.config.utils.createTreeData();
   const tree = await global.config.utils.createTree({
@@ -102,6 +102,36 @@ test('should succeed with both', async () => {
         where: {
           creatorId: user.user.id,
           treeDataId: treeData.id,
+        },
+        take: 10,
+      },
+    },
+    { authorization: `Bearer ${user.token}` },
+  );
+
+  // Test response
+  expect(data?.getTrees.trees.length).toEqual(1);
+  expect(data?.getTrees.trees[0].id).toEqual(tree.id);
+  expect(data?.getTrees.count).toEqual(1);
+});
+
+
+test('should succeed with follower', async () => {
+  const user = await global.config.utils.createUser();
+  const tree = await global.config.utils.createTree({
+    followers: {
+      connect: {
+        id: user.user.id,
+      },
+    },
+  });
+
+  const { data } = await global.config.client.rawRequest<Response, Variables>(
+    query,
+    {
+      data: {
+        where: {
+          followerId: user.user.id,
         },
         take: 10,
       },
