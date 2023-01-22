@@ -34,6 +34,7 @@ export class GetTreeDataResolver {
     @Arg('data') data: GetTreeDataInput,
     @Ctx() context: Context<TokenType.GENERAL>,
   ): Promise<TreeData | null> {
+    // TODO - should error if null;
     return context.db.read.treeData.findUnique({
       where: {
         id: data.id,

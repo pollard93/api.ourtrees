@@ -36,6 +36,14 @@ class TreeDataSeeder extends Seeder {
                   }
                 )),
               },
+              careDifficultyResult: {
+                create: {
+                  count: 0,
+                  easy: 0,
+                  moderate: 0,
+                  hard: 0,
+                },
+              },
             },
             update: {
               id: result.id,

@@ -21,34 +21,30 @@ type Response = { getTreeDatas: TreeDataProfilesPayLoad };
 type Variables = { data: GetTreeDatasInput };
 
 
-test('should succeed', async () => {
+test('should succeed with country name', async () => {
   const user = await global.config.utils.createUser();
   const countryName = await global.config.utils.createCountry();
 
   // Create 2 treeDatas, one should be received the other should not
   // Should receive
-  await global.config.db.treeData.create({
-    data: {
-      id: TestUtils.getRandomInt(10000),
-      taxon: TestUtils.randomString(),
-      author: TestUtils.randomString(),
-      family: TestUtils.randomString(),
-      countries: {
-        connect: {
-          name: countryName,
-        },
+  await global.config.utils.createTreeData({
+    id: TestUtils.getRandomInt(10000),
+    taxon: TestUtils.randomString(),
+    author: TestUtils.randomString(),
+    family: TestUtils.randomString(),
+    countries: {
+      connect: {
+        name: countryName,
       },
     },
   });
 
   // Should not receive
-  await global.config.db.treeData.create({
-    data: {
-      id: TestUtils.getRandomInt(10000),
-      taxon: TestUtils.randomString(),
-      author: TestUtils.randomString(),
-      family: TestUtils.randomString(),
-    },
+  await global.config.utils.createTreeData({
+    id: TestUtils.getRandomInt(10000),
+    taxon: TestUtils.randomString(),
+    author: TestUtils.randomString(),
+    family: TestUtils.randomString(),
   });
 
   const { data } = await global.config.client.rawRequest<Response, Variables>(
@@ -77,31 +73,27 @@ test('should succeed to search taxon', async () => {
 
   // Create 2 treeDatas, one should be received the other should not
   // Should receive
-  await global.config.db.treeData.create({
-    data: {
-      id: TestUtils.getRandomInt(10000),
-      taxon: `${nameSearch}${TestUtils.randomString()}`,
-      author: TestUtils.randomString(),
-      family: TestUtils.randomString(),
-      countries: {
-        connect: {
-          name: countryName,
-        },
+  await global.config.utils.createTreeData({
+    id: TestUtils.getRandomInt(10000),
+    taxon: `${nameSearch}${TestUtils.randomString()}`,
+    author: TestUtils.randomString(),
+    family: TestUtils.randomString(),
+    countries: {
+      connect: {
+        name: countryName,
       },
     },
   });
 
   // Should not receive
-  await global.config.db.treeData.create({
-    data: {
-      id: TestUtils.getRandomInt(10000),
-      taxon: TestUtils.randomString(),
-      author: TestUtils.randomString(),
-      family: TestUtils.randomString(),
-      countries: {
-        connect: {
-          name: countryName,
-        },
+  await global.config.utils.createTreeData({
+    id: TestUtils.getRandomInt(10000),
+    taxon: TestUtils.randomString(),
+    author: TestUtils.randomString(),
+    family: TestUtils.randomString(),
+    countries: {
+      connect: {
+        name: countryName,
       },
     },
   });
@@ -133,31 +125,27 @@ test('should succeed to search family', async () => {
 
   // Create 2 treeDatas, one should be received the other should not
   // Should receive
-  await global.config.db.treeData.create({
-    data: {
-      id: TestUtils.getRandomInt(10000),
-      taxon: TestUtils.randomString(),
-      author: TestUtils.randomString(),
-      family: `${nameSearch}${TestUtils.randomString()}`,
-      countries: {
-        connect: {
-          name: countryName,
-        },
+  await global.config.utils.createTreeData({
+    id: TestUtils.getRandomInt(10000),
+    taxon: TestUtils.randomString(),
+    author: TestUtils.randomString(),
+    family: `${nameSearch}${TestUtils.randomString()}`,
+    countries: {
+      connect: {
+        name: countryName,
       },
     },
   });
 
   // Should not receive
-  await global.config.db.treeData.create({
-    data: {
-      id: TestUtils.getRandomInt(10000),
-      taxon: TestUtils.randomString(),
-      author: TestUtils.randomString(),
-      family: TestUtils.randomString(),
-      countries: {
-        connect: {
-          name: countryName,
-        },
+  await global.config.utils.createTreeData({
+    id: TestUtils.getRandomInt(10000),
+    taxon: TestUtils.randomString(),
+    author: TestUtils.randomString(),
+    family: TestUtils.randomString(),
+    countries: {
+      connect: {
+        name: countryName,
       },
     },
   });

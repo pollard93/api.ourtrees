@@ -9,6 +9,12 @@ const query = gql`
   query getTreeData($data: GetTreeDataInput!){
     getTreeData(data: $data){
       id
+      careDifficultyResult {
+        count
+        easy
+        moderate
+        hard
+      }
     }
   }
 `;
@@ -19,17 +25,14 @@ type Variables = { data: GetTreeDataInput };
 
 test('should succeed', async () => {
   const user = await global.config.utils.createUser();
-
-  const treeData = await global.config.db.treeData.create({
-    data: {
-      id: TestUtils.getRandomInt(10000),
-      taxon: TestUtils.randomString(),
-      author: TestUtils.randomString(),
-      family: TestUtils.randomString(),
-      countries: {
-        connect: {
-          name: await global.config.utils.createCountry(),
-        },
+  const treeData = await global.config.utils.createTreeData({
+    id: TestUtils.getRandomInt(10000),
+    taxon: TestUtils.randomString(),
+    author: TestUtils.randomString(),
+    family: TestUtils.randomString(),
+    countries: {
+      connect: {
+        name: await global.config.utils.createCountry(),
       },
     },
   });
@@ -45,6 +48,47 @@ test('should succeed', async () => {
   );
 
   expect(data?.getTreeData?.id).toEqual(treeData.id);
+});
+
+
+test('should resolve careDifficultyResult', async () => {
+  const user = await global.config.utils.createUser();
+  const treeData = await global.config.utils.createTreeData({
+    id: TestUtils.getRandomInt(10000),
+    taxon: TestUtils.randomString(),
+    author: TestUtils.randomString(),
+    family: TestUtils.randomString(),
+    countries: {
+      connect: {
+        name: await global.config.utils.createCountry(),
+      },
+    },
+    careDifficultyResult: {
+      create: {
+        count: 1,
+        easy: 2,
+        moderate: 3,
+        hard: 4,
+      },
+    },
+  });
+
+  const { data } = await global.config.client.rawRequest<Response, Variables>(
+    query,
+    {
+      data: {
+        id: treeData.id,
+      },
+    },
+    { authorization: `Bearer ${user.token}` },
+  );
+
+  expect(data?.getTreeData?.careDifficultyResult).toEqual({
+    count: 1,
+    easy: 2,
+    moderate: 3,
+    hard: 4,
+  });
 });
 
 

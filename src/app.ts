@@ -14,6 +14,7 @@ import * as tq from 'type-graphql';
 import { GraphQLScalarType } from 'graphql';
 import { DateTimeResolver } from 'graphql-scalars';
 import { graphqlUploadExpress } from 'graphql-upload';
+import { TREE_CARE_DIFFICULTY_TYPE } from '@prisma/client';
 import shareRoute from './routes/shareRoute';
 import linkRoute from './routes/linkRoute';
 import { InitFileHandler } from './modules/FileHandler';
@@ -59,6 +60,9 @@ tq.registerEnumType(SortOrder, {
 });
 tq.registerEnumType(SocialProvider, {
   name: 'SocialProvider',
+});
+tq.registerEnumType(TREE_CARE_DIFFICULTY_TYPE, {
+  name: 'TREE_CARE_DIFFICULTY_TYPE',
 });
 
 

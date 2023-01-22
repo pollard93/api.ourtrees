@@ -56,6 +56,14 @@ export default class TestUtils {
             name: await this.createCountry(),
           },
         },
+        careDifficultyResult: {
+          create: {
+            count: 0,
+            easy: 0,
+            moderate: 0,
+            hard: 0,
+          },
+        },
         ...data,
       },
     });
