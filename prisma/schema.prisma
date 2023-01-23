@@ -84,31 +84,33 @@ model Country {
 }
 
 model TreeData {
-  id                             Int                                     @id
-  taxon                          String
-  family                         String
-  author                         String?
-  source                         String?
-  countries                      Country[]                               @relation("TreeDataCountries")
-  careDifficultyVotes            TreeDataCareDifficultyVote[]            @relation("TreeDataCareDifficultyVotes")
-  careDifficultyResult           TreeDataCareDifficultyResult            @relation(name: "TreeDataCareDifficultyResult", fields: [treeDataCareDifficultyResultId], references: [id])
-  treeDataCareDifficultyResultId String                                  @unique
-  careWaterVotes                 TreeDataCareWaterVote[]                 @relation("TreeDataCareWaterVotes")
-  careWaterResult                TreeDataCareWaterResult                 @relation(name: "TreeDataCareWaterResult", fields: [treeDataCareWaterResultId], references: [id])
-  treeDataCareWaterResultId      String                                  @unique
-  careSunlightVotes              TreeDataCareSunlightVote[]              @relation("TreeDataCareSunlightVotes")
-  careSunlightResult             TreeDataCareSunlightResult              @relation(name: "TreeDataCareSunlightResult", fields: [treeDataCareSunlightResultId], references: [id])
-  treeDataCareSunlightResultId   String
-  carePlantingVotes              TreeDataCarePlantingVote[]              @relation("TreeDataCarePlantingVotes")
-  careObtainingSeedsContents     TreeDataCareObtainingSeedsContent[]     @relation("TreeDataCareObtainingSeedsContents")
-  careObtainingSeedsVotes        TreeDataCareObtainingSeedsVote[]        @relation("TreeDataCareObtainingSeedsVotes")
-  careHowToPlantSeedsContents    TreeDataCareHowToPlantSeedsContent[]    @relation("TreeDataCareHowToPlantSeedsContents")
-  careHowToPlantSeedsVotes       TreeDataCareHowToPlantSeedsVote[]       @relation("TreeDataCareHowToPlantSeedsVotes")
-  careWhenToReleaseVotes         TreeDataCareWhenToReleaseVote[]         @relation("TreeDataCareWhenToReleaseVotes")
-  careGerminationDifficultyVote  TreeDataCareGerminationDifficultyVote[] @relation("TreeDataCareGerminationDifficultyVotes")
-  careGerminationNotesContent    TreeDataCareGerminationNotesContent[]   @relation("TreeDataCareGerminationNotesContents")
-  careGerminationNotesVote       TreeDataCareGerminationNotesVote[]      @relation("TreeDataCareGerminationNotesVotes")
-  trees                          Tree[]                                  @relation("TreeDataToTrees")
+  id                                        Int                                     @id
+  taxon                                     String
+  family                                    String
+  author                                    String?
+  source                                    String?
+  countries                                 Country[]                               @relation("TreeDataCountries")
+  careDifficultyVotes                       TreeDataCareDifficultyVote[]            @relation("TreeDataCareDifficultyVotes")
+  careDifficultyResult                      TreeDataCareDifficultyResult            @relation(name: "TreeDataCareDifficultyResult", fields: [treeDataCareDifficultyResultId], references: [id])
+  treeDataCareDifficultyResultId            String                                  @unique
+  careWaterVotes                            TreeDataCareWaterVote[]                 @relation("TreeDataCareWaterVotes")
+  careWaterResult                           TreeDataCareWaterResult                 @relation(name: "TreeDataCareWaterResult", fields: [treeDataCareWaterResultId], references: [id])
+  treeDataCareWaterResultId                 String                                  @unique
+  careSunlightVotes                         TreeDataCareSunlightVote[]              @relation("TreeDataCareSunlightVotes")
+  careSunlightResult                        TreeDataCareSunlightResult              @relation(name: "TreeDataCareSunlightResult", fields: [treeDataCareSunlightResultId], references: [id])
+  treeDataCareSunlightResultId              String                                  @unique
+  carePlantingVotes                         TreeDataCarePlantingVote[]              @relation("TreeDataCarePlantingVotes")
+  careObtainingSeedsContents                TreeDataCareObtainingSeedsContent[]     @relation("TreeDataCareObtainingSeedsContents")
+  careObtainingSeedsVotes                   TreeDataCareObtainingSeedsVote[]        @relation("TreeDataCareObtainingSeedsVotes")
+  careHowToPlantSeedsContents               TreeDataCareHowToPlantSeedsContent[]    @relation("TreeDataCareHowToPlantSeedsContents")
+  careHowToPlantSeedsVotes                  TreeDataCareHowToPlantSeedsVote[]       @relation("TreeDataCareHowToPlantSeedsVotes")
+  careWhenToReleaseVotes                    TreeDataCareWhenToReleaseVote[]         @relation("TreeDataCareWhenToReleaseVotes")
+  careGerminationDifficultyVote             TreeDataCareGerminationDifficultyVote[] @relation("TreeDataCareGerminationDifficultyVotes")
+  careGerminationDifficultyResult           TreeDataCareGerminationDifficultyResult @relation(name: "TreeDataCareGerminationDifficultyResult", fields: [treeDataCareGerminationDifficultyResultId], references: [id])
+  treeDataCareGerminationDifficultyResultId String                                  @unique
+  careGerminationNotesContent               TreeDataCareGerminationNotesContent[]   @relation("TreeDataCareGerminationNotesContents")
+  careGerminationNotesVote                  TreeDataCareGerminationNotesVote[]      @relation("TreeDataCareGerminationNotesVotes")
+  trees                                     Tree[]                                  @relation("TreeDataToTrees")
 }
 
 model TreeDataCareDifficultyVote {
@@ -256,6 +258,15 @@ model TreeDataCareGerminationDifficultyVote {
   type       TREE_CARE_GERMINATION_DIFFICULTY_TYPE
 
   @@unique([userId, treeDataId])
+}
+
+model TreeDataCareGerminationDifficultyResult {
+  id       String    @id @default(uuid())
+  treeData TreeData? @relation(name: "TreeDataCareGerminationDifficultyResult")
+  count    Int
+  easy     Int
+  moderate Int
+  hard     Int
 }
 
 enum TREE_CARE_GERMINATION_DIFFICULTY_TYPE {

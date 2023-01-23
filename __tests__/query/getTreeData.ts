@@ -27,6 +27,12 @@ const query = gql`
         partial
         direct
       }
+      careGerminationDifficultyResult {
+        count
+        easy
+        moderate
+        hard
+      }
     }
   }
 `;
@@ -145,6 +151,38 @@ test('should resolve careSunlightResult', async () => {
     indirect: 2,
     partial: 3,
     direct: 4,
+  });
+});
+
+
+test('should resolve careGerminationDifficultyResult', async () => {
+  const user = await global.config.utils.createUser();
+  const treeData = await global.config.utils.createTreeData({
+    careGerminationDifficultyResult: {
+      create: {
+        count: 1,
+        easy: 2,
+        moderate: 3,
+        hard: 4,
+      },
+    },
+  });
+
+  const { data } = await global.config.client.rawRequest<Response, Variables>(
+    query,
+    {
+      data: {
+        id: treeData.id,
+      },
+    },
+    { authorization: `Bearer ${user.token}` },
+  );
+
+  expect(data?.getTreeData?.careGerminationDifficultyResult).toEqual({
+    count: 1,
+    easy: 2,
+    moderate: 3,
+    hard: 4,
   });
 });
 

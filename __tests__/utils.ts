@@ -80,6 +80,14 @@ export default class TestUtils {
             direct: 0,
           },
         },
+        careGerminationDifficultyResult: {
+          create: {
+            count: 0,
+            easy: 0,
+            moderate: 0,
+            hard: 0,
+          },
+        },
         ...data,
       },
     });

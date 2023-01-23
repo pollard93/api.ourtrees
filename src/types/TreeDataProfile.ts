@@ -3,6 +3,7 @@ import { ObjectType, Field } from 'type-graphql';
 import { TreeDataCareDifficultyResultProfile } from './TreeDataCareDifficultyResultProfile';
 import { TreeDataCareWaterResultProfile } from './TreeDataCareWaterResultProfile';
 import { TreeDataCareSunlightResultProfile } from './TreeDataCareSunlightResultProfile';
+import { TreeDataCareGerminationDifficultyResultProfile } from './TreeDataCareGerminationDifficultyResultProfile';
 
 
 @ObjectType()
@@ -24,4 +25,7 @@ export class TreeDataProfile {
 
   @Field(() => TreeDataCareSunlightResultProfile)
   careSunlightResult: TreeDataCareSunlightResultProfile
+
+  @Field(() => TreeDataCareGerminationDifficultyResultProfile)
+  careGerminationDifficultyResult: TreeDataCareGerminationDifficultyResultProfile
 }
