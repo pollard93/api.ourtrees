@@ -100,6 +100,8 @@ model TreeData {
   careSunlightResult                        TreeDataCareSunlightResult              @relation(name: "TreeDataCareSunlightResult", fields: [treeDataCareSunlightResultId], references: [id])
   treeDataCareSunlightResultId              String                                  @unique
   carePlantingVotes                         TreeDataCarePlantingVote[]              @relation("TreeDataCarePlantingVotes")
+  carePlantingResult                        TreeDataCarePlantingResult              @relation(name: "TreeDataCarePlantingResult", fields: [treeDataCarePlantingResultId], references: [id])
+  treeDataCarePlantingResultId              String                                  @unique
   careObtainingSeedsContents                TreeDataCareObtainingSeedsContent[]     @relation("TreeDataCareObtainingSeedsContents")
   careObtainingSeedsVotes                   TreeDataCareObtainingSeedsVote[]        @relation("TreeDataCareObtainingSeedsVotes")
   careHowToPlantSeedsContents               TreeDataCareHowToPlantSeedsContent[]    @relation("TreeDataCareHowToPlantSeedsContents")
@@ -192,15 +194,43 @@ enum TREE_CARE_SUNLIGHT_TYPE {
 }
 
 model TreeDataCarePlantingVote {
-  id          String   @id @default(uuid())
-  treeData    TreeData @relation(name: "TreeDataCarePlantingVotes", fields: [treeDataId], references: [id])
-  treeDataId  Int
-  user        User     @relation(name: "UserTreeDataCarePlantingVote", fields: [userId], references: [id])
-  userId      String
-  monthsStart Int
-  monthsEnd   Int
+  id         String   @id @default(uuid())
+  treeData   TreeData @relation(name: "TreeDataCarePlantingVotes", fields: [treeDataId], references: [id])
+  treeDataId Int
+  user       User     @relation(name: "UserTreeDataCarePlantingVote", fields: [userId], references: [id])
+  userId     String
+  jan        Boolean
+  feb        Boolean
+  mar        Boolean
+  apr        Boolean
+  may        Boolean
+  jun        Boolean
+  jul        Boolean
+  aug        Boolean
+  sep        Boolean
+  oct        Boolean
+  nov        Boolean
+  dec        Boolean
 
   @@unique([userId, treeDataId])
+}
+
+model TreeDataCarePlantingResult {
+  id       String    @id @default(uuid())
+  treeData TreeData? @relation(name: "TreeDataCarePlantingResult")
+  count    Int
+  jan      Int
+  feb      Int
+  mar      Int
+  apr      Int
+  may      Int
+  jun      Int
+  jul      Int
+  aug      Int
+  sep      Int
+  oct      Int
+  nov      Int
+  dec      Int
 }
 
 model TreeDataCareObtainingSeedsContent {

@@ -1,4 +1,4 @@
-import { TreeData, TreeDataCareDifficultyResult, TreeDataCareGerminationDifficultyResult, TreeDataCareSunlightResult, TreeDataCareWaterResult } from '@prisma/client';
+import { TreeData, TreeDataCareDifficultyResult, TreeDataCareGerminationDifficultyResult, TreeDataCarePlantingResult, TreeDataCareSunlightResult, TreeDataCareWaterResult } from '@prisma/client';
 import { Ctx, FieldResolver, Resolver, Root } from 'type-graphql';
 import { TreeDataProfile } from '../../types/TreeDataProfile';
 import { TreeDataCareDifficultyResultProfile } from '../../types/TreeDataCareDifficultyResultProfile';
@@ -6,6 +6,7 @@ import { Context } from '../../utils/types';
 import { TreeDataCareWaterResultProfile } from '../../types/TreeDataCareWaterResultProfile';
 import { TreeDataCareSunlightResultProfile } from '../../types/TreeDataCareSunlightResultProfile';
 import { TreeDataCareGerminationDifficultyResultProfile } from '../../types/TreeDataCareGerminationDifficultyResultProfile';
+import { TreeDataCarePlantingResultProfile } from '../../types/TreeDataCarePlantingResultProfile';
 
 
 @Resolver(() => TreeDataProfile)
@@ -23,6 +24,11 @@ export class TreeDataProfileResolver {
   @FieldResolver(() => TreeDataCareSunlightResultProfile)
   async careSunlightResult(@Root() { id }: TreeData, @Ctx() context: Context): Promise<TreeDataCareSunlightResult | undefined> {
     return (await context.db.read.treeData.findUnique({ where: { id }, include: { careSunlightResult: true } }))?.careSunlightResult;
+  }
+
+  @FieldResolver(() => TreeDataCarePlantingResultProfile)
+  async carePlantingResult(@Root() { id }: TreeData, @Ctx() context: Context): Promise<TreeDataCarePlantingResult | undefined> {
+    return (await context.db.read.treeData.findUnique({ where: { id }, include: { carePlantingResult: true } }))?.carePlantingResult;
   }
 
   @FieldResolver(() => TreeDataCareGerminationDifficultyResultProfile)

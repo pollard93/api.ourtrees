@@ -33,6 +33,21 @@ const query = gql`
         moderate
         hard
       }
+      carePlantingResult {
+        count
+        jan        
+        feb        
+        mar        
+        apr        
+        may        
+        jun        
+        jul        
+        aug        
+        sep        
+        oct        
+        nov        
+        dec        
+      }
     }
   }
 `;
@@ -183,6 +198,56 @@ test('should resolve careGerminationDifficultyResult', async () => {
     easy: 2,
     moderate: 3,
     hard: 4,
+  });
+});
+
+
+test('should resolve carePlantingResult', async () => {
+  const user = await global.config.utils.createUser();
+  const treeData = await global.config.utils.createTreeData({
+    carePlantingResult: {
+      create: {
+        count: 1,
+        jan: 2,
+        feb: 3,
+        mar: 4,
+        apr: 5,
+        may: 6,
+        jun: 7,
+        jul: 8,
+        aug: 9,
+        sep: 10,
+        oct: 11,
+        nov: 12,
+        dec: 13,
+      },
+    },
+  });
+
+  const { data } = await global.config.client.rawRequest<Response, Variables>(
+    query,
+    {
+      data: {
+        id: treeData.id,
+      },
+    },
+    { authorization: `Bearer ${user.token}` },
+  );
+
+  expect(data?.getTreeData?.carePlantingResult).toEqual({
+    count: 1,
+    jan: 2,
+    feb: 3,
+    mar: 4,
+    apr: 5,
+    may: 6,
+    jun: 7,
+    jul: 8,
+    aug: 9,
+    sep: 10,
+    oct: 11,
+    nov: 12,
+    dec: 13,
   });
 });
 
