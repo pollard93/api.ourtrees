@@ -1,4 +1,4 @@
-import { TreeData, TreeDataCareDifficultyResult, TreeDataCareGerminationDifficultyResult, TreeDataCarePlantingResult, TreeDataCareSunlightResult, TreeDataCareWaterResult } from '@prisma/client';
+import { TreeData, TreeDataCareDifficultyResult, TreeDataCareGerminationDifficultyResult, TreeDataCarePlantingResult, TreeDataCareSunlightResult, TreeDataCareWaterResult, TreeDataCareWhenToReleaseResult } from '@prisma/client';
 import { Ctx, FieldResolver, Resolver, Root } from 'type-graphql';
 import { TreeDataProfile } from '../../types/TreeDataProfile';
 import { TreeDataCareDifficultyResultProfile } from '../../types/TreeDataCareDifficultyResultProfile';
@@ -7,6 +7,7 @@ import { TreeDataCareWaterResultProfile } from '../../types/TreeDataCareWaterRes
 import { TreeDataCareSunlightResultProfile } from '../../types/TreeDataCareSunlightResultProfile';
 import { TreeDataCareGerminationDifficultyResultProfile } from '../../types/TreeDataCareGerminationDifficultyResultProfile';
 import { TreeDataCarePlantingResultProfile } from '../../types/TreeDataCarePlantingResultProfile';
+import { TreeDataCareWhenToReleaseResultProfile } from '../../types/TreeDataCareWhenToReleaseResultProfile';
 
 
 @Resolver(() => TreeDataProfile)
@@ -34,5 +35,10 @@ export class TreeDataProfileResolver {
   @FieldResolver(() => TreeDataCareGerminationDifficultyResultProfile)
   async careGerminationDifficultyResult(@Root() { id }: TreeData, @Ctx() context: Context): Promise<TreeDataCareGerminationDifficultyResult | undefined> {
     return (await context.db.read.treeData.findUnique({ where: { id }, include: { careGerminationDifficultyResult: true } }))?.careGerminationDifficultyResult;
+  }
+
+  @FieldResolver(() => TreeDataCareWhenToReleaseResultProfile)
+  async careWhenToReleaseResult(@Root() { id }: TreeData, @Ctx() context: Context): Promise<TreeDataCareWhenToReleaseResult | undefined> {
+    return (await context.db.read.treeData.findUnique({ where: { id }, include: { careWhenToReleaseResult: true } }))?.careWhenToReleaseResult;
   }
 }

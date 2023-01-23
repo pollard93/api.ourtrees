@@ -5,6 +5,7 @@ import { TreeDataCareWaterResultProfile } from './TreeDataCareWaterResultProfile
 import { TreeDataCareSunlightResultProfile } from './TreeDataCareSunlightResultProfile';
 import { TreeDataCarePlantingResultProfile } from './TreeDataCarePlantingResultProfile';
 import { TreeDataCareGerminationDifficultyResultProfile } from './TreeDataCareGerminationDifficultyResultProfile';
+import { TreeDataCareWhenToReleaseResultProfile } from './TreeDataCareWhenToReleaseResultProfile';
 
 
 @ObjectType()
@@ -32,4 +33,7 @@ export class TreeDataProfile {
 
   @Field(() => TreeDataCareGerminationDifficultyResultProfile)
   careGerminationDifficultyResult: TreeDataCareGerminationDifficultyResultProfile
+
+  @Field(() => TreeDataCareWhenToReleaseResultProfile)
+  careWhenToReleaseResult: TreeDataCareWhenToReleaseResultProfile
 }

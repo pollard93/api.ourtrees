@@ -27,13 +27,28 @@ const query = gql`
         partial
         direct
       }
+      carePlantingResult {
+        count
+        jan        
+        feb        
+        mar        
+        apr        
+        may        
+        jun        
+        jul        
+        aug        
+        sep        
+        oct        
+        nov        
+        dec        
+      }
       careGerminationDifficultyResult {
         count
         easy
         moderate
         hard
       }
-      carePlantingResult {
+      careWhenToReleaseResult {
         count
         jan        
         feb        
@@ -170,38 +185,6 @@ test('should resolve careSunlightResult', async () => {
 });
 
 
-test('should resolve careGerminationDifficultyResult', async () => {
-  const user = await global.config.utils.createUser();
-  const treeData = await global.config.utils.createTreeData({
-    careGerminationDifficultyResult: {
-      create: {
-        count: 1,
-        easy: 2,
-        moderate: 3,
-        hard: 4,
-      },
-    },
-  });
-
-  const { data } = await global.config.client.rawRequest<Response, Variables>(
-    query,
-    {
-      data: {
-        id: treeData.id,
-      },
-    },
-    { authorization: `Bearer ${user.token}` },
-  );
-
-  expect(data?.getTreeData?.careGerminationDifficultyResult).toEqual({
-    count: 1,
-    easy: 2,
-    moderate: 3,
-    hard: 4,
-  });
-});
-
-
 test('should resolve carePlantingResult', async () => {
   const user = await global.config.utils.createUser();
   const treeData = await global.config.utils.createTreeData({
@@ -235,6 +218,88 @@ test('should resolve carePlantingResult', async () => {
   );
 
   expect(data?.getTreeData?.carePlantingResult).toEqual({
+    count: 1,
+    jan: 2,
+    feb: 3,
+    mar: 4,
+    apr: 5,
+    may: 6,
+    jun: 7,
+    jul: 8,
+    aug: 9,
+    sep: 10,
+    oct: 11,
+    nov: 12,
+    dec: 13,
+  });
+});
+
+
+test('should resolve careGerminationDifficultyResult', async () => {
+  const user = await global.config.utils.createUser();
+  const treeData = await global.config.utils.createTreeData({
+    careGerminationDifficultyResult: {
+      create: {
+        count: 1,
+        easy: 2,
+        moderate: 3,
+        hard: 4,
+      },
+    },
+  });
+
+  const { data } = await global.config.client.rawRequest<Response, Variables>(
+    query,
+    {
+      data: {
+        id: treeData.id,
+      },
+    },
+    { authorization: `Bearer ${user.token}` },
+  );
+
+  expect(data?.getTreeData?.careGerminationDifficultyResult).toEqual({
+    count: 1,
+    easy: 2,
+    moderate: 3,
+    hard: 4,
+  });
+});
+
+
+test('should resolve careWhenToReleaseResult', async () => {
+  const user = await global.config.utils.createUser();
+  const treeData = await global.config.utils.createTreeData({
+    careWhenToReleaseResult: {
+      create: {
+        count: 1,
+        jan: 2,
+        feb: 3,
+        mar: 4,
+        apr: 5,
+        may: 6,
+        jun: 7,
+        jul: 8,
+        aug: 9,
+        sep: 10,
+        oct: 11,
+        nov: 12,
+        dec: 13,
+      },
+    },
+  });
+
+  const { data } = await global.config.client.rawRequest<Response, Variables>(
+    query,
+    {
+      data: {
+        id: treeData.id,
+      },
+    },
+    { authorization: `Bearer ${user.token}` },
+  );
+
+  expect(data?.getTreeData?.careWhenToReleaseResult).toEqual({
     count: 1,
     jan: 2,
     feb: 3,
