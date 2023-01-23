@@ -1,7 +1,7 @@
-import { TREE_CARE_DIFFICULTY_TYPE } from '@prisma/client';
 import 'reflect-metadata';
-import { ObjectType, Field, ID } from 'type-graphql';
+import { ObjectType, Field } from 'type-graphql';
 import { TreeDataCareDifficultyResultProfile } from './TreeDataCareDifficultyResultProfile';
+import { TreeDataCareWaterResultProfile } from './TreeDataCareWaterResultProfile';
 
 
 @ObjectType()
@@ -17,4 +17,7 @@ export class TreeDataProfile {
 
   @Field(() => TreeDataCareDifficultyResultProfile)
   careDifficultyResult: TreeDataCareDifficultyResultProfile
+
+  @Field(() => TreeDataCareWaterResultProfile)
+  careWaterResult: TreeDataCareWaterResultProfile
 }

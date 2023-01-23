@@ -94,6 +94,8 @@ model TreeData {
   careDifficultyResult           TreeDataCareDifficultyResult            @relation(name: "TreeDataCareDifficultyResult", fields: [treeDataCareDifficultyResultId], references: [id])
   treeDataCareDifficultyResultId String                                  @unique
   careWaterVotes                 TreeDataCareWaterVote[]                 @relation("TreeDataCareWaterVotes")
+  careWaterResult                TreeDataCareWaterResult                 @relation(name: "TreeDataCareWaterResult", fields: [treeDataCareWaterResultId], references: [id])
+  treeDataCareWaterResultId      String                                  @unique
   careSunlightVotes              TreeDataCareSunlightVote[]              @relation("TreeDataCareSunlightVotes")
   carePlantingVotes              TreeDataCarePlantingVote[]              @relation("TreeDataCarePlantingVotes")
   careObtainingSeedsContents     TreeDataCareObtainingSeedsContent[]     @relation("TreeDataCareObtainingSeedsContents")
@@ -144,10 +146,19 @@ model TreeDataCareWaterVote {
   @@unique([userId, treeDataId])
 }
 
+model TreeDataCareWaterResult {
+  id        String    @id @default(uuid())
+  treeData  TreeData? @relation(name: "TreeDataCareWaterResult")
+  count     Int
+  weekly    Int
+  biweekly  Int
+  triweekly Int
+}
+
 enum TREE_CARE_WATER_TYPE {
-  EASY
-  MODERATE
-  HARD
+  WEEKLY
+  BIWEEKLY
+  TRIWEEKLY
 }
 
 model TreeDataCareSunlightVote {

@@ -15,6 +15,12 @@ const query = gql`
         moderate
         hard
       }
+      careWaterResult {
+        count
+        weekly
+        biweekly
+        triweekly
+      }
     }
   }
 `;
@@ -88,6 +94,47 @@ test('should resolve careDifficultyResult', async () => {
     easy: 2,
     moderate: 3,
     hard: 4,
+  });
+});
+
+
+test('should resolve careWaterResult', async () => {
+  const user = await global.config.utils.createUser();
+  const treeData = await global.config.utils.createTreeData({
+    id: TestUtils.getRandomInt(10000),
+    taxon: TestUtils.randomString(),
+    author: TestUtils.randomString(),
+    family: TestUtils.randomString(),
+    countries: {
+      connect: {
+        name: await global.config.utils.createCountry(),
+      },
+    },
+    careWaterResult: {
+      create: {
+        count: 1,
+        weekly: 2,
+        biweekly: 3,
+        triweekly: 4,
+      },
+    },
+  });
+
+  const { data } = await global.config.client.rawRequest<Response, Variables>(
+    query,
+    {
+      data: {
+        id: treeData.id,
+      },
+    },
+    { authorization: `Bearer ${user.token}` },
+  );
+
+  expect(data?.getTreeData?.careWaterResult).toEqual({
+    count: 1,
+    weekly: 2,
+    biweekly: 3,
+    triweekly: 4,
   });
 });
 

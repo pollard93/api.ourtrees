@@ -64,6 +64,14 @@ export default class TestUtils {
             hard: 0,
           },
         },
+        careWaterResult: {
+          create: {
+            count: 0,
+            weekly: 0,
+            biweekly: 0,
+            triweekly: 0,
+          },
+        },
         ...data,
       },
     });
