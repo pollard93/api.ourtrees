@@ -72,6 +72,14 @@ export default class TestUtils {
             triweekly: 0,
           },
         },
+        careSunlightResult: {
+          create: {
+            count: 0,
+            indirect: 0,
+            partial: 0,
+            direct: 0,
+          },
+        },
         ...data,
       },
     });

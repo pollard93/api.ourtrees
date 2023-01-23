@@ -21,6 +21,12 @@ const query = gql`
         biweekly
         triweekly
       }
+      careSunlightResult {
+        count
+        indirect
+        partial
+        direct
+      }
     }
   }
 `;
@@ -31,17 +37,7 @@ type Variables = { data: GetTreeDataInput };
 
 test('should succeed', async () => {
   const user = await global.config.utils.createUser();
-  const treeData = await global.config.utils.createTreeData({
-    id: TestUtils.getRandomInt(10000),
-    taxon: TestUtils.randomString(),
-    author: TestUtils.randomString(),
-    family: TestUtils.randomString(),
-    countries: {
-      connect: {
-        name: await global.config.utils.createCountry(),
-      },
-    },
-  });
+  const treeData = await global.config.utils.createTreeData();
 
   const { data } = await global.config.client.rawRequest<Response, Variables>(
     query,
@@ -60,15 +56,6 @@ test('should succeed', async () => {
 test('should resolve careDifficultyResult', async () => {
   const user = await global.config.utils.createUser();
   const treeData = await global.config.utils.createTreeData({
-    id: TestUtils.getRandomInt(10000),
-    taxon: TestUtils.randomString(),
-    author: TestUtils.randomString(),
-    family: TestUtils.randomString(),
-    countries: {
-      connect: {
-        name: await global.config.utils.createCountry(),
-      },
-    },
     careDifficultyResult: {
       create: {
         count: 1,
@@ -101,15 +88,6 @@ test('should resolve careDifficultyResult', async () => {
 test('should resolve careWaterResult', async () => {
   const user = await global.config.utils.createUser();
   const treeData = await global.config.utils.createTreeData({
-    id: TestUtils.getRandomInt(10000),
-    taxon: TestUtils.randomString(),
-    author: TestUtils.randomString(),
-    family: TestUtils.randomString(),
-    countries: {
-      connect: {
-        name: await global.config.utils.createCountry(),
-      },
-    },
     careWaterResult: {
       create: {
         count: 1,
@@ -135,6 +113,38 @@ test('should resolve careWaterResult', async () => {
     weekly: 2,
     biweekly: 3,
     triweekly: 4,
+  });
+});
+
+
+test('should resolve careSunlightResult', async () => {
+  const user = await global.config.utils.createUser();
+  const treeData = await global.config.utils.createTreeData({
+    careSunlightResult: {
+      create: {
+        count: 1,
+        indirect: 2,
+        partial: 3,
+        direct: 4,
+      },
+    },
+  });
+
+  const { data } = await global.config.client.rawRequest<Response, Variables>(
+    query,
+    {
+      data: {
+        id: treeData.id,
+      },
+    },
+    { authorization: `Bearer ${user.token}` },
+  );
+
+  expect(data?.getTreeData?.careSunlightResult).toEqual({
+    count: 1,
+    indirect: 2,
+    partial: 3,
+    direct: 4,
   });
 });
 

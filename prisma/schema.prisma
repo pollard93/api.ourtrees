@@ -97,6 +97,8 @@ model TreeData {
   careWaterResult                TreeDataCareWaterResult                 @relation(name: "TreeDataCareWaterResult", fields: [treeDataCareWaterResultId], references: [id])
   treeDataCareWaterResultId      String                                  @unique
   careSunlightVotes              TreeDataCareSunlightVote[]              @relation("TreeDataCareSunlightVotes")
+  careSunlightResult             TreeDataCareSunlightResult              @relation(name: "TreeDataCareSunlightResult", fields: [treeDataCareSunlightResultId], references: [id])
+  treeDataCareSunlightResultId   String
   carePlantingVotes              TreeDataCarePlantingVote[]              @relation("TreeDataCarePlantingVotes")
   careObtainingSeedsContents     TreeDataCareObtainingSeedsContent[]     @relation("TreeDataCareObtainingSeedsContents")
   careObtainingSeedsVotes        TreeDataCareObtainingSeedsVote[]        @relation("TreeDataCareObtainingSeedsVotes")
@@ -172,10 +174,19 @@ model TreeDataCareSunlightVote {
   @@unique([userId, treeDataId])
 }
 
+model TreeDataCareSunlightResult {
+  id       String    @id @default(uuid())
+  treeData TreeData? @relation(name: "TreeDataCareSunlightResult")
+  count    Int
+  indirect Int
+  partial  Int
+  direct   Int
+}
+
 enum TREE_CARE_SUNLIGHT_TYPE {
-  EASY
-  MODERATE
-  HARD
+  INDIRECT
+  PARTIAL
+  DIRECT
 }
 
 model TreeDataCarePlantingVote {

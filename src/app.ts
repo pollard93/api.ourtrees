@@ -14,7 +14,7 @@ import * as tq from 'type-graphql';
 import { GraphQLScalarType } from 'graphql';
 import { DateTimeResolver } from 'graphql-scalars';
 import { graphqlUploadExpress } from 'graphql-upload';
-import { TREE_CARE_DIFFICULTY_TYPE, TREE_CARE_WATER_TYPE } from '@prisma/client';
+import { TREE_CARE_DIFFICULTY_TYPE, TREE_CARE_SUNLIGHT_TYPE, TREE_CARE_WATER_TYPE } from '@prisma/client';
 import shareRoute from './routes/shareRoute';
 import linkRoute from './routes/linkRoute';
 import { InitFileHandler } from './modules/FileHandler';
@@ -66,6 +66,9 @@ tq.registerEnumType(TREE_CARE_DIFFICULTY_TYPE, {
 });
 tq.registerEnumType(TREE_CARE_WATER_TYPE, {
   name: 'TREE_CARE_WATER_TYPE',
+});
+tq.registerEnumType(TREE_CARE_SUNLIGHT_TYPE, {
+  name: 'TREE_CARE_SUNLIGHT_TYPE',
 });
 
 
