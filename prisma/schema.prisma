@@ -104,6 +104,8 @@ model TreeData {
   treeDataCarePlantingResultId              String                                  @unique
   careObtainingSeedsContents                TreeDataCareObtainingSeedsContent[]     @relation("TreeDataCareObtainingSeedsContents")
   careObtainingSeedsVotes                   TreeDataCareObtainingSeedsVote[]        @relation("TreeDataCareObtainingSeedsVotes")
+  careObtainingSeedsResult                  TreeDataCareObtainingSeedsResult        @relation(name: "TreeDataCareObtainingSeedsResult", fields: [treeDataCareObtainingSeedsResultId], references: [id])
+  treeDataCareObtainingSeedsResultId        String                                  @unique
   careHowToPlantSeedsContents               TreeDataCareHowToPlantSeedsContent[]    @relation("TreeDataCareHowToPlantSeedsContents")
   careHowToPlantSeedsVotes                  TreeDataCareHowToPlantSeedsVote[]       @relation("TreeDataCareHowToPlantSeedsVotes")
   careWhenToReleaseVotes                    TreeDataCareWhenToReleaseVote[]         @relation("TreeDataCareWhenToReleaseVotes")
@@ -236,12 +238,14 @@ model TreeDataCarePlantingResult {
 }
 
 model TreeDataCareObtainingSeedsContent {
-  id         String                           @id @default(uuid())
-  treeData   TreeData                         @relation(name: "TreeDataCareObtainingSeedsContents", fields: [treeDataId], references: [id])
-  treeDataId Int
-  user       User                             @relation(name: "UserTreeDataCareObtainingSeedsContent", fields: [userId], references: [id])
-  userId     String
-  votes      TreeDataCareObtainingSeedsVote[] @relation(name: "TreeDataCareObtainingSeedsContentToVotes")
+  id                               String                             @id @default(uuid())
+  treeData                         TreeData                           @relation(name: "TreeDataCareObtainingSeedsContents", fields: [treeDataId], references: [id])
+  treeDataId                       Int
+  user                             User                               @relation(name: "UserTreeDataCareObtainingSeedsContent", fields: [userId], references: [id])
+  userId                           String
+  content                          String
+  votes                            TreeDataCareObtainingSeedsVote[]   @relation(name: "TreeDataCareObtainingSeedsContentToVotes")
+  treeDataCareObtainingSeedsResult TreeDataCareObtainingSeedsResult[] @relation(name: "TreeDataCareObtainingSeedsTopVotedContent")
 
   @@unique([userId, treeDataId])
 }
@@ -256,6 +260,14 @@ model TreeDataCareObtainingSeedsVote {
   userId     String
 
   @@unique([userId, treeDataId])
+}
+
+model TreeDataCareObtainingSeedsResult {
+  id                                  String                             @id @default(uuid())
+  treeData                            TreeData?                          @relation(name: "TreeDataCareObtainingSeedsResult")
+  count                               Int
+  content                             TreeDataCareObtainingSeedsContent? @relation(name: "TreeDataCareObtainingSeedsTopVotedContent", fields: [treeDataCareObtainingSeedsContentId], references: [id])
+  treeDataCareObtainingSeedsContentId String?
 }
 
 model TreeDataCareHowToPlantSeedsContent {
