@@ -265,7 +265,6 @@ model TreeDataCareObtainingSeedsVote {
 model TreeDataCareObtainingSeedsResult {
   id                                  String                             @id @default(uuid())
   treeData                            TreeData?                          @relation(name: "TreeDataCareObtainingSeedsResult")
-  count                               Int
   content                             TreeDataCareObtainingSeedsContent? @relation(name: "TreeDataCareObtainingSeedsTopVotedContent", fields: [treeDataCareObtainingSeedsContentId], references: [id])
   treeDataCareObtainingSeedsContentId String?
 }

@@ -123,9 +123,7 @@ export default class TestUtils {
           },
         },
         careObtainingSeedsResult: {
-          create: {
-            count: 0,
-          },
+          create: {},
         },
         ...data,
       },

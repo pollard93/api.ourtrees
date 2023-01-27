@@ -6,6 +6,7 @@ import { TreeDataCareSunlightResultProfile } from './TreeDataCareSunlightResultP
 import { TreeDataCarePlantingResultProfile } from './TreeDataCarePlantingResultProfile';
 import { TreeDataCareGerminationDifficultyResultProfile } from './TreeDataCareGerminationDifficultyResultProfile';
 import { TreeDataCareWhenToReleaseResultProfile } from './TreeDataCareWhenToReleaseResultProfile';
+import { TreeDataCareObtainingSeedsResultProfile } from './TreeDataCareObtainingSeedsResultProfile';
 
 
 @ObjectType()
@@ -36,4 +37,7 @@ export class TreeDataProfile {
 
   @Field(() => TreeDataCareWhenToReleaseResultProfile)
   careWhenToReleaseResult: TreeDataCareWhenToReleaseResultProfile
+
+  @Field(() => TreeDataCareObtainingSeedsResultProfile, { nullable: true })
+  careObtainingSeedsResult: TreeDataCareObtainingSeedsResultProfile
 }

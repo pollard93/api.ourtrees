@@ -1,4 +1,4 @@
-import { TreeData, TreeDataCareDifficultyResult, TreeDataCareGerminationDifficultyResult, TreeDataCarePlantingResult, TreeDataCareSunlightResult, TreeDataCareWaterResult, TreeDataCareWhenToReleaseResult } from '@prisma/client';
+import { TreeData, TreeDataCareDifficultyResult, TreeDataCareGerminationDifficultyResult, TreeDataCarePlantingResult, TreeDataCareSunlightResult, TreeDataCareWaterResult, TreeDataCareWhenToReleaseResult, TreeDataCareObtainingSeedsResult } from '@prisma/client';
 import { Ctx, FieldResolver, Resolver, Root } from 'type-graphql';
 import { TreeDataProfile } from '../../types/TreeDataProfile';
 import { TreeDataCareDifficultyResultProfile } from '../../types/TreeDataCareDifficultyResultProfile';
@@ -8,6 +8,7 @@ import { TreeDataCareSunlightResultProfile } from '../../types/TreeDataCareSunli
 import { TreeDataCareGerminationDifficultyResultProfile } from '../../types/TreeDataCareGerminationDifficultyResultProfile';
 import { TreeDataCarePlantingResultProfile } from '../../types/TreeDataCarePlantingResultProfile';
 import { TreeDataCareWhenToReleaseResultProfile } from '../../types/TreeDataCareWhenToReleaseResultProfile';
+import { TreeDataCareObtainingSeedsResultProfile } from '../../types/TreeDataCareObtainingSeedsResultProfile';
 
 
 @Resolver(() => TreeDataProfile)
@@ -40,5 +41,10 @@ export class TreeDataProfileResolver {
   @FieldResolver(() => TreeDataCareWhenToReleaseResultProfile)
   async careWhenToReleaseResult(@Root() { id }: TreeData, @Ctx() context: Context): Promise<TreeDataCareWhenToReleaseResult | undefined> {
     return (await context.db.read.treeData.findUnique({ where: { id }, include: { careWhenToReleaseResult: true } }))?.careWhenToReleaseResult;
+  }
+
+  @FieldResolver(() => TreeDataCareObtainingSeedsResultProfile)
+  async careObtainingSeedsResult(@Root() { id }: TreeData, @Ctx() context: Context): Promise<TreeDataCareObtainingSeedsResult | undefined> {
+    return (await context.db.read.treeData.findUnique({ where: { id }, include: { careObtainingSeedsResult: true } }))?.careObtainingSeedsResult;
   }
 }
