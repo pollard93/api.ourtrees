@@ -6,6 +6,6 @@ import { TreeDataCareObtainingSeedsContentProfile } from './TreeDataCareObtainin
 
 @ObjectType()
 export class TreeDataCareObtainingSeedsResultProfile {
-  @Field(() => TreeDataCareObtainingSeedsContentProfile)
-  content: TreeDataCareObtainingSeedsContentProfile
+  @Field(() => TreeDataCareObtainingSeedsContentProfile, { nullable: true })
+  content?: TreeDataCareObtainingSeedsContentProfile
 }

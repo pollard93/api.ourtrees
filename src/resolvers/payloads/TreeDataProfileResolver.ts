@@ -1,4 +1,4 @@
-import { TreeData, TreeDataCareDifficultyResult, TreeDataCareGerminationDifficultyResult, TreeDataCarePlantingResult, TreeDataCareSunlightResult, TreeDataCareWaterResult, TreeDataCareWhenToReleaseResult, TreeDataCareObtainingSeedsResult } from '@prisma/client';
+import { TreeData, TreeDataCareDifficultyResult, TreeDataCareGerminationDifficultyResult, TreeDataCarePlantingResult, TreeDataCareSunlightResult, TreeDataCareWaterResult, TreeDataCareWhenToReleaseResult, TreeDataCareObtainingSeedsResult, TreeDataCareHowToPlantSeedsResult } from '@prisma/client';
 import { Ctx, FieldResolver, Resolver, Root } from 'type-graphql';
 import { TreeDataProfile } from '../../types/TreeDataProfile';
 import { TreeDataCareDifficultyResultProfile } from '../../types/TreeDataCareDifficultyResultProfile';
@@ -9,6 +9,7 @@ import { TreeDataCareGerminationDifficultyResultProfile } from '../../types/Tree
 import { TreeDataCarePlantingResultProfile } from '../../types/TreeDataCarePlantingResultProfile';
 import { TreeDataCareWhenToReleaseResultProfile } from '../../types/TreeDataCareWhenToReleaseResultProfile';
 import { TreeDataCareObtainingSeedsResultProfile } from '../../types/TreeDataCareObtainingSeedsResultProfile';
+import { TreeDataCareHowToPlantSeedsResultProfile } from '../../types/TreeDataCareHowToPlantSeedsResultProfile';
 
 
 @Resolver(() => TreeDataProfile)
@@ -46,5 +47,10 @@ export class TreeDataProfileResolver {
   @FieldResolver(() => TreeDataCareObtainingSeedsResultProfile)
   async careObtainingSeedsResult(@Root() { id }: TreeData, @Ctx() context: Context): Promise<TreeDataCareObtainingSeedsResult | undefined> {
     return (await context.db.read.treeData.findUnique({ where: { id }, include: { careObtainingSeedsResult: true } }))?.careObtainingSeedsResult;
+  }
+
+  @FieldResolver(() => TreeDataCareHowToPlantSeedsResultProfile)
+  async careHowToPlantSeedsResult(@Root() { id }: TreeData, @Ctx() context: Context): Promise<TreeDataCareHowToPlantSeedsResult | undefined> {
+    return (await context.db.read.treeData.findUnique({ where: { id }, include: { careHowToPlantSeedsResult: true } }))?.careHowToPlantSeedsResult;
   }
 }

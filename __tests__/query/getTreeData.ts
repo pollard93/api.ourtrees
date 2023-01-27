@@ -63,6 +63,16 @@ const query = gql`
         nov        
         dec        
       }
+      careObtainingSeedsResult {
+        content {
+          id
+        }      
+      }
+      careHowToPlantSeedsResult {
+        content {
+          id
+        }      
+      }
     }
   }
 `;
@@ -314,6 +324,90 @@ test('should resolve careWhenToReleaseResult', async () => {
     nov: 12,
     dec: 13,
   });
+});
+
+
+test('should resolve careObtainingSeedsResult', async () => {
+  const user = await global.config.utils.createUser();
+  const treeData = await global.config.utils.createTreeData();
+  const content = await global.config.db.treeDataCareObtainingSeedsContent.create({
+    data: {
+      content: TestUtils.randomString(),
+      treeDataId: treeData.id,
+      userId: user.user.id,
+    },
+  });
+
+  await global.config.db.treeData.update({
+    where: {
+      id: treeData.id,
+    },
+    data: {
+      careObtainingSeedsResult: {
+        update: {
+          content: {
+            connect: {
+              id: content.id,
+            },
+          },
+        },
+      },
+    },
+  });
+
+  const { data } = await global.config.client.rawRequest<Response, Variables>(
+    query,
+    {
+      data: {
+        id: treeData.id,
+      },
+    },
+    { authorization: `Bearer ${user.token}` },
+  );
+
+  expect(data?.getTreeData?.careObtainingSeedsResult?.content?.id).toEqual(content.id);
+});
+
+
+test('should resolve careHowToPlantSeedsResult', async () => {
+  const user = await global.config.utils.createUser();
+  const treeData = await global.config.utils.createTreeData();
+  const content = await global.config.db.treeDataCareHowToPlantSeedsContent.create({
+    data: {
+      content: TestUtils.randomString(),
+      treeDataId: treeData.id,
+      userId: user.user.id,
+    },
+  });
+
+  await global.config.db.treeData.update({
+    where: {
+      id: treeData.id,
+    },
+    data: {
+      careHowToPlantSeedsResult: {
+        update: {
+          content: {
+            connect: {
+              id: content.id,
+            },
+          },
+        },
+      },
+    },
+  });
+
+  const { data } = await global.config.client.rawRequest<Response, Variables>(
+    query,
+    {
+      data: {
+        id: treeData.id,
+      },
+    },
+    { authorization: `Bearer ${user.token}` },
+  );
+
+  expect(data?.getTreeData?.careHowToPlantSeedsResult?.content?.id).toEqual(content.id);
 });
 
 
