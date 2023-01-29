@@ -104,6 +104,27 @@ test('should succeed', async () => {
 });
 
 
+test('should error if does not exist', async () => {
+  const user = await global.config.utils.createUser();
+
+  try {
+    await global.config.client.rawRequest<Response, Variables>(
+      query,
+      {
+        data: {
+          id: 0,
+        },
+      },
+      { authorization: `Bearer ${user.token}` },
+    );
+    throw new Error();
+  } catch (error) {
+    // eslint-disable-next-line jest/no-conditional-expect, jest/no-try-expect
+    expect(error.response.errors[0].message).toEqual('Resource does not exist');
+  }
+});
+
+
 test('should resolve careDifficultyResult', async () => {
   const user = await global.config.utils.createUser();
   const treeData = await global.config.utils.createTreeData({
@@ -455,20 +476,4 @@ test('should resolve careGerminationNotesResult', async () => {
   );
 
   expect(data?.getTreeData?.careGerminationNotesResult?.content?.id).toEqual(content.id);
-});
-
-
-test('should fail', async () => {
-  const user = await global.config.utils.createUser();
-  const { data } = await global.config.client.rawRequest<Response, Variables>(
-    query,
-    {
-      data: {
-        id: TestUtils.getRandomInt(10000),
-      },
-    },
-    { authorization: `Bearer ${user.token}` },
-  );
-
-  expect(data?.getTreeData).toEqual(null);
 });

@@ -1,7 +1,6 @@
 import { gql } from 'graphql-request';
 import '../../global-variables';
-import { CountryProfilesPayload } from '../../src/resolvers/query/getTreeDatas';
-import TestUtils from '../utils';
+import { CountryProfilesPayload } from '../../src/resolvers/query/getCountries';
 
 
 const query = gql`
@@ -18,7 +17,7 @@ type Response = { getCountries: CountryProfilesPayload };
 type Variables = undefined;
 
 
-test('should succeed, tests profilePicture', async () => {
+test('should succeed', async () => {
   const user = await global.config.utils.createUser();
   const country = await global.config.utils.createCountry();
 

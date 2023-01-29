@@ -4,17 +4,16 @@ import {
   Ctx,
   Query,
   UseMiddleware,
-  Int,
   Field,
-  ObjectType,
   InputType,
   Arg
 } from 'type-graphql';
-import { TreeData, Prisma } from '@prisma/client';
+import { TreeData } from '@prisma/client';
 import { TokenType } from '../../modules/Auth/interfaces';
 import { Context } from '../../utils/types';
 import { AuthInterceptor } from '../../modules/Auth/middleware';
 import { TreeDataProfile } from '../../types/TreeDataProfile';
+import { GenericError } from '../../errors';
 
 
 @InputType()
@@ -33,12 +32,13 @@ export class GetTreeDataResolver {
   async getTreeData(
     @Arg('data') data: GetTreeDataInput,
     @Ctx() context: Context<TokenType.GENERAL>,
-  ): Promise<TreeData | null> {
-    // TODO - should error if null;
-    return context.db.read.treeData.findUnique({
+  ): Promise<TreeData> {
+    const res = await context.db.read.treeData.findUnique({
       where: {
         id: data.id,
       },
     });
+    if (!res) throw GenericError('Resource does not exist');
+    return res;
   }
 }
