@@ -128,6 +128,9 @@ export default class TestUtils {
         careHowToPlantSeedsResult: {
           create: {},
         },
+        careGerminationNotesResult: {
+          create: {},
+        },
         ...data,
       },
     });

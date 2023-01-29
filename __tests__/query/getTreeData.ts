@@ -73,6 +73,11 @@ const query = gql`
           id
         }      
       }
+      careGerminationNotesResult {
+        content {
+          id
+        }      
+      }
     }
   }
 `;
@@ -408,6 +413,48 @@ test('should resolve careHowToPlantSeedsResult', async () => {
   );
 
   expect(data?.getTreeData?.careHowToPlantSeedsResult?.content?.id).toEqual(content.id);
+});
+
+
+test('should resolve careGerminationNotesResult', async () => {
+  const user = await global.config.utils.createUser();
+  const treeData = await global.config.utils.createTreeData();
+  const content = await global.config.db.treeDataCareGerminationNotesContent.create({
+    data: {
+      content: TestUtils.randomString(),
+      treeDataId: treeData.id,
+      userId: user.user.id,
+    },
+  });
+
+  await global.config.db.treeData.update({
+    where: {
+      id: treeData.id,
+    },
+    data: {
+      careGerminationNotesResult: {
+        update: {
+          content: {
+            connect: {
+              id: content.id,
+            },
+          },
+        },
+      },
+    },
+  });
+
+  const { data } = await global.config.client.rawRequest<Response, Variables>(
+    query,
+    {
+      data: {
+        id: treeData.id,
+      },
+    },
+    { authorization: `Bearer ${user.token}` },
+  );
+
+  expect(data?.getTreeData?.careGerminationNotesResult?.content?.id).toEqual(content.id);
 });
 
 

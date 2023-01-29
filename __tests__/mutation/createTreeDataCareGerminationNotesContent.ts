@@ -1,13 +1,13 @@
 import { gql } from 'graphql-request';
 import '../../global-variables';
-import { TreeDataCareHowToPlantSeedsContentProfile } from '../../src/types/TreeDataCareHowToPlantSeedsContentProfile';
-import { CreateTreeDataCareHowToPlantSeedsContentInput } from '../../src/resolvers/mutation/createTreeDataHowToPlantSeedsContent';
+import { TreeDataCareGerminationNotesContentProfile } from '../../src/types/TreeDataCareGerminationNotesContentProfile';
+import { CreateTreeDataCareGerminationNotesContentInput } from '../../src/resolvers/mutation/createTreeDataGerminationNotesContent';
 import TestUtils from '../utils';
 
 
 const query = gql`
-  mutation createTreeDataCareHowToPlantSeedsContent($data: CreateTreeDataCareHowToPlantSeedsContentInput!){
-    createTreeDataCareHowToPlantSeedsContent(data: $data) {
+  mutation createTreeDataCareGerminationNotesContent($data: CreateTreeDataCareGerminationNotesContentInput!){
+    createTreeDataCareGerminationNotesContent(data: $data) {
       id
       content
       voteCount
@@ -15,8 +15,8 @@ const query = gql`
   }
 `;
 
-type Response = { createTreeDataCareHowToPlantSeedsContent: TreeDataCareHowToPlantSeedsContentProfile };
-type Variables = { data: CreateTreeDataCareHowToPlantSeedsContentInput };
+type Response = { createTreeDataCareGerminationNotesContent: TreeDataCareGerminationNotesContentProfile };
+type Variables = { data: CreateTreeDataCareGerminationNotesContentInput };
 
 
 test('should succeed', async () => {
@@ -35,9 +35,9 @@ test('should succeed', async () => {
     { authorization: `Bearer ${user.token}` },
   );
 
-  expect(data?.createTreeDataCareHowToPlantSeedsContent.id).toBeTruthy();
-  expect(data?.createTreeDataCareHowToPlantSeedsContent.content).toBe(content);
-  expect(data?.createTreeDataCareHowToPlantSeedsContent.voteCount).toBe(0);
+  expect(data?.createTreeDataCareGerminationNotesContent.id).toBeTruthy();
+  expect(data?.createTreeDataCareGerminationNotesContent.content).toBe(content);
+  expect(data?.createTreeDataCareGerminationNotesContent.voteCount).toBe(0);
 });
 
 
@@ -46,7 +46,7 @@ test('should fail if user and tree are not unique', async () => {
   const treeData = await global.config.utils.createTreeData();
   const content = TestUtils.randomString();
 
-  await global.config.db.treeDataCareHowToPlantSeedsContent.create({
+  await global.config.db.treeDataCareGerminationNotesContent.create({
     data: {
       user: {
         connect: {

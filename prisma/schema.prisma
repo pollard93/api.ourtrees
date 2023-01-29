@@ -118,6 +118,8 @@ model TreeData {
   treeDataCareGerminationDifficultyResultId String                                  @unique
   careGerminationNotesContent               TreeDataCareGerminationNotesContent[]   @relation("TreeDataCareGerminationNotesContents")
   careGerminationNotesVote                  TreeDataCareGerminationNotesVote[]      @relation("TreeDataCareGerminationNotesVotes")
+  careGerminationNotesResult                TreeDataCareGerminationNotesResult      @relation(name: "TreeDataCareGerminationNotesResult", fields: [treeDataCareGerminationNotesResultId], references: [id])
+  treeDataCareGerminationNotesResultId      String                                  @unique
   trees                                     Tree[]                                  @relation("TreeDataToTrees")
 }
 
@@ -330,12 +332,14 @@ enum TREE_CARE_GERMINATION_DIFFICULTY_TYPE {
 }
 
 model TreeDataCareGerminationNotesContent {
-  id         String                             @id @default(uuid())
-  treeData   TreeData                           @relation(name: "TreeDataCareGerminationNotesContents", fields: [treeDataId], references: [id])
-  treeDataId Int
-  user       User                               @relation(name: "UserTreeDataCareGerminationNotesContent", fields: [userId], references: [id])
-  userId     String
-  votes      TreeDataCareGerminationNotesVote[] @relation(name: "TreeDataCareGerminationNotesContentToVotes")
+  id                                 String                               @id @default(uuid())
+  treeData                           TreeData                             @relation(name: "TreeDataCareGerminationNotesContents", fields: [treeDataId], references: [id])
+  treeDataId                         Int
+  user                               User                                 @relation(name: "UserTreeDataCareGerminationNotesContent", fields: [userId], references: [id])
+  userId                             String
+  content                            String
+  votes                              TreeDataCareGerminationNotesVote[]   @relation(name: "TreeDataCareGerminationNotesContentToVotes")
+  treeDataCareGerminationNotesResult TreeDataCareGerminationNotesResult[] @relation(name: "TreeDataCareGerminationNotesTopVotedContent")
 
   @@unique([userId, treeDataId])
 }
@@ -350,6 +354,13 @@ model TreeDataCareGerminationNotesVote {
   userId     String
 
   @@unique([userId, treeDataId])
+}
+
+model TreeDataCareGerminationNotesResult {
+  id                                    String                               @id @default(uuid())
+  treeData                              TreeData?                            @relation(name: "TreeDataCareGerminationNotesResult")
+  content                               TreeDataCareGerminationNotesContent? @relation(name: "TreeDataCareGerminationNotesTopVotedContent", fields: [treeDataCareGerminationNotesContentId], references: [id])
+  treeDataCareGerminationNotesContentId String?
 }
 
 model TreeDataCareWhenToReleaseVote {

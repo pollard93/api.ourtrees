@@ -8,6 +8,7 @@ import { TreeDataCareGerminationDifficultyResultProfile } from './TreeDataCareGe
 import { TreeDataCareWhenToReleaseResultProfile } from './TreeDataCareWhenToReleaseResultProfile';
 import { TreeDataCareObtainingSeedsResultProfile } from './TreeDataCareObtainingSeedsResultProfile';
 import { TreeDataCareHowToPlantSeedsResultProfile } from './TreeDataCareHowToPlantSeedsResultProfile';
+import { TreeDataCareGerminationNotesResultProfile } from './TreeDataCareGerminationNotesResultProfile';
 
 
 @ObjectType()
@@ -44,4 +45,7 @@ export class TreeDataProfile {
 
   @Field(() => TreeDataCareHowToPlantSeedsResultProfile, { nullable: true })
   careHowToPlantSeedsResult?: TreeDataCareHowToPlantSeedsResultProfile
+
+  @Field(() => TreeDataCareGerminationNotesResultProfile, { nullable: true })
+  careGerminationNotesResult?: TreeDataCareGerminationNotesResultProfile
 }
