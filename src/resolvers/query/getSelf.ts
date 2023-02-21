@@ -18,7 +18,7 @@ export class GetSelfResolver {
   }))
   async getSelf(
     @Ctx() context: Context<TokenType.GENERAL>,
-  ): Promise<User> {
+  ): Promise<User | null> {
     const { email } = context.accessToken.data;
     return context.db.read.user.findUnique({ where: { email } });
   }

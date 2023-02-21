@@ -1,6 +1,5 @@
 import 'reflect-metadata';
-import {
-  Resolver,
+import { Resolver,
   Ctx,
   Query,
   UseMiddleware,
@@ -8,8 +7,7 @@ import {
   Field,
   ObjectType,
   InputType,
-  Arg
-} from 'type-graphql';
+  Arg } from 'type-graphql';
 import { Tree, Prisma } from '@prisma/client';
 import { TokenType } from '../../modules/Auth/interfaces';
 import { Context } from '../../utils/types';
