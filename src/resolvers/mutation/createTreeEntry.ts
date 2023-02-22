@@ -6,12 +6,16 @@ import { Resolver,
   Arg,
   Field,
   InputType } from 'type-graphql';
-import { Tree } from '@prisma/client';
+import { Prisma, Tree } from '@prisma/client';
 import { GraphQLUpload, FileUpload } from 'graphql-upload';
+import uuid4 from 'uuid4';
+import path from 'path';
 import { TokenType } from '../../modules/Auth/interfaces';
 import { Context } from '../../utils/types';
 import { AuthInterceptor } from '../../modules/Auth/middleware';
 import { TreeProfile } from '../../types/TreeProfile';
+import { FileAuthenticationError, GenericError } from '../../errors';
+import { FileHandler } from '../../modules/FileHandler';
 
 
 @InputType()
@@ -37,12 +41,66 @@ export class CreateTreeEntryResolver {
     accessTokens: [TokenType.GENERAL],
   }))
   async createTreeEntry(
-    @Arg('data') { treeId, notes, createdAt }: CreateTreeEntryInput,
+    @Arg('data') { treeId, notes, createdAt, image }: CreateTreeEntryInput,
     @Ctx() context: Context<TokenType.GENERAL>,
   ): Promise<Tree> {
     const { id: creatorId } = context.accessToken.data;
-    // @TODO - validate user owns the tree
-    // @TODO - images
+
+    /**
+     * Get tree and validate owner
+     */
+    const tree = await context.db.read.tree.findUnique({
+      where: {
+        id: treeId,
+      },
+    });
+    if (!tree) throw GenericError('Tree does not exist');
+    if (tree.creatorId !== creatorId) throw GenericError('Unauthorized');
+
+
+    /**
+     * Create id so can be used for image url
+     */
+    const id = uuid4();
+
+
+    /**
+     * Processes and validates profile picture
+     */
+    const processImage = async (): Promise<Prisma.FileCreateNestedOneWithoutTreeEntryInput> => {
+      // Validate image
+      const { resolved, rejected } = await FileHandler.validateGraphQLUploads([image as any], {
+        mimes: ['image/jpeg'],
+        maxFileSize: 5000000,
+      });
+
+      if (Object.keys(rejected).length) {
+        throw FileAuthenticationError('Something went wrong with your file uploads', rejected);
+      }
+
+      // eslint-disable-next-line prefer-destructuring
+      const imageResolved = resolved[0];
+
+      // Store in bucket
+      const url = await FileHandler.putImage(`public/trees/${treeId}/entries/${id}${path.extname(imageResolved.filename)}`, imageResolved.buffer!);
+
+      // Upsert to create if already exists
+      return {
+        create: {
+          path: url.full,
+          mime: imageResolved.mimetype,
+          author: {
+            connect: {
+              id: creatorId,
+            },
+          },
+        },
+      };
+    };
+
+    /**
+     * Update and return tree
+     */
     return context.db.write.tree.update({
       where: {
         id: treeId,
@@ -50,8 +108,10 @@ export class CreateTreeEntryResolver {
       data: {
         entries: {
           create: {
+            id,
             notes,
             createdAt,
+            image: (image ? await processImage() : undefined),
           },
         },
       },

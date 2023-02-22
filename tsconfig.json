@@ -3,7 +3,6 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "target": "ES2019",
-    "strictNullChecks": false,
     "allowUnreachableCode": true,
     "esModuleInterop": true,
     "module": "commonjs",
