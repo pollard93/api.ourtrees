@@ -4,34 +4,31 @@ import path from 'path';
 import { createReadStream } from 'fs-extra';
 import TestUtils from '../utils';
 import { CreateTreeEntryInput } from '../../src/resolvers/mutation/createTreeEntry';
-import { TreeProfile } from '../../src/types/TreeProfile';
 import { FileHandler } from '../../src/modules/FileHandler';
+import { TreeEntryProfile } from '../../src/types/TreeEntryProfile';
 
 
 const query = gql`
   mutation createTreeEntry($data: CreateTreeEntryInput!){
     createTreeEntry(data: $data) {
       id
-      entries {
+      notes
+      image {
         id
-        notes
-        image {
-          id
-          url {
-            full
-          }
-          mime
-          author {
-            id
-          }
+        url {
+          full
         }
-        createdAt
+        mime
+        author {
+          id
+        }
       }
+      createdAt
     }
   }
 `;
 
-type Response = { createTreeEntry: TreeProfile };
+type Response = { createTreeEntry: TreeEntryProfile };
 type Variables = { data: CreateTreeEntryInput };
 
 
@@ -59,10 +56,9 @@ test('should succeed', async () => {
     { authorization: `Bearer ${user.token}` },
   );
 
-  expect(data?.createTreeEntry.entries?.length).toEqual(1);
-  expect(data?.createTreeEntry.entries?.[0].notes).toEqual(notes);
-  expect(data?.createTreeEntry.entries?.[0].createdAt).toEqual(createdAt);
-  expect(data?.createTreeEntry.entries?.[0].image).toBeNull();
+  expect(data?.createTreeEntry.notes).toEqual(notes);
+  expect(data?.createTreeEntry.createdAt).toEqual(createdAt);
+  expect(data?.createTreeEntry.image).toBeNull();
 });
 
 test('should succeed with image', async () => {
@@ -91,9 +87,9 @@ test('should succeed with image', async () => {
   );
 
   // Test resolvers
-  expect(data?.createTreeEntry.entries?.[0].image.mime).toEqual('image/jpeg');
-  expect(data?.createTreeEntry.entries?.[0].image.url.full).toEqual(`${FileHandler.config.siteUrl}/public/trees/${data?.createTreeEntry.id}/entries/${data?.createTreeEntry.entries?.[0].id}.jpeg`);
-  expect(data?.createTreeEntry.entries?.[0].image.author?.id).toEqual(user.user.id);
+  expect(data?.createTreeEntry.image.mime).toEqual('image/jpeg');
+  expect(data?.createTreeEntry.image.url.full).toEqual(`${FileHandler.config.siteUrl}/public/trees/${tree.id}/entries/${data?.createTreeEntry.id}.jpeg`);
+  expect(data?.createTreeEntry.image.author?.id).toEqual(user.user.id);
 });
 
 test('should fail if user does not own tree', async () => {

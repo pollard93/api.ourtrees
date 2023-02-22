@@ -6,16 +6,16 @@ import { Resolver,
   Arg,
   Field,
   InputType } from 'type-graphql';
-import { Prisma, Tree } from '@prisma/client';
+import { Prisma, TreeEntry } from '@prisma/client';
 import { GraphQLUpload, FileUpload } from 'graphql-upload';
 import uuid4 from 'uuid4';
 import path from 'path';
 import { TokenType } from '../../modules/Auth/interfaces';
 import { Context } from '../../utils/types';
 import { AuthInterceptor } from '../../modules/Auth/middleware';
-import { TreeProfile } from '../../types/TreeProfile';
 import { FileAuthenticationError, GenericError } from '../../errors';
 import { FileHandler } from '../../modules/FileHandler';
+import { TreeEntryProfile } from '../../types/TreeEntryProfile';
 
 
 @InputType()
@@ -36,14 +36,14 @@ export class CreateTreeEntryInput {
 
 @Resolver()
 export class CreateTreeEntryResolver {
-  @Mutation(() => TreeProfile)
+  @Mutation(() => TreeEntryProfile)
   @UseMiddleware(AuthInterceptor({
     accessTokens: [TokenType.GENERAL],
   }))
   async createTreeEntry(
     @Arg('data') { treeId, notes, createdAt, image }: CreateTreeEntryInput,
     @Ctx() context: Context<TokenType.GENERAL>,
-  ): Promise<Tree> {
+  ): Promise<TreeEntry> {
     const { id: creatorId } = context.accessToken.data;
 
     /**
@@ -99,21 +99,15 @@ export class CreateTreeEntryResolver {
     };
 
     /**
-     * Update and return tree
+     * Create and return tree entry
      */
-    return context.db.write.tree.update({
-      where: {
-        id: treeId,
-      },
+    return context.db.write.treeEntry.create({
       data: {
-        entries: {
-          create: {
-            id,
-            notes,
-            createdAt,
-            image: (image ? await processImage() : undefined),
-          },
-        },
+        id,
+        notes,
+        createdAt,
+        image: (image ? await processImage() : undefined),
+        treeId,
       },
     });
   }

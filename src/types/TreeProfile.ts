@@ -1,7 +1,6 @@
 import 'reflect-metadata';
 import { ObjectType, Field, ID } from 'type-graphql';
 import { TreeDataProfile } from './TreeDataProfile';
-import { TreeEntryProfile } from './TreeEntryProfile';
 import { UserProfile } from './UserProfile';
 
 
@@ -21,7 +20,4 @@ export class TreeProfile {
 
   @Field(() => UserProfile)
   creator: UserProfile
-
-  @Field(() => [TreeEntryProfile])
-  entries: TreeEntryProfile[]
 }
