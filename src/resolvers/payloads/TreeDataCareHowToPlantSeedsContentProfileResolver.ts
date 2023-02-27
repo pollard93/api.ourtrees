@@ -7,7 +7,7 @@ import { Context } from '../../utils/types';
 @Resolver(() => TreeDataCareHowToPlantSeedsContentProfile)
 export class TreeDataCareHowToPlantSeedsContentProfileResolver {
   @FieldResolver(() => Int)
-  voteCount(@Root() { id }: TreeDataCareHowToPlantSeedsContent, @Ctx() context: Context): Promise<number> {
+  voteCount(@Root() { id }: TreeDataCareHowToPlantSeedsContent, @Ctx() context: Context<null>): Promise<number> {
     return context.db.read.treeDataCareHowToPlantSeedsVote.count({ where: { contentId: id } });
   }
 }

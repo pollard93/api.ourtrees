@@ -1,17 +1,15 @@
 import 'reflect-metadata';
 import path from 'path';
-import {
-  Resolver,
+import { Resolver,
   Mutation,
   Arg,
   Ctx,
   UseMiddleware,
   InputType,
-  Field
-} from 'type-graphql';
+  Field } from 'type-graphql';
 import { GraphQLUpload, FileUpload } from 'graphql-upload';
 import { Prisma, User } from '@prisma/client';
-import { FileAuthenticationError } from '../../errors';
+import { FileAuthenticationError, GenericError } from '../../errors';
 import { TokenType } from '../../modules/Auth/interfaces';
 import { AuthInterceptor } from '../../modules/Auth/middleware';
 import { Context } from '../../utils/types';
@@ -61,6 +59,7 @@ export class UpdateSelfResolver {
 
       // eslint-disable-next-line prefer-destructuring
       const profilePictureResolved = resolved[0];
+      if (!profilePictureResolved.buffer) throw GenericError('Something went wrong with your file uploads');
 
       // Store in bucket
       const url = await FileHandler.putImage(`public/users/${id}/profile-picture${path.extname(profilePictureResolved.filename)}`, profilePictureResolved.buffer);

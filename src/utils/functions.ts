@@ -48,7 +48,7 @@ export const cleanseWhereInput = <T>(where: T, allowedKeys: (keyof T)[]) => {
  * @param m - minimum version
  * @return boolean - false if client version is greater than the minimum, true if not
  */
-export const requiresUpdate = (c: string, m: string): RequiresUpdate => {
+export const requiresUpdate = (c: string, m: string): RequiresUpdate | null => {
   try {
     // If they match, no update is required
     if (c === m) return null;
@@ -64,8 +64,8 @@ export const requiresUpdate = (c: string, m: string): RequiresUpdate => {
     for (let i = 0; i < 3; i++) {
       if (client[i] < minimum[i]) {
         return {
-          appStoreUrl: process.env.APP_STORE_URL,
-          playStoreUrl: process.env.PLAY_STORE_URL,
+          appStoreUrl: process.env.APP_STORE_URL || '',
+          playStoreUrl: process.env.PLAY_STORE_URL || '',
         };
       }
     }

@@ -8,7 +8,7 @@ import { Context } from '../../utils/types';
 @Resolver(() => TreeDataCareHowToPlantSeedsResultProfile)
 export class TreeDataCareHowToPlantSeedsResultProfileResolver {
   @FieldResolver(() => TreeDataCareHowToPlantSeedsContentProfile)
-  async content(@Root() { id }: TreeDataCareHowToPlantSeedsResult, @Ctx() context: Context): Promise<TreeDataCareHowToPlantSeedsContent | null | undefined> {
+  async content(@Root() { id }: TreeDataCareHowToPlantSeedsResult, @Ctx() context: Context<null>): Promise<TreeDataCareHowToPlantSeedsContent | null | undefined> {
     return (await context.db.read.treeDataCareHowToPlantSeedsResult.findUnique({ where: { id }, include: { content: true } }))?.content;
   }
 }

@@ -1,13 +1,11 @@
 import 'reflect-metadata';
-import {
-  Resolver,
+import { Resolver,
   Mutation,
   Arg,
   Ctx,
   InputType,
   Field,
-  UseMiddleware
-} from 'type-graphql';
+  UseMiddleware } from 'type-graphql';
 import { User } from '@prisma/client';
 import { AuthInterceptor } from '../../modules/Auth/middleware';
 import { TokenType } from '../../modules/Auth/interfaces';
@@ -36,7 +34,7 @@ export class RegisterResolver {
   }))
   async register(
     @Arg('data') { email, password }: RegisterInput,
-    @Ctx() context: Context,
+    @Ctx() context: Context<null>,
   ): Promise<{ token: string, user: User }> {
     /**
      * Validate data

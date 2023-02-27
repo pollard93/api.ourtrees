@@ -24,7 +24,7 @@ export enum RefreshTokenType {
  * `extends TokenType` requires the generic (T) to be of type TokenType
  * If we do not define any data, it will fallback to null
  */
-export type TokenData<T extends TokenType> =
+export type TokenData<T extends TokenType | null> =
   T extends TokenType.GENERAL ? {id: string; email: string} :
   T extends TokenType.RESET ? {email: string} :
   T extends TokenType.VERIFICATION ? {id: string} :
@@ -40,7 +40,7 @@ export type TokenData<T extends TokenType> =
  * This is where we tell typescript what TokenType we are using
  * Then we say for the data, we want TokenData, using the given TokenType
  */
-export interface TokenArgs<T extends TokenType> {
+export interface TokenArgs<T extends TokenType | null> {
   type: T;
   exp?: number;
   sessionId?: string;

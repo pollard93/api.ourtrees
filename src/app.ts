@@ -147,7 +147,7 @@ ExpressPublicProxy(app);
  * Define cores for non /graphql requests
  */
 app.use(cors({
-  origin: [process.env.CLIENT_URL_WEB],
+  origin: [process.env.CLIENT_URL_WEB!],
   credentials: true,
 }));
 
@@ -169,7 +169,7 @@ app.use((_, res, next) => {
 apolloServer.applyMiddleware({
   app,
   cors: {
-    origin: [process.env.CLIENT_URL_WEB],
+    origin: [process.env.CLIENT_URL_WEB!],
     credentials: true,
   },
 });

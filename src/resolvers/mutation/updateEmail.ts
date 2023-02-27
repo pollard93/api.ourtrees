@@ -1,13 +1,11 @@
 import 'reflect-metadata';
-import {
-  Resolver,
+import { Resolver,
   Mutation,
   Arg,
   Ctx,
   UseMiddleware,
   Field,
-  InputType
-} from 'type-graphql';
+  InputType } from 'type-graphql';
 import { AuthInterceptor } from '../../modules/Auth/middleware';
 import { TokenType } from '../../modules/Auth/interfaces';
 import { EMAIL_TRANSACTIONAL_TYPE } from '../../events/email/types';
@@ -38,6 +36,7 @@ export class UpdateEmailResolver {
   ): Promise<boolean> {
     const { email: existingEmail } = context.accessToken.data;
     const user = await context.db.read.user.findUnique({ where: { email: existingEmail } });
+    if (!user) throw GenericError('User does not exist');
 
 
     /**

@@ -168,8 +168,8 @@ export default class TestUtils {
   }
 
   static getCookie(cookieString: string, name: string) {
-    const parts = cookieString.split('; ').find((s) => s.startsWith(name)).split('=');
-    if (parts.length === 2) return parts[1];
+    const parts = cookieString.split('; ').find((s) => s.startsWith(name))?.split('=');
+    if (parts?.length === 2) return parts[1];
     return null;
   }
 }

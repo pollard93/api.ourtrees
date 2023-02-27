@@ -43,7 +43,7 @@ export class LoginWithSocialResolver {
         switch (provider) {
           case 'FACEBOOK':
             // Get token from header
-            const facebookAccessToken = context.req.headers.authorization.replace('Bearer ', '');
+            const facebookAccessToken = (context.req.headers.authorization || '').replace('Bearer ', '');
 
             // Make a request to facebook to validate the access token and to get user id and email
             // For testing, use the raw token
@@ -71,7 +71,7 @@ export class LoginWithSocialResolver {
 
           case 'GOOGLE':
             // Get id token from header
-            const googleIdToken = context.req.headers.authorization.replace('Bearer ', '');
+            const googleIdToken = (context.req.headers.authorization || '').replace('Bearer ', '');
 
             // Make a request to google to validate the id token and to get user id and email
             // For testing, use the raw token

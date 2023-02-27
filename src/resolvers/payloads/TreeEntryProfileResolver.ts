@@ -8,7 +8,7 @@ import { FileProfile } from '../../types/FileProfile';
 @Resolver(() => TreeEntryProfile)
 export class TreeEntryProfileResolver {
   @FieldResolver(() => FileProfile)
-  image(@Root() { id }: TreeEntry, @Ctx() context: Context) {
+  image(@Root() { id }: TreeEntry, @Ctx() context: Context<null>) {
     return context.db.read.treeEntry.findUnique({ where: { id } }).image();
   }
 }

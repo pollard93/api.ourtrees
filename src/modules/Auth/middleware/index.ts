@@ -17,7 +17,7 @@ import { AuthError } from '../../../errors';
  * @param accessTokens - types of access tokens required
  * @param noRefreshRequired - if true, refresh token is not required
  */
-export const validateAndRefreshTokens = async (context: Context, accessTokens: TokenType[], noRefreshRequired = false): Promise<void> => {
+export const validateAndRefreshTokens = async (context: Context<any>, accessTokens: TokenType[], noRefreshRequired = false): Promise<void> => {
   /**
    * Validate access token, will not throw if invalid as may need to be refreshed
    */
@@ -30,7 +30,7 @@ export const validateAndRefreshTokens = async (context: Context, accessTokens: T
 
   // Set accessToken in cotext for use in resolvers
   // eslint-disable-next-line no-param-reassign
-  context.accessToken = accessToken.data;
+  context.accessToken = accessToken.data!;
 
   // If access token is valid, and there is no error then resolve
   if (accessToken.data && accessToken.error == null) {
@@ -77,9 +77,9 @@ export const validateAndRefreshTokens = async (context: Context, accessTokens: T
 
   // If no refresh token or error then throw
   if (!refreshToken.data || refreshToken.error) {
-    if (refreshToken.error.message === 'jwt expired') {
+    if (refreshToken.error?.message === 'jwt expired') {
       // If expired then throw based on token type
-      switch (refreshToken.data.data.type) {
+      switch (refreshToken.data?.data.type) {
         case RefreshTokenType.GENERAL:
           throw AuthError('Expired General Token');
 
@@ -129,13 +129,13 @@ export const validateAndRefreshTokens = async (context: Context, accessTokens: T
 
 
 interface AuthInterceptorProps {
-  accessTokens: TokenType[]; // Required access tokens, pass null if none are required (login)
+  accessTokens: TokenType[] | null; // Required access tokens, pass null if none are required (login)
   refreshTokenNotRequired?: true; // Pass true to not require a refresh token (resetPassword)
   fileCacheBuster?: boolean; // Set to bust file cache (see: `src/resolvers/payloads/Url.ts`)
 }
 
 
-export const AuthInterceptor = (props: AuthInterceptorProps): MiddlewareFn<Context> => async ({ context }, next) => {
+export const AuthInterceptor = (props: AuthInterceptorProps): MiddlewareFn<Context<any>> => async ({ context }, next) => {
   try {
     // Set vars from headers
     // eslint-disable-next-line no-param-reassign

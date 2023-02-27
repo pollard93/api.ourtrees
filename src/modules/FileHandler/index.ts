@@ -15,6 +15,16 @@ export const FileHandler = FileHandlerInstance as FileHandlerClass<keyof UrlProf
  * This should be run first of all
  */
 export const InitFileHandler = () => {
+  if (
+    !process.env.SITE_URL
+    || !process.env.MINIO_ENDPOINT
+    || !process.env.MINIO_PORT
+    || !process.env.MINIO_ACCESS_KEY
+    || !process.env.MINIO_SECRET_KEY
+  ) {
+    throw new Error('FileHandler env issue');
+  }
+
   FileHandler.init({
     siteUrl: process.env.SITE_URL,
     minioOptions: {
@@ -30,7 +40,7 @@ export const InitFileHandler = () => {
       splash: (image) => image.resize(10, Jimp.AUTO).blur(1),
       small: (image) => image.resize(100, Jimp.AUTO).quality(80),
       large: (image) => image.resize(500, Jimp.AUTO).quality(80),
-      full: null,
+      full: (image) => image,
     },
   });
 };

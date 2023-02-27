@@ -8,13 +8,13 @@ import { Context } from '../../utils/types';
 
 @Resolver(() => FileProfile)
 export class FileProfileResolver {
-  @FieldResolver(() => UserProfile)
-  author(@Root() { userId }: File, @Ctx() context: Context): Promise<User> {
+  @FieldResolver(() => UserProfile, { nullable: true })
+  author(@Root() { userId }: File, @Ctx() context: Context<null>): Promise<User | null> {
     return context.db.read.user.findUnique({ where: { id: userId } });
   }
 
   @FieldResolver(() => UrlProfile)
-  async url(@Root() root: File, @Ctx() context: Context): Promise<UrlProfile> {
+  async url(@Root() root: File, @Ctx() context: Context<null>): Promise<UrlProfile> {
     return {
       splash: await FileHandler.getUrl({
         path: root.path,

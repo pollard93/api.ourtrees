@@ -22,8 +22,8 @@ const linkRoute = (e: express.Application) => {
     const props: LinkRouteProps = {
       title: 'Made By Prism',
       deepLink,
-      appStoreUrl: process.env.APP_STORE_URL,
-      playStoreUrl: process.env.PLAY_STORE_URL,
+      appStoreUrl: process.env.APP_STORE_URL || '',
+      playStoreUrl: process.env.PLAY_STORE_URL || '',
     };
 
     return res.render('link/index', props);

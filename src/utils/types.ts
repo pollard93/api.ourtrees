@@ -27,13 +27,13 @@ declare module 'http' {
 /**
  * Define Context
  */
-export interface VerifiedToken<T extends TokenType> {
-  data: TokenArgs<T>;
+export interface VerifiedToken<T extends TokenType | null> {
+  data: TokenArgs<T> | null;
   error?: Error;
 }
 
 
-export interface Context<T extends TokenType = null> extends ExpressContext {
+export interface Context<T extends TokenType | null> extends ExpressContext {
   req: Request;
   res: Response;
   db: Prisma;

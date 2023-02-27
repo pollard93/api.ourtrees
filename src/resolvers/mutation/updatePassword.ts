@@ -38,6 +38,7 @@ export class UpdatePasswordResolver {
      */
     const { id } = context.accessToken.data;
     const user = await context.db.read.user.findUnique({ where: { id } });
+    if (!user) throw GenericError('User does not exist');
 
 
     /**

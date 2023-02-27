@@ -16,47 +16,47 @@ import { TreeDataCareGerminationNotesResultProfile } from '../../types/TreeDataC
 @Resolver(() => TreeDataProfile)
 export class TreeDataProfileResolver {
   @FieldResolver(() => TreeDataCareDifficultyResultProfile)
-  async careDifficultyResult(@Root() { id }: TreeData, @Ctx() context: Context): Promise<TreeDataCareDifficultyResult | undefined> {
+  async careDifficultyResult(@Root() { id }: TreeData, @Ctx() context: Context<null>): Promise<TreeDataCareDifficultyResult | undefined> {
     return (await context.db.read.treeData.findUnique({ where: { id }, include: { careDifficultyResult: true } }))?.careDifficultyResult;
   }
 
   @FieldResolver(() => TreeDataCareWaterResultProfile)
-  async careWaterResult(@Root() { id }: TreeData, @Ctx() context: Context): Promise<TreeDataCareWaterResult | undefined> {
+  async careWaterResult(@Root() { id }: TreeData, @Ctx() context: Context<null>): Promise<TreeDataCareWaterResult | undefined> {
     return (await context.db.read.treeData.findUnique({ where: { id }, include: { careWaterResult: true } }))?.careWaterResult;
   }
 
   @FieldResolver(() => TreeDataCareSunlightResultProfile)
-  async careSunlightResult(@Root() { id }: TreeData, @Ctx() context: Context): Promise<TreeDataCareSunlightResult | undefined> {
+  async careSunlightResult(@Root() { id }: TreeData, @Ctx() context: Context<null>): Promise<TreeDataCareSunlightResult | undefined> {
     return (await context.db.read.treeData.findUnique({ where: { id }, include: { careSunlightResult: true } }))?.careSunlightResult;
   }
 
   @FieldResolver(() => TreeDataCarePlantingResultProfile)
-  async carePlantingResult(@Root() { id }: TreeData, @Ctx() context: Context): Promise<TreeDataCarePlantingResult | undefined> {
+  async carePlantingResult(@Root() { id }: TreeData, @Ctx() context: Context<null>): Promise<TreeDataCarePlantingResult | undefined> {
     return (await context.db.read.treeData.findUnique({ where: { id }, include: { carePlantingResult: true } }))?.carePlantingResult;
   }
 
   @FieldResolver(() => TreeDataCareGerminationDifficultyResultProfile)
-  async careGerminationDifficultyResult(@Root() { id }: TreeData, @Ctx() context: Context): Promise<TreeDataCareGerminationDifficultyResult | undefined> {
+  async careGerminationDifficultyResult(@Root() { id }: TreeData, @Ctx() context: Context<null>): Promise<TreeDataCareGerminationDifficultyResult | undefined> {
     return (await context.db.read.treeData.findUnique({ where: { id }, include: { careGerminationDifficultyResult: true } }))?.careGerminationDifficultyResult;
   }
 
   @FieldResolver(() => TreeDataCareWhenToReleaseResultProfile)
-  async careWhenToReleaseResult(@Root() { id }: TreeData, @Ctx() context: Context): Promise<TreeDataCareWhenToReleaseResult | undefined> {
+  async careWhenToReleaseResult(@Root() { id }: TreeData, @Ctx() context: Context<null>): Promise<TreeDataCareWhenToReleaseResult | undefined> {
     return (await context.db.read.treeData.findUnique({ where: { id }, include: { careWhenToReleaseResult: true } }))?.careWhenToReleaseResult;
   }
 
   @FieldResolver(() => TreeDataCareObtainingSeedsResultProfile)
-  async careObtainingSeedsResult(@Root() { id }: TreeData, @Ctx() context: Context): Promise<TreeDataCareObtainingSeedsResult | undefined> {
+  async careObtainingSeedsResult(@Root() { id }: TreeData, @Ctx() context: Context<null>): Promise<TreeDataCareObtainingSeedsResult | undefined> {
     return (await context.db.read.treeData.findUnique({ where: { id }, include: { careObtainingSeedsResult: true } }))?.careObtainingSeedsResult;
   }
 
   @FieldResolver(() => TreeDataCareHowToPlantSeedsResultProfile)
-  async careHowToPlantSeedsResult(@Root() { id }: TreeData, @Ctx() context: Context): Promise<TreeDataCareHowToPlantSeedsResult | undefined> {
+  async careHowToPlantSeedsResult(@Root() { id }: TreeData, @Ctx() context: Context<null>): Promise<TreeDataCareHowToPlantSeedsResult | undefined> {
     return (await context.db.read.treeData.findUnique({ where: { id }, include: { careHowToPlantSeedsResult: true } }))?.careHowToPlantSeedsResult;
   }
 
   @FieldResolver(() => TreeDataCareGerminationNotesResultProfile)
-  async careGerminationNotesResult(@Root() { id }: TreeData, @Ctx() context: Context): Promise<TreeDataCareGerminationNotesResult | undefined> {
+  async careGerminationNotesResult(@Root() { id }: TreeData, @Ctx() context: Context<null>): Promise<TreeDataCareGerminationNotesResult | undefined> {
     return (await context.db.read.treeData.findUnique({ where: { id }, include: { careGerminationNotesResult: true } }))?.careGerminationNotesResult;
   }
 }

@@ -31,31 +31,31 @@ class NotificationWhereUniqueInput {
 @InputType()
 class NotificationOrderByInput {
   @Field()
-  createdAt?: SortOrder | null
+  createdAt?: SortOrder
 
   @Field()
-  id?: SortOrder | null
+  id?: SortOrder
 
   @Field()
-  message?: SortOrder | null
+  message?: SortOrder
 
   @Field()
-  onOpenType?: SortOrder | null
+  onOpenType?: SortOrder
 
   @Field()
-  readDate?: SortOrder | null
+  readDate?: SortOrder
 
   @Field()
-  receiverId?: SortOrder | null
+  receiverId?: SortOrder
 
   @Field()
-  senderId?: SortOrder | null
+  senderId?: SortOrder
 
   @Field()
-  type?: SortOrder | null
+  type?: SortOrder
 
   @Field()
-  updatedAt?: SortOrder | null
+  updatedAt?: SortOrder
 }
 
 

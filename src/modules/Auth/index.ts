@@ -42,7 +42,7 @@ export const generateToken = <T extends TokenType>(data: TokenArgs<T>): string =
  * @param tokenData - token data
  * @param sessionId - optional session if wanting to upsert, otherwise session is created
  */
-export const generateRefreshToken = async (db: Context['db'], tokenData: TokenData<TokenType.REFRESH>, sessionId = uuidv4()) => {
+export const generateRefreshToken = async (db: Context<null>['db'], tokenData: TokenData<TokenType.REFRESH>, sessionId = uuidv4()) => {
   // 7 days from today - seconds
   const expires = tokenData.type === RefreshTokenType.GENERAL
     ? Math.floor(Date.now() / 1000) + (604800) // 7 days

@@ -30,20 +30,20 @@ const shareRoute = (e: express.Application) => {
           const image = await prisma.read.user.findUnique({ where: { id: req.params.id } }).profilePicture();
 
           const props: ShareViewProps = {
-            title: user.name,
-            description: user.name,
+            title: user.name || '',
+            description: user.name || '',
             url: url.format({
               protocol: 'https',
               host: req.get('host'),
               pathname: req.originalUrl,
             }),
-            imageUrl: image && await FileHandler.getUrl({
+            imageUrl: image ? await FileHandler.getUrl({
               path: image.path,
               thumbnail: 'large',
-            }),
+            }) : '',
             deepLink: `${getMobileClientUrl()}user/${req.params.id}`,
-            appStoreUrl: process.env.APP_STORE_URL,
-            playStoreUrl: process.env.PLAY_STORE_URL,
+            appStoreUrl: process.env.APP_STORE_URL || '',
+            playStoreUrl: process.env.PLAY_STORE_URL || '',
           };
 
           return res.render('share/index', props);

@@ -15,8 +15,8 @@ export default async () => {
    * Replace env for test database
    */
   process.env.NODE_ENV = 'test';
-  process.env.DATABASE_URL_WRITE = process.env.DATABASE_URL_WRITE.replace(/development|production/g, 'test');
-  process.env.DATABASE_URL_READ = process.env.DATABASE_URL_READ.replace(/development|production/g, 'test');
+  process.env.DATABASE_URL_WRITE = process.env.DATABASE_URL_WRITE!.replace(/development|production/g, 'test');
+  process.env.DATABASE_URL_READ = process.env.DATABASE_URL_READ!.replace(/development|production/g, 'test');
 
 
   /**
@@ -32,7 +32,7 @@ export default async () => {
 
     con.connect((err) => {
       if (err) rej(err);
-      con.query(`DROP DATABASE \`${global.process.env.DATABASE_URL_WRITE.split('/').pop()}\``, (error, results) => {
+      con.query(`DROP DATABASE \`${global.process.env.DATABASE_URL_WRITE!.split('/').pop()}\``, (error, results) => {
         if (error) {
           // eslint-disable-next-line no-console
           console.error(error);
@@ -48,7 +48,7 @@ export default async () => {
   /**
    * If the command was `test:unit:reset` try and reset the db
    */
-  const command = JSON.parse(process.env.npm_config_argv).original[0];
+  const command = JSON.parse(process.env.npm_config_argv!).original[0];
   if (command === 'test:unit:reset') {
     await exec('NODE_ENV=test yarn dev:ensure:bucket');
     await deleteDatabase();

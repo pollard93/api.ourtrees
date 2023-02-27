@@ -29,7 +29,7 @@ export class RequestPasswordResetResolver {
   }))
   async requestPasswordReset(
     @Arg('data') { email }: RequestPasswordResetInput,
-    @Ctx() context: Context,
+    @Ctx() context: Context<null>,
   ): Promise<boolean> {
     /**
      * Get user from collective db

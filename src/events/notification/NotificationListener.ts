@@ -1,6 +1,6 @@
 import { Notification } from 'onesignal-node';
 import { Prisma as PrismaInterface } from 'prisma';
-import { Prisma, NOTIFICATION_TYPE } from '@prisma/client';
+import { Prisma, NOTIFICATION_TYPE, NOTIFICATION_ON_OPEN_TYPE } from '@prisma/client';
 import NotificationEmitter from './NotificationEmitter';
 import { OneSignalClient } from '../../modules/OneSignal';
 import { NotificationEventType, DBNotificationArgs, PushNotificationArgs, NotificationArgs } from './types';
@@ -36,7 +36,7 @@ export default class NotificationListener {
       receiver: { connect: { id: data.receiver.id } },
       message: data.message,
       onOpenType: data.onOpenType,
-      sender: data.sender ? { connect: { id: data.sender.id } } : undefined,
+      sender: data.sender ? { connect: { id: data.sender.id } } : {},
     };
 
 
@@ -104,7 +104,7 @@ export default class NotificationListener {
                 data: {
                   type: 'PASSWORD_CHANGED',
                   notificationId,
-                  onOpenType: null,
+                  onOpenType: NOTIFICATION_ON_OPEN_TYPE.SOME_TYPE_TO_OPEN,
                   someData: 'some required data here',
                 },
                 include_external_user_ids: [receiver.id],

@@ -7,13 +7,13 @@ import { Context } from '../../utils/types';
 
 @Resolver(() => NotificationProfile)
 export class NotificationProfileResolver {
-  @FieldResolver(() => UserProfile)
-  receiver(@Root() { receiverId }: Notification, @Ctx() context: Context): Promise<User> {
+  @FieldResolver(() => UserProfile, { nullable: true })
+  receiver(@Root() { receiverId }: Notification, @Ctx() context: Context<null>): Promise<User | null> {
     return context.db.read.user.findUnique({ where: { id: receiverId } });
   }
 
-  @FieldResolver(() => UserProfile)
-  sender(@Root() { senderId }: Notification, @Ctx() context: Context): Promise<User> {
+  @FieldResolver(() => UserProfile, { nullable: true })
+  sender(@Root() { senderId }: Notification, @Ctx() context: Context<null>): Promise<User | null> {
     return context.db.read.user.findUnique({ where: { id: senderId } });
   }
 }

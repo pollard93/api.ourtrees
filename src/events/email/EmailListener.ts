@@ -17,7 +17,7 @@ export default class EmailListener {
 
     // set up sendgrid
     if (process.env.NODE_ENV !== 'test') {
-      this.sendGridClient.setApiKey(process.env.SENDGRID_API_KEY);
+      this.sendGridClient.setApiKey(process.env.SENDGRID_API_KEY || '');
     }
   }
 
@@ -63,7 +63,7 @@ export default class EmailListener {
           case EMAIL_TRANSACTIONAL_TYPE.PASSWORD_CHANGED:
             await this.handleRaw({
               to: receiver.email,
-              from: process.env.EMAIL_FROM_EMAIL,
+              from: process.env.EMAIL_FROM_EMAIL || '',
               subject: 'Security Alert: Your password has changed',
               html: await renderGenericTemplate({
                 content: `
@@ -79,7 +79,7 @@ export default class EmailListener {
 
             await this.handleRaw({
               to: receiver.email,
-              from: process.env.EMAIL_FROM_EMAIL,
+              from: process.env.EMAIL_FROM_EMAIL || '',
               subject: 'Reset your Password',
               html: await renderGenericTemplate({
                 content: data.clientType === CLIENT_TYPE.MOBILE
@@ -101,7 +101,7 @@ export default class EmailListener {
 
             await this.handleRaw({
               to: receiver.email,
-              from: process.env.EMAIL_FROM_EMAIL,
+              from: process.env.EMAIL_FROM_EMAIL || '',
               subject: 'Verify Your Email',
               html: await renderGenericTemplate({
                 content: data.clientType === CLIENT_TYPE.MOBILE
@@ -125,7 +125,7 @@ export default class EmailListener {
 
             await this.handleRaw({
               to: receiver.email,
-              from: process.env.EMAIL_FROM_EMAIL,
+              from: process.env.EMAIL_FROM_EMAIL || '',
               subject: 'Email change request',
               html: await renderGenericTemplate({
                 content: data.clientType === CLIENT_TYPE.MOBILE
@@ -161,7 +161,7 @@ export default class EmailListener {
         case EMAIL_INTERNAL_TYPE.USER_REGISTERED:
           await this.handleRaw({
             to: process.env.EMAIL_INTERNAL_ADMIN,
-            from: process.env.EMAIL_FROM_EMAIL,
+            from: process.env.EMAIL_FROM_EMAIL || '',
             subject: 'New user registered',
             html: await renderGenericTemplate({
               content: `Requested user id: ${(data as InternalEmailArgs<EMAIL_INTERNAL_TYPE.USER_REGISTERED>).data.user.id}`,
