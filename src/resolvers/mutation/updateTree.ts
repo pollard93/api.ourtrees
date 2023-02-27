@@ -11,15 +11,16 @@ import { TokenType } from '../../modules/Auth/interfaces';
 import { Context } from '../../utils/types';
 import { AuthInterceptor } from '../../modules/Auth/middleware';
 import { TreeProfile } from '../../types/TreeProfile';
+import { GenericError } from '../../errors';
 
 
 @InputType()
-export class CreateTreeInput {
+export class UpdateTreeInput {
   @Field()
-  treeDataId: number
+  id: string
 
-  @Field()
-  name: string
+  @Field({ nullable: true })
+  name?: string
 
   @Field({ nullable: true })
   cultivationDate?: string
@@ -27,20 +28,41 @@ export class CreateTreeInput {
 
 
 @Resolver()
-export class CreateTreeResolver {
+export class UpdateTreeResolver {
   @Mutation(() => TreeProfile)
   @UseMiddleware(AuthInterceptor({
     accessTokens: [TokenType.GENERAL],
   }))
-  async createTree(
-    @Arg('data') { treeDataId, name, cultivationDate }: CreateTreeInput,
+  async updateTree(
+    @Arg('data') { id, name, cultivationDate }: UpdateTreeInput,
     @Ctx() context: Context<TokenType.GENERAL>,
   ): Promise<Tree> {
     const { id: creatorId } = context.accessToken.data;
-    return context.db.write.tree.create({
+
+
+    /**
+     * Get tree and validate owner
+     */
+    const tree = await context.db.read.treeEntry.findUnique({
+      where: {
+        id,
+      },
+      include: {
+        tree: true,
+      },
+    });
+    if (!tree) throw GenericError('Tree does not exist');
+    if (tree.tree.creatorId !== creatorId) throw GenericError('Unauthorized');
+
+
+    /**
+     * Update tree
+     */
+    return context.db.write.tree.update({
+      where: {
+        id: tree.id,
+      },
       data: {
-        creatorId,
-        treeDataId,
         name,
         cultivationDate,
       },
