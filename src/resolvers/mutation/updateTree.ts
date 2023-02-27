@@ -43,16 +43,13 @@ export class UpdateTreeResolver {
     /**
      * Get tree and validate owner
      */
-    const tree = await context.db.read.treeEntry.findUnique({
+    const tree = await context.db.read.tree.findUnique({
       where: {
         id,
       },
-      include: {
-        tree: true,
-      },
     });
     if (!tree) throw GenericError('Tree does not exist');
-    if (tree.tree.creatorId !== creatorId) throw GenericError('Unauthorized');
+    if (tree.creatorId !== creatorId) throw GenericError('Unauthorized');
 
 
     /**

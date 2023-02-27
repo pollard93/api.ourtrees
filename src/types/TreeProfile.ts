@@ -12,8 +12,8 @@ export class TreeProfile {
   @Field()
   name: string
 
-  @Field()
-  cultivationDate: Date
+  @Field(() => Date)
+  cultivationDate: string
 
   @Field(() => TreeDataProfile)
   treeData: TreeDataProfile

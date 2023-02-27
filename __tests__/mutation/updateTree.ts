@@ -46,7 +46,7 @@ test('should succeed without data', async () => {
   );
 
   expect(data?.updateTree.name).toEqual(tree.name);
-  expect(data?.updateTree.cultivationDate).toEqual(tree.cultivationDate);
+  expect(data?.updateTree.cultivationDate).toEqual(tree.cultivationDate.toISOString());
 });
 
 

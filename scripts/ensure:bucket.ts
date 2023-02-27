@@ -28,7 +28,7 @@ void (async function () {
       const objectsStream = FileHandler.client.listObjects(bucketName, '', true);
 
       objectsStream.on('data', (obj) => {
-        objectsList.push(obj.name);
+        objectsList.push(obj.name as never);
       });
 
       objectsStream.on('error', (e) => {
