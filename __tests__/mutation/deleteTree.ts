@@ -1,23 +1,11 @@
 import { gql } from 'graphql-request';
 import '../../global-variables';
-import TestUtils from '../utils';
 import { DeleteTreeInput } from '../../src/resolvers/mutation/deleteTree';
-import { TreeProfile } from '../../src/types/TreeProfile';
 
 
 const query = gql`
   mutation deleteTree($data: DeleteTreeInput!){
-    deleteTree(data: $data) {
-      id
-      name
-      cultivationDate
-      treeData {
-        id
-      }
-      creator {
-        id
-      }
-    }
+    deleteTree(data: $data)
   }
 `;
 
@@ -46,6 +34,13 @@ test('should succeed', async () => {
   );
 
   expect(data?.deleteTree).toBeTruthy();
+
+  const treeAfter = await global.config.db.tree.findUnique({
+    where: {
+      id: tree.id,
+    },
+  });
+  expect(treeAfter).toBeFalsy();
 });
 
 test('should fail if user does not own tree', async () => {
