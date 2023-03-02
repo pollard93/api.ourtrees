@@ -54,10 +54,6 @@ test('should succeed', async () => {
 test('should fail if entry does not exist', async () => {
   const user = await global.config.utils.createUser();
 
-  /**
-   * Test
-   */
-
   try {
     await global.config.client.rawRequest<Response, Variables>(
       query,

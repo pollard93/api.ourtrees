@@ -15,6 +15,7 @@ import { TokenType } from '../../modules/Auth/interfaces';
 import { Context } from '../../utils/types';
 import { AuthInterceptor } from '../../modules/Auth/middleware';
 import { TreeEntryProfile } from '../../types/TreeEntryProfile';
+import { GenericError } from '../../errors';
 
 
 export enum SortOrder {
@@ -58,8 +59,14 @@ export class GetTreeEntriesResolver {
      * Get entries and return
      */
     const entries = await context.db.read.tree.findUnique({ where: { id: data.treeId } }).entries({
-      take: data?.take,
+      take: data.take,
     });
+
+
+    /**
+     * If tree does not exist
+     */
+    if (entries === null) throw GenericError('Tree does not exist');
 
 
     /**

@@ -65,3 +65,25 @@ test('should succeed', async () => {
   expect(data.data?.getTreeEntries.entries.find((e) => e.id === treeEntry1.id)).toBeTruthy();
   expect(data.data?.getTreeEntries.entries.find((e) => e.id === treeEntry2.id)).toBeTruthy();
 });
+
+
+test('should fail if tree does not exist', async () => {
+  const user = await global.config.utils.createUser();
+
+  try {
+    await global.config.client.rawRequest<Response, Variables>(
+      query,
+      {
+        data: {
+          treeId: 'unknown',
+          take: 2,
+        },
+      },
+      { authorization: `Bearer ${user.token}` },
+    );
+    throw new Error();
+  } catch (error) {
+    // eslint-disable-next-line jest/no-conditional-expect, jest/no-try-expect
+    expect(error.response.errors[0].message).toEqual('Tree does not exist');
+  }
+});
