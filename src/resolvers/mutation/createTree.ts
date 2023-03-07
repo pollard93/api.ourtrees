@@ -36,6 +36,9 @@ export class CreateTreeResolver {
     @Arg('data') { treeDataId, name, cultivationDate }: CreateTreeInput,
     @Ctx() context: Context<TokenType.GENERAL>,
   ): Promise<Tree> {
+    /**
+     * @TODO - validate treeDataId
+     */
     const { id: creatorId } = context.accessToken.data;
     return context.db.write.tree.create({
       data: {

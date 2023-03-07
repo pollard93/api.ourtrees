@@ -35,6 +35,7 @@ model User {
   treeDataCareGerminationNotesVote      TreeDataCareGerminationNotesVote[]      @relation("UserTreeDataCareGerminationNotesVote")
   treesCreated                          Tree[]                                  @relation("UserTreesCreated")
   treesFollowing                        Tree[]                                  @relation("UserTreesFollowing")
+  treeComments                          TreeComment[]
   createdAt                             DateTime                                @default(now())
   updatedAt                             DateTime                                @updatedAt
 }
@@ -406,17 +407,28 @@ model TreeDataCareWhenToReleaseResult {
 }
 
 model Tree {
-  id              String      @id @default(uuid())
+  id              String        @id @default(uuid())
   name            String
-  cultivationDate DateTime    @default(now())
-  creator         User        @relation(name: "UserTreesCreated", fields: [creatorId], references: [id])
+  cultivationDate DateTime      @default(now())
+  creator         User          @relation(name: "UserTreesCreated", fields: [creatorId], references: [id])
   creatorId       String
-  treeData        TreeData    @relation(name: "TreeDataToTrees", fields: [treeDataId], references: [id])
+  treeData        TreeData      @relation(name: "TreeDataToTrees", fields: [treeDataId], references: [id])
   treeDataId      Int
-  followers       User[]      @relation("UserTreesFollowing")
+  followers       User[]        @relation("UserTreesFollowing")
+  comments        TreeComment[]
   entries         TreeEntry[]
-  createdAt       DateTime    @default(now())
-  updatedAt       DateTime    @updatedAt
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+}
+
+model TreeComment {
+  id        String   @id @default(uuid())
+  comment   String
+  tree      Tree     @relation(fields: [treeId], references: [id])
+  treeId    String
+  creator   User     @relation(fields: [creatorId], references: [id])
+  creatorId String
+  createdAt DateTime @default(now())
 }
 
 model TreeEntry {
