@@ -25,9 +25,19 @@ export enum SortOrder {
 
 
 @InputType()
+class TreeEntryWhereUniqueInput {
+  @Field()
+  id: string
+}
+
+
+@InputType()
 export class GetTreeEntriesInput {
   @Field(() => ID)
   treeId: string
+
+  @Field(() => TreeEntryWhereUniqueInput, { nullable: true })
+  cursor?: TreeEntryWhereUniqueInput
 
   @Field()
   @Max(30)
@@ -59,6 +69,7 @@ export class GetTreeEntriesResolver {
      * Get entries and return
      */
     const entries = await context.db.read.tree.findUnique({ where: { id: data.treeId } }).entries({
+      cursor: data.cursor,
       take: data.take,
     });
 
