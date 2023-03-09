@@ -160,7 +160,7 @@ export default class TestUtils {
   }
 
   static randomString() {
-    return uuidv4();
+    return uuidv4() as string;
   }
 
   static getRandomInt(max) {

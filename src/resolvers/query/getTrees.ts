@@ -9,6 +9,7 @@ import { Resolver,
   InputType,
   Arg } from 'type-graphql';
 import { Tree, Prisma } from '@prisma/client';
+import { Max } from 'class-validator';
 import { TokenType } from '../../modules/Auth/interfaces';
 import { Context } from '../../utils/types';
 import { AuthInterceptor } from '../../modules/Auth/middleware';
@@ -31,6 +32,9 @@ class TreeWhereInput {
 
   @Field({ nullable: true })
   followerId?: string
+
+  @Field({ nullable: true })
+  countryName?: string
 }
 
 
@@ -50,6 +54,7 @@ export class GetTreesInput {
   cursor?: TreeWhereUniqueInput
 
   @Field()
+  @Max(30)
   take: number
 }
 
@@ -81,12 +86,13 @@ export class GetTreesResolver {
       ...(data.where.creatorId ? { creatorId: data.where.creatorId } : {}),
       ...(data.where.treeDataId ? { treeDataId: data.where.treeDataId } : {}),
       ...(data.where.followerId ? { followers: { some: { id: data.where.followerId } } } : {}),
+      ...(data.where.countryName ? { creator: { countryName: data.where.countryName } } : {}),
     };
 
 
     /**
-   * Get trees and return
-   */
+     * Get trees and return
+     */
     const trees = await context.db.read.tree.findMany({
       where,
       cursor: data?.cursor,
@@ -95,8 +101,8 @@ export class GetTreesResolver {
 
 
     /**
-   * Count
-   */
+     * Count
+     */
     const count = await context.db.read.tree.count({
       where,
     });

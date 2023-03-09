@@ -9,6 +9,7 @@ import { Resolver,
   InputType,
   Arg } from 'type-graphql';
 import { TreeData, Prisma } from '@prisma/client';
+import { Max } from 'class-validator';
 import { TokenType } from '../../modules/Auth/interfaces';
 import { Context } from '../../utils/types';
 import { AuthInterceptor } from '../../modules/Auth/middleware';
@@ -57,6 +58,7 @@ export class GetTreeDatasInput {
   cursor?: TreeDataWhereUniqueInput
 
   @Field()
+  @Max(30)
   take: number
 
   @Field(() => [TreeDataOrderByInput], { nullable: true })

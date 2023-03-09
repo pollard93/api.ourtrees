@@ -9,6 +9,7 @@ import { Resolver,
   InputType,
   Arg } from 'type-graphql';
 import { Notification, Prisma } from '@prisma/client';
+import { Max } from 'class-validator';
 import { TokenType } from '../../modules/Auth/interfaces';
 import { Context } from '../../utils/types';
 import { AuthInterceptor } from '../../modules/Auth/middleware';
@@ -65,6 +66,7 @@ export class GetNotificationsInput {
   cursor: NotificationWhereUniqueInput
 
   @Field()
+  @Max(30)
   take: number
 
   @Field(() => [NotificationOrderByInput])
