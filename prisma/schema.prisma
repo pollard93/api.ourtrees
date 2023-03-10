@@ -344,6 +344,7 @@ model TreeDataCareGerminationNotesContent {
   content                            String
   votes                              TreeDataCareGerminationNotesVote[]   @relation(name: "TreeDataCareGerminationNotesContentToVotes")
   treeDataCareGerminationNotesResult TreeDataCareGerminationNotesResult[] @relation(name: "TreeDataCareGerminationNotesTopVotedContent")
+  reportedAt                         DateTime?
 
   @@unique([userId, treeDataId])
 }
