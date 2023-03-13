@@ -1,7 +1,7 @@
 import { gql } from 'graphql-request';
 import '../../global-variables';
 import { TreeDataCareGerminationNotesContentProfile } from '../../src/types/TreeDataCareGerminationNotesContentProfile';
-import { CreateTreeDataCareGerminationNotesContentInput } from '../../src/resolvers/mutation/createTreeDataGerminationNotesContent';
+import { CreateTreeDataCareGerminationNotesContentInput } from '../../src/resolvers/mutation/createTreeDataCareGerminationNotesContent';
 import TestUtils from '../utils';
 
 
