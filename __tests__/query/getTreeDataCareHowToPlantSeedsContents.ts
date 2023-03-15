@@ -1,12 +1,12 @@
 import { gql } from 'graphql-request';
 import '../../global-variables';
 import TestUtils from '../utils';
-import { GetTreeDataCareGerminationNotesContentsInput, TreeDataCareGerminationNotesContentProfilesPayLoad } from '../../src/resolvers/query/getTreeDataCareGerminationNotesContents';
+import { GetTreeDataCareHowToPlantSeedsContentsInput, TreeDataCareHowToPlantSeedsContentProfilesPayLoad } from '../../src/resolvers/query/getTreeDataCareHowToPlantSeedsContents';
 
 
 const query = gql`
-  query getTreeDataCareGerminationNotesContents($data: GetTreeDataCareGerminationNotesContentsInput!){
-    getTreeDataCareGerminationNotesContents(data: $data){
+  query getTreeDataCareHowToPlantSeedsContents($data: GetTreeDataCareHowToPlantSeedsContentsInput!){
+    getTreeDataCareHowToPlantSeedsContents(data: $data){
       notes {
         id
       }
@@ -15,8 +15,8 @@ const query = gql`
   }
 `;
 
-type Response = { getTreeDataCareGerminationNotesContents: TreeDataCareGerminationNotesContentProfilesPayLoad };
-type Variables = { data?: GetTreeDataCareGerminationNotesContentsInput };
+type Response = { getTreeDataCareHowToPlantSeedsContents: TreeDataCareHowToPlantSeedsContentProfilesPayLoad };
+type Variables = { data?: GetTreeDataCareHowToPlantSeedsContentsInput };
 
 
 test('should succeed', async () => {
@@ -29,7 +29,7 @@ test('should succeed', async () => {
   /**
    * Create tree notes
    */
-  const notes1 = await global.config.db.treeDataCareGerminationNotesContent.create({
+  const notes1 = await global.config.db.treeDataCareHowToPlantSeedsContent.create({
     data: {
       user: {
         connect: {
@@ -44,7 +44,7 @@ test('should succeed', async () => {
       content: TestUtils.randomString(),
     },
   });
-  const notes2 = await global.config.db.treeDataCareGerminationNotesContent.create({
+  const notes2 = await global.config.db.treeDataCareHowToPlantSeedsContent.create({
     data: {
       user: {
         connect: {
@@ -77,10 +77,10 @@ test('should succeed', async () => {
   /**
    * Test
    */
-  expect(data.data?.getTreeDataCareGerminationNotesContents.notes.length).toEqual(2);
-  expect(data.data?.getTreeDataCareGerminationNotesContents.count).toEqual(2);
-  expect(data.data?.getTreeDataCareGerminationNotesContents.notes.find((e) => e.id === notes1.id)).toBeTruthy();
-  expect(data.data?.getTreeDataCareGerminationNotesContents.notes.find((e) => e.id === notes2.id)).toBeTruthy();
+  expect(data.data?.getTreeDataCareHowToPlantSeedsContents.notes.length).toEqual(2);
+  expect(data.data?.getTreeDataCareHowToPlantSeedsContents.count).toEqual(2);
+  expect(data.data?.getTreeDataCareHowToPlantSeedsContents.notes.find((e) => e.id === notes1.id)).toBeTruthy();
+  expect(data.data?.getTreeDataCareHowToPlantSeedsContents.notes.find((e) => e.id === notes2.id)).toBeTruthy();
 });
 
 
@@ -94,7 +94,7 @@ test('should not return reported', async () => {
   /**
    * Create tree notes
    */
-  await global.config.db.treeDataCareGerminationNotesContent.create({
+  await global.config.db.treeDataCareHowToPlantSeedsContent.create({
     data: {
       reportedAt: new Date(),
       user: {
@@ -128,8 +128,8 @@ test('should not return reported', async () => {
   /**
    * Test
    */
-  expect(data.data?.getTreeDataCareGerminationNotesContents.notes.length).toEqual(0);
-  expect(data.data?.getTreeDataCareGerminationNotesContents.count).toEqual(0);
+  expect(data.data?.getTreeDataCareHowToPlantSeedsContents.notes.length).toEqual(0);
+  expect(data.data?.getTreeDataCareHowToPlantSeedsContents.count).toEqual(0);
 });
 
 

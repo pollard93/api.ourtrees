@@ -8,12 +8,12 @@ import { Resolver,
   ObjectType,
   InputType,
   Arg } from 'type-graphql';
-import { TreeDataCareGerminationNotesContent } from '@prisma/client';
+import { TreeDataCareHowToPlantSeedsContent } from '@prisma/client';
 import { Max } from 'class-validator';
 import { TokenType } from '../../modules/Auth/interfaces';
 import { Context } from '../../utils/types';
 import { AuthInterceptor } from '../../modules/Auth/middleware';
-import { TreeDataCareGerminationNotesContentProfile } from '../../types/TreeDataCareGerminationNotesContentProfile';
+import { TreeDataCareHowToPlantSeedsContentProfile } from '../../types/TreeDataCareHowToPlantSeedsContentProfile';
 import { GenericError } from '../../errors';
 
 
@@ -24,19 +24,19 @@ export enum SortOrder {
 
 
 @InputType()
-class TreeDataCareGerminationNotesContentWhereUniqueInput {
+class TreeDataCareHowToPlantSeedsContentWhereUniqueInput {
   @Field()
   id: string
 }
 
 
 @InputType()
-export class GetTreeDataCareGerminationNotesContentsInput {
+export class GetTreeDataCareHowToPlantSeedsContentsInput {
   @Field()
   treeDataId: number
 
-  @Field(() => TreeDataCareGerminationNotesContentWhereUniqueInput, { nullable: true })
-  cursor?: TreeDataCareGerminationNotesContentWhereUniqueInput
+  @Field(() => TreeDataCareHowToPlantSeedsContentWhereUniqueInput, { nullable: true })
+  cursor?: TreeDataCareHowToPlantSeedsContentWhereUniqueInput
 
   @Field()
   @Max(30)
@@ -45,9 +45,9 @@ export class GetTreeDataCareGerminationNotesContentsInput {
 
 
 @ObjectType()
-export class TreeDataCareGerminationNotesContentProfilesPayLoad {
-  @Field(() => [TreeDataCareGerminationNotesContentProfile])
-  notes: TreeDataCareGerminationNotesContentProfile[]
+export class TreeDataCareHowToPlantSeedsContentProfilesPayLoad {
+  @Field(() => [TreeDataCareHowToPlantSeedsContentProfile])
+  notes: TreeDataCareHowToPlantSeedsContentProfile[]
 
   @Field(() => Int)
   count: number
@@ -55,19 +55,19 @@ export class TreeDataCareGerminationNotesContentProfilesPayLoad {
 
 
 @Resolver()
-export class GetTreeDataCareGerminationNotesContentsResolver {
-  @Query(() => TreeDataCareGerminationNotesContentProfilesPayLoad)
+export class GetTreeDataCareHowToPlantSeedsContentsResolver {
+  @Query(() => TreeDataCareHowToPlantSeedsContentProfilesPayLoad)
   @UseMiddleware(AuthInterceptor({
     accessTokens: [TokenType.GENERAL],
   }))
-  async getTreeDataCareGerminationNotesContents(
-    @Arg('data') data: GetTreeDataCareGerminationNotesContentsInput,
+  async getTreeDataCareHowToPlantSeedsContents(
+    @Arg('data') data: GetTreeDataCareHowToPlantSeedsContentsInput,
     @Ctx() context: Context<TokenType.GENERAL>,
-  ): Promise<{ notes: TreeDataCareGerminationNotesContent[], count: number }> {
+  ): Promise<{ notes: TreeDataCareHowToPlantSeedsContent[], count: number }> {
     /**
      * Get notes and return
      */
-    const notes = await context.db.read.treeData.findUnique({ where: { id: data.treeDataId } }).careGerminationNotesContents({
+    const notes = await context.db.read.treeData.findUnique({ where: { id: data.treeDataId } }).careHowToPlantSeedsContents({
       where: {
         reportedAt: null,
       },
@@ -85,7 +85,7 @@ export class GetTreeDataCareGerminationNotesContentsResolver {
     /**
      * Count
      */
-    const count = await context.db.read.treeDataCareGerminationNotesContent.count({
+    const count = await context.db.read.treeDataCareHowToPlantSeedsContent.count({
       where: {
         reportedAt: null,
         treeDataId: data.treeDataId,

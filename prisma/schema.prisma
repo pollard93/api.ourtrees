@@ -120,7 +120,7 @@ model TreeData {
   careGerminationDifficultyVote             TreeDataCareGerminationDifficultyVote[] @relation("TreeDataCareGerminationDifficultyVotes")
   careGerminationDifficultyResult           TreeDataCareGerminationDifficultyResult @relation(name: "TreeDataCareGerminationDifficultyResult", fields: [treeDataCareGerminationDifficultyResultId], references: [id])
   treeDataCareGerminationDifficultyResultId String                                  @unique
-  careGerminationNotesContent               TreeDataCareGerminationNotesContent[]   @relation("TreeDataCareGerminationNotesContents")
+  careGerminationNotesContents              TreeDataCareGerminationNotesContent[]   @relation("TreeDataCareGerminationNotesContents")
   careGerminationNotesVote                  TreeDataCareGerminationNotesVote[]      @relation("TreeDataCareGerminationNotesVotes")
   careGerminationNotesResult                TreeDataCareGerminationNotesResult      @relation(name: "TreeDataCareGerminationNotesResult", fields: [treeDataCareGerminationNotesResultId], references: [id])
   treeDataCareGerminationNotesResultId      String                                  @unique

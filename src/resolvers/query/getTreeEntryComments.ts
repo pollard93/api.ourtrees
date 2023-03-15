@@ -67,6 +67,7 @@ export class GetTreeEntryCommentsResolver {
   ): Promise<{ comments: TreeEntryComment[], count: number }> {
     /**
      * Get comments and return
+     * @TODO - must not return reported (add delete and report)
      */
     const comments = await context.db.read.treeEntry.findUnique({ where: { id: data.treeEntryId } }).comments({
       cursor: data.cursor,
