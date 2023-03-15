@@ -84,6 +84,54 @@ test('should succeed', async () => {
 });
 
 
+test('should not return reported', async () => {
+  /**
+   * Create user and tree
+   */
+  const user = await global.config.utils.createUser();
+  const treeData = await global.config.utils.createTreeData();
+
+  /**
+   * Create tree notes
+   */
+  await global.config.db.treeDataCareGerminationNotesContent.create({
+    data: {
+      user: {
+        connect: {
+          id: (await global.config.utils.createUser()).user.id,
+        },
+      },
+      treeData: {
+        connect: {
+          id: treeData.id,
+        },
+      },
+      content: TestUtils.randomString(),
+    },
+  });
+
+  /**
+   * Get
+   */
+  const data = await global.config.client.rawRequest<Response, Variables>(
+    query,
+    {
+      data: {
+        treeDataId: treeData.id,
+        take: 2,
+      },
+    },
+    { authorization: `Bearer ${user.token}` },
+  );
+
+  /**
+   * Test
+   */
+  expect(data.data?.getTreeDataCareGerminationNotesContents.notes.length).toEqual(0);
+  expect(data.data?.getTreeDataCareGerminationNotesContents.count).toEqual(0);
+});
+
+
 test('should fail if tree data does not exist', async () => {
   const user = await global.config.utils.createUser();
 

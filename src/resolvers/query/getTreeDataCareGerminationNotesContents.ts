@@ -68,6 +68,9 @@ export class GetTreeDataCareGerminationNotesContentsResolver {
      * Get notes and return
      */
     const notes = await context.db.read.treeData.findUnique({ where: { id: data.treeDataId } }).careGerminationNotesContent({
+      where: {
+        reportedAt: null,
+      },
       cursor: data.cursor,
       take: data.take,
     });
@@ -84,6 +87,7 @@ export class GetTreeDataCareGerminationNotesContentsResolver {
      */
     const count = await context.db.read.treeDataCareGerminationNotesContent.count({
       where: {
+        reportedAt: null,
         treeDataId: data.treeDataId,
       },
     });
