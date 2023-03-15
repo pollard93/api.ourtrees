@@ -286,6 +286,7 @@ model TreeDataCareHowToPlantSeedsContent {
   content                           String
   votes                             TreeDataCareHowToPlantSeedsVote[]   @relation(name: "TreeDataCareHowToPlantSeedsContentToVotes")
   treeDataCareHowToPlantSeedsResult TreeDataCareHowToPlantSeedsResult[] @relation(name: "TreeDataCareHowToPlantSeedsTopVotedContent")
+  reportedAt                        DateTime?
 
   @@unique([userId, treeDataId])
 }

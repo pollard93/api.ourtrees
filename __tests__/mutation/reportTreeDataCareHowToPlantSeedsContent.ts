@@ -1,23 +1,23 @@
 import { gql } from 'graphql-request';
 import '../../global-variables';
-import { ReportTreeDataCareGerminationNotesContentInput } from '../../src/resolvers/mutation/reportTreeDataCareGerminationNotesContent';
+import { ReportTreeDataCareHowToPlantSeedsContentInput } from '../../src/resolvers/mutation/reportTreeDataCareHowToPlantSeedsContent';
 import TestUtils from '../utils';
 
 
 const query = gql`
-  mutation reportTreeDataCareGerminationNotesContent($data: ReportTreeDataCareGerminationNotesContentInput!){
-    reportTreeDataCareGerminationNotesContent(data: $data)
+  mutation reportTreeDataCareHowToPlantSeedsContent($data: ReportTreeDataCareHowToPlantSeedsContentInput!){
+    reportTreeDataCareHowToPlantSeedsContent(data: $data)
   }
 `;
 
-type Response = { reportTreeDataCareGerminationNotesContent: boolean };
-type Variables = { data: ReportTreeDataCareGerminationNotesContentInput };
+type Response = { reportTreeDataCareHowToPlantSeedsContent: boolean };
+type Variables = { data: ReportTreeDataCareHowToPlantSeedsContentInput };
 
 
 test('should succeed', async () => {
   const user = await global.config.utils.createUser();
   const treeData = await global.config.utils.createTreeData();
-  const content = await global.config.db.treeDataCareGerminationNotesContent.create({
+  const content = await global.config.db.treeDataCareHowToPlantSeedsContent.create({
     data: {
       user: {
         connect: {
@@ -43,15 +43,15 @@ test('should succeed', async () => {
     { authorization: `Bearer ${user.token}` },
   );
 
-  expect(data?.reportTreeDataCareGerminationNotesContent).toBeTruthy();
-  expect((await global.config.db.treeDataCareGerminationNotesContent.findUnique({ where: { id: content.id } }))?.reportedAt).toBeTruthy();
+  expect(data?.reportTreeDataCareHowToPlantSeedsContent).toBeTruthy();
+  expect((await global.config.db.treeDataCareHowToPlantSeedsContent.findUnique({ where: { id: content.id } }))?.reportedAt).toBeTruthy();
 });
 
 
 test('should remove content from top voted result', async () => {
   const user = await global.config.utils.createUser();
   const treeData = await global.config.utils.createTreeData();
-  const content = await global.config.db.treeDataCareGerminationNotesContent.create({
+  const content = await global.config.db.treeDataCareHowToPlantSeedsContent.create({
     data: {
       user: {
         connect: {
@@ -72,8 +72,8 @@ test('should remove content from top voted result', async () => {
    */
   await global.config.client.rawRequest(
     gql`
-      mutation upsertTreeDataCareGerminationNotesVote($data: UpsertTreeDataCareGerminationNotesVoteInput!){
-        upsertTreeDataCareGerminationNotesVote(data: $data) {
+      mutation upsertTreeDataCareHowToPlantSeedsVote($data: UpsertTreeDataCareHowToPlantSeedsVoteInput!){
+        upsertTreeDataCareHowToPlantSeedsVote(data: $data) {
           id
         }
       }
@@ -94,10 +94,10 @@ test('should remove content from top voted result', async () => {
       id: treeData.id,
     },
     include: {
-      careGerminationNotesResult: true,
+      careHowToPlantSeedsResult: true,
     },
   });
-  expect(treeDataBefore?.careGerminationNotesResult.treeDataCareGerminationNotesContentId).toEqual(content.id);
+  expect(treeDataBefore?.careHowToPlantSeedsResult.treeDataCareHowToPlantSeedsContentId).toEqual(content.id);
 
   /**
    * Make request
@@ -120,10 +120,10 @@ test('should remove content from top voted result', async () => {
       id: treeData.id,
     },
     include: {
-      careGerminationNotesResult: true,
+      careHowToPlantSeedsResult: true,
     },
   });
-  expect(treeDataAfter?.careGerminationNotesResult.treeDataCareGerminationNotesContentId).toEqual(null);
+  expect(treeDataAfter?.careHowToPlantSeedsResult.treeDataCareHowToPlantSeedsContentId).toEqual(null);
 });
 
 
