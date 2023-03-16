@@ -426,13 +426,14 @@ model Tree {
 }
 
 model TreeComment {
-  id        String   @id @default(uuid())
-  comment   String
-  tree      Tree     @relation(fields: [treeId], references: [id])
-  treeId    String
-  creator   User     @relation(fields: [creatorId], references: [id])
-  creatorId String
-  createdAt DateTime @default(now())
+  id         String    @id @default(uuid())
+  comment    String
+  tree       Tree      @relation(fields: [treeId], references: [id])
+  treeId     String
+  creator    User      @relation(fields: [creatorId], references: [id])
+  creatorId  String
+  createdAt  DateTime  @default(now())
+  reportedAt DateTime?
 }
 
 model TreeEntry {
@@ -454,4 +455,5 @@ model TreeEntryComment {
   creator     User      @relation(fields: [creatorId], references: [id])
   creatorId   String
   createdAt   DateTime  @default(now())
+  reportedAt  DateTime?
 }
