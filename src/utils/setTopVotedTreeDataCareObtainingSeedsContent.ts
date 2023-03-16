@@ -4,12 +4,12 @@ import { Context } from './types';
 /**
  * Update tree data with top voted content
  */
-export const setTopVotedTreeDataCareHowToPlantSeedsContent = async (context: Context<any>, treeDataId: number) => {
+export const setTopVotedTreeDataCareObtainingSeedsContent = async (context: Context<any>, treeDataId: number) => {
   /**
    * Get all content for the tree data with votes counted
    * Exclude reportedAt
    */
-  const contents = await context.db.read.treeDataCareHowToPlantSeedsContent.findMany({
+  const contents = await context.db.read.treeDataCareObtainingSeedsContent.findMany({
     where: {
       treeDataId,
       reportedAt: null,
@@ -38,7 +38,7 @@ export const setTopVotedTreeDataCareHowToPlantSeedsContent = async (context: Con
       id: treeDataId,
     },
     data: {
-      careHowToPlantSeedsResult: {
+      careObtainingSeedsResult: {
         upsert: {
           create: {
             content: topVoted ? {

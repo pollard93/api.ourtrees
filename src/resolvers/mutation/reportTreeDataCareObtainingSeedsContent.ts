@@ -10,30 +10,30 @@ import { TokenType } from '../../modules/Auth/interfaces';
 import { Context } from '../../utils/types';
 import { AuthInterceptor } from '../../modules/Auth/middleware';
 import { GenericError } from '../../errors';
-import { setTopVotedTreeDataCareHowToPlantSeedsContent } from '../../utils/setTopVotedTreeDataCareHowToPlantSeedsContent';
+import { setTopVotedTreeDataCareObtainingSeedsContent } from '../../utils/setTopVotedTreeDataCareObtainingSeedsContent';
 
 
 @InputType()
-export class ReportTreeDataCareHowToPlantSeedsContentInput {
+export class ReportTreeDataCareObtainingSeedsContentInput {
   @Field()
   id: string
 }
 
 
 @Resolver()
-export class ReportTreeDataCareHowToPlantSeedsContentResolver {
+export class ReportTreeDataCareObtainingSeedsContentResolver {
   @Mutation(() => Boolean)
   @UseMiddleware(AuthInterceptor({
     accessTokens: [TokenType.GENERAL],
   }))
-  async reportTreeDataCareHowToPlantSeedsContent(
-    @Arg('data') { id }: ReportTreeDataCareHowToPlantSeedsContentInput,
+  async reportTreeDataCareObtainingSeedsContent(
+    @Arg('data') { id }: ReportTreeDataCareObtainingSeedsContentInput,
     @Ctx() context: Context<TokenType.GENERAL>,
   ): Promise<boolean> {
     /**
      * Get content
      */
-    const content = await context.db.read.treeDataCareHowToPlantSeedsContent.findUnique({
+    const content = await context.db.read.treeDataCareObtainingSeedsContent.findUnique({
       where: {
         id,
       },
@@ -44,7 +44,7 @@ export class ReportTreeDataCareHowToPlantSeedsContentResolver {
     /**
      * Report content
      */
-    await context.db.write.treeDataCareHowToPlantSeedsContent.update({
+    await context.db.write.treeDataCareObtainingSeedsContent.update({
       where: {
         id,
       },
@@ -57,7 +57,7 @@ export class ReportTreeDataCareHowToPlantSeedsContentResolver {
     /**
      * Update top voted content
      */
-    await setTopVotedTreeDataCareHowToPlantSeedsContent(context, content.treeDataId);
+    await setTopVotedTreeDataCareObtainingSeedsContent(context, content.treeDataId);
 
 
     return true;
