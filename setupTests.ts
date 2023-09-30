@@ -4,7 +4,7 @@ import sinon, { SinonStub } from 'sinon';
 import { PrismaClient } from '@prisma/client';
 import { GraphQLClient } from 'graphql-request';
 import crossFetch from 'cross-fetch';
-import { app, db, apolloServer } from './src/app';
+import { httpServer, db, startApolloServer, apolloServer } from './src/app';
 import NotificationEmitter from './src/events/notification/NotificationEmitter';
 import EmailEmitter from './src/events/email/EmailEmitter';
 import TestUtils from './__tests__/utils';
@@ -38,7 +38,8 @@ beforeAll(async () => {
   /**
    * Setup server on 0 (find empty port)
    */
-  const server = await app.listen({ port: 0 });
+  await startApolloServer();
+  const server = await httpServer.listen({ port: 0 });
   // eslint-disable-next-line global-require
   const fetch = require('fetch-cookie')(crossFetch);
 

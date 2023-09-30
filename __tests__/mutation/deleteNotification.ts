@@ -38,13 +38,13 @@ test('should succeed', async () => {
     },
   });
 
-  const { data: { deleteNotification } } = await global.config.client.rawRequest<Response, Variables>(
+  const { data } = await global.config.client.rawRequest<Response, Variables>(
     query,
     { data: { id } },
     { authorization: `Bearer ${receiver.token}` },
   );
 
-  expect(deleteNotification).toBeTruthy();
+  expect(data?.deleteNotification).toBeTruthy();
 
   // Check notification has been deleted
   const after = await global.config.db.notification.findUnique({ where: { id } });

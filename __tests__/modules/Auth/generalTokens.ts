@@ -49,17 +49,17 @@ test('should make a request with valid access and refresh token', async () => {
 
   // Get access token and refresh token
   const accessToken = headers.get('general_token');
-  const refreshToken = TestUtils.getCookie(headers.get('set-cookie'), 'general_refresh_token');
+  const refreshToken = TestUtils.getCookie(headers.get('set-cookie')!, 'general_refresh_token');
 
   // Get self with tokens
-  const { data: { getSelf } } = await global.config.client.rawRequest<GetSelfResponse, GetSelfVariables>(
+  const { data } = await global.config.client.rawRequest<GetSelfResponse, GetSelfVariables>(
     getSelfQuery, undefined,
     {
       authorization: `Bearer ${accessToken}`,
       Cookie: `general_refresh_token=${refreshToken};`,
     },
   );
-  expect(getSelf.id).toEqual(user.id);
+  expect(data?.getSelf.id).toEqual(user.id);
 });
 
 
@@ -79,7 +79,7 @@ test('should make a request with an invalid access and valid refresh token', asy
 
   // Get access token and refresh token
   const accessToken = headers.get('general_token');
-  const refreshToken = TestUtils.getCookie(headers.get('set-cookie'), 'general_refresh_token');
+  const refreshToken = TestUtils.getCookie(headers.get('set-cookie')!, 'general_refresh_token');
 
   // Get refresh token in db
   const tokenData = jwt.verify(accessToken, process.env.JWT_SECRET);
@@ -92,25 +92,25 @@ test('should make a request with an invalid access and valid refresh token', asy
   });
 
   // Get self with expired access token, valid refresh token
-  const { data: { getSelf }, headers: getSelfHeaders } = await global.config.client.rawRequest<GetSelfResponse, GetSelfVariables>(
+  const { data, headers: getSelfHeaders } = await global.config.client.rawRequest<GetSelfResponse, GetSelfVariables>(
     getSelfQuery, undefined,
     {
       authorization: `Bearer ${expiredToken}`,
       Cookie: `general_refresh_token=${refreshToken};`,
     },
   );
-  expect(getSelf.id).toEqual(user.id);
+  expect(data?.getSelf.id).toEqual(user.id);
 
   // Tokens should be in response
   const newAccessToken = getSelfHeaders.get('general_token');
   expect(newAccessToken).toBeTruthy();
-  const newRefreshToken = getSelfHeaders.get('set-cookie').replace('general_refresh_token=', '');
+  const newRefreshToken = getSelfHeaders.get('set-cookie')?.replace('general_refresh_token=', '');
   expect(newRefreshToken).toBeTruthy();
 
   // The refresh token expiry should have been increased
   expect(
-    new Date(refreshTokenDB.expires).getTime()
-    < new Date((await global.config.db.refreshToken.findUnique({ where: { sessionId: tokenData.sessionId } })).expires).getTime(),
+    new Date(refreshTokenDB!.expires).getTime()
+    < new Date((await global.config.db.refreshToken.findUnique({ where: { sessionId: tokenData.sessionId } }))!.expires).getTime(),
   ).toBeTruthy();
 
 
@@ -118,28 +118,30 @@ test('should make a request with an invalid access and valid refresh token', asy
    * Test all scenarios of the race conditions
    */
 
-
+  {
   // Can make a request with the old general token and old refresh token
   // This allows asynchronous requests to not fail after the tokens have been refreshed
-  const { data: { getSelf: getSelf1 } } = await global.config.client.rawRequest<GetSelfResponse, GetSelfVariables>(
-    getSelfQuery, undefined,
-    {
-      authorization: `Bearer ${accessToken}`,
-      Cookie: `general_refresh_token=${refreshToken};`,
-    },
-  );
-  expect(getSelf1.id).toEqual(user.id);
+    const { data: data1 } = await global.config.client.rawRequest<GetSelfResponse, GetSelfVariables>(
+      getSelfQuery, undefined,
+      {
+        authorization: `Bearer ${accessToken}`,
+        Cookie: `general_refresh_token=${refreshToken};`,
+      },
+    );
+    expect(data1?.getSelf.id).toEqual(user.id);
+  }
 
-
+  {
   // Can then make a request with the new access token and new refresh token
-  const { data: { getSelf: getSelf2 } } = await global.config.client.rawRequest<GetSelfResponse, GetSelfVariables>(
-    getSelfQuery, undefined,
-    {
-      authorization: `Bearer ${newAccessToken}`,
-      Cookie: `general_refresh_token=${newRefreshToken};`,
-    },
-  );
-  expect(getSelf2.id).toEqual(user.id);
+    const { data: data1 } = await global.config.client.rawRequest<GetSelfResponse, GetSelfVariables>(
+      getSelfQuery, undefined,
+      {
+        authorization: `Bearer ${newAccessToken}`,
+        Cookie: `general_refresh_token=${newRefreshToken};`,
+      },
+    );
+    expect(data1?.getSelf.id).toEqual(user.id);
+  }
 });
 
 
@@ -159,7 +161,7 @@ test('should make a request with an invalid access and valid refresh token, test
 
   // Get access token and refresh token
   const accessToken = headers.get('general_token');
-  const refreshToken = TestUtils.getCookie(headers.get('set-cookie'), 'general_refresh_token');
+  const refreshToken = TestUtils.getCookie(headers.get('set-cookie')!, 'general_refresh_token');
   const tokenData: TokenArgs<TokenType.GENERAL> = jwt.verify(accessToken, process.env.JWT_SECRET);
 
   // Manually create an expired refresh token with a different sessionId

@@ -69,17 +69,17 @@ test('should succeed', async () => {
     },
   });
 
-  const { data: { getNotifications } } = await global.config.client.rawRequest<Response, Variables>(
+  const { data } = await global.config.client.rawRequest<Response, Variables>(
     query,
     {},
     { authorization: `Bearer ${receiver.token}` },
   );
 
   // Test response
-  expect(getNotifications.notifications.length).toEqual(1);
-  expect(getNotifications.count).toEqual(1);
+  expect(data?.getNotifications.notifications.length).toEqual(1);
+  expect(data?.getNotifications.count).toEqual(1);
 
   // Test resolver
-  expect(getNotifications.notifications[0].receiver.id).toEqual(receiver.user.id);
-  expect(getNotifications.notifications[0].sender.id).toEqual(sender.user.id);
+  expect(data?.getNotifications.notifications[0].receiver.id).toEqual(receiver.user.id);
+  expect(data?.getNotifications.notifications[0].sender.id).toEqual(sender.user.id);
 });

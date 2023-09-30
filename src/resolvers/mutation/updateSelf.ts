@@ -46,7 +46,7 @@ export class UpdateSelfResolver {
     /**
      * Processes and validates profile picture
      */
-    const processProfilePicture = async (): Promise<Prisma.FileUpdateOneWithoutAuthorInput> => {
+    const processProfilePicture = async (): Promise<Prisma.FileUpdateOneWithoutUserProfilePicturesNestedInput> => {
       // Validate image
       const { resolved, rejected } = await FileHandler.validateGraphQLUploads([profilePicture as any], {
         mimes: ['image/jpeg'],
@@ -74,6 +74,7 @@ export class UpdateSelfResolver {
           create: {
             path: url.full,
             mime: profilePictureResolved.mimetype,
+            authorId: id,
           },
         },
       };

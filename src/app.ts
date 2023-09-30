@@ -1,10 +1,12 @@
 import 'reflect-metadata';
 import * as dotenv from 'dotenv';
-import { ApolloServer } from 'apollo-server-express';
+import { ApolloServer } from '@apollo/server';
+import { expressMiddleware } from '@apollo/server/express4';
 import cookieParser from 'cookie-parser';
 import { ExpressPublicProxy } from 'node-filehandler';
 import cors from 'cors';
 import minify from 'express-minify';
+import http from 'http';
 import compression from 'compression';
 import mustacheExpress from 'mustache-express';
 import express from 'express';
@@ -15,6 +17,7 @@ import { GraphQLScalarType } from 'graphql';
 import { DateTimeResolver } from 'graphql-scalars';
 import { graphqlUploadExpress } from 'graphql-upload';
 import { TREE_CARE_DIFFICULTY_TYPE, TREE_CARE_GERMINATION_DIFFICULTY_TYPE, TREE_CARE_SUNLIGHT_TYPE, TREE_CARE_WATER_TYPE } from '@prisma/client';
+import { json } from 'body-parser';
 import shareRoute from './routes/shareRoute';
 import linkRoute from './routes/linkRoute';
 import { InitFileHandler } from './modules/FileHandler';
@@ -25,6 +28,8 @@ import EmailListener from './events/email/EmailListener';
 import Prisma from './prisma';
 import { SortOrder } from './resolvers/query/getNotifications';
 import { SocialProvider } from './resolvers/mutation/loginWithSocial';
+import * as mutations from './resolvers/mutation';
+import * as queries from './resolvers/query';
 
 
 dotenv.config();
@@ -78,21 +83,17 @@ tq.registerEnumType(TREE_CARE_GERMINATION_DIFFICULTY_TYPE, {
 /**
  * Create server
  */
-export const app = express();
+const app = express();
+export const httpServer = http.createServer(app);
 export const apolloServer = new ApolloServer({
-  uploads: false,
+  // uploads: false,
   formatError: formatError as any,
   schema: tq.buildSchemaSync({
     resolvers: [
-      path.join(__dirname, '/resolvers/**/*.ts'),
-    ],
+      ...Object.values(mutations),
+      ...Object.values(queries),
+    ] as any,
     scalarsMap: [{ type: GraphQLScalarType, scalar: DateTimeResolver }],
-  }),
-  context: (c) => ({
-    ...c,
-    db,
-    notificationEvents,
-    emailEvents,
   }),
 });
 
@@ -144,15 +145,6 @@ ExpressPublicProxy(app);
 
 
 /**
- * Define cores for non /graphql requests
- */
-app.use(cors({
-  origin: [process.env.CLIENT_URL_WEB!],
-  credentials: true,
-}));
-
-
-/**
  * Expose custom headers
  */
 app.use((_, res, next) => {
@@ -163,13 +155,24 @@ app.use((_, res, next) => {
 });
 
 
-/**
- * Required for mobile applications
- */
-apolloServer.applyMiddleware({
-  app,
-  cors: {
-    origin: [process.env.CLIENT_URL_WEB!],
-    credentials: true,
-  },
-});
+// Set up our Express middleware to handle CORS, body parsing,
+// and our expressMiddleware function.
+export const startApolloServer = async () => {
+  await apolloServer.start();
+  app.use(
+    '/graphql',
+    cors<cors.CorsRequest>({
+      origin: [process.env.CLIENT_URL_WEB!],
+      credentials: true,
+    }),
+    json(),
+    expressMiddleware(apolloServer, {
+      context: async (c) => ({
+        ...c,
+        db,
+        notificationEvents,
+        emailEvents,
+      }),
+    }),
+  );
+};

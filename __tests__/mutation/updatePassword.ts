@@ -17,7 +17,7 @@ type Variables = { data: UpdatePasswordInput };
 test('should succeed', async () => {
   const user = await global.config.utils.createUser();
 
-  const { data: { updatePassword } } = await global.config.client.rawRequest<Response, Variables>(
+  const { data } = await global.config.client.rawRequest<Response, Variables>(
     query,
     {
       data: {
@@ -28,10 +28,10 @@ test('should succeed', async () => {
     { authorization: `Bearer ${user.token}` },
   );
 
-  expect(updatePassword).toBeTruthy();
+  expect(data?.updatePassword).toBeTruthy();
   expect(await comparePassword({
     pwd: 'new-password',
-    hash: (await global.config.db.user.findUnique({ where: { id: user.user.id } })).password,
+    hash: (await global.config.db.user.findUnique({ where: { id: user.user.id } }))?.password,
   })).toBeTruthy();
 });
 

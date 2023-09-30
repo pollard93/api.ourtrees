@@ -33,14 +33,14 @@ test('should succeed', async () => {
     },
   });
 
-  const { data: { verifyEmailChange } } = await global.config.client.rawRequest<Response, Variables>(
+  const { data } = await global.config.client.rawRequest<Response, Variables>(
     query,
     undefined,
     { authorization: `Bearer ${token}` },
   );
 
   // Verify the users email was updated
-  expect(verifyEmailChange.user.email).toEqual(email);
+  expect(data?.verifyEmailChange.user.email).toEqual(email);
 });
 
 

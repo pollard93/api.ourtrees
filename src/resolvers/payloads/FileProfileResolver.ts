@@ -9,8 +9,8 @@ import { Context } from '../../utils/types';
 @Resolver(() => FileProfile)
 export class FileProfileResolver {
   @FieldResolver(() => UserProfile, { nullable: true })
-  author(@Root() { userId }: File, @Ctx() context: Context<null>): Promise<User | null> {
-    return context.db.read.user.findUnique({ where: { id: userId } });
+  author(@Root() { authorId }: File, @Ctx() context: Context<null>): Promise<User | null> {
+    return context.db.read.user.findUnique({ where: { id: authorId } });
   }
 
   @FieldResolver(() => UrlProfile)

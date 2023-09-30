@@ -29,13 +29,13 @@ test('should succeed', async () => {
     },
   });
 
-  const { data: { verifyUser } } = await global.config.client.rawRequest<Response, Variables>(
+  const { data } = await global.config.client.rawRequest<Response, Variables>(
     query,
     undefined,
     { authorization: `Bearer ${token}` },
   );
 
-  expect(verifyUser.user.verified).toBeTruthy();
+  expect(data?.verifyUser.user.verified).toBeTruthy();
 });
 
 

@@ -28,7 +28,7 @@ type Variables = { data: LoginWithSocialInput };
 test('(facebook) - should succeed and return general access token for new user', async () => {
   const email = TestUtils.randomEmail();
 
-  const { data: { loginWithSocial } } = await global.config.client.rawRequest<Response, Variables>(query,
+  const { data } = await global.config.client.rawRequest<Response, Variables>(query,
     {
       data: {
         provider: SocialProvider.FACEBOOK,
@@ -41,12 +41,12 @@ test('(facebook) - should succeed and return general access token for new user',
       })}`,
     });
 
-  expect(typeof loginWithSocial.token).toEqual('string');
-  expect(loginWithSocial.user.email).toEqual(email);
+  expect(typeof data?.loginWithSocial.token).toEqual('string');
+  expect(data?.loginWithSocial.user.email).toEqual(email);
 
   // User should be verified
-  const { verified } = await global.config.db.user.findUnique({ where: { id: loginWithSocial.user.id } });
-  expect(verified).toBeTruthy();
+  const user = await global.config.db.user.findUnique({ where: { id: data?.loginWithSocial.user.id } });
+  expect(user?.verified).toBeTruthy();
 });
 
 test('(facebook) - should succeed and return general access token for existing user', async () => {
@@ -64,7 +64,7 @@ test('(facebook) - should succeed and return general access token for existing u
     },
   });
 
-  const { data: { loginWithSocial } } = await global.config.client.rawRequest<Response, Variables>(query,
+  const { data } = await global.config.client.rawRequest<Response, Variables>(query,
     {
       data: {
         provider: SocialProvider.FACEBOOK,
@@ -74,9 +74,9 @@ test('(facebook) - should succeed and return general access token for existing u
       authorization: `Bearer ${JSON.stringify(user)}`,
     });
 
-  expect(typeof loginWithSocial.token).toEqual('string');
-  expect(loginWithSocial.user.id).toEqual(user.id);
-  expect(loginWithSocial.user.email).toEqual(user.email);
+  expect(typeof data?.loginWithSocial.token).toEqual('string');
+  expect(data?.loginWithSocial.user.id).toEqual(user.id);
+  expect(data?.loginWithSocial.user.email).toEqual(user.email);
 });
 
 
@@ -87,7 +87,7 @@ test('(facebook) - should succeed and return general access token for existing u
 test('(google) - should succeed and return general access token for new user', async () => {
   const email = TestUtils.randomEmail();
 
-  const { data: { loginWithSocial } } = await global.config.client.rawRequest<Response, Variables>(query,
+  const { data } = await global.config.client.rawRequest<Response, Variables>(query,
     {
       data: {
         provider: SocialProvider.GOOGLE,
@@ -100,12 +100,12 @@ test('(google) - should succeed and return general access token for new user', a
       })}`,
     });
 
-  expect(typeof loginWithSocial.token).toEqual('string');
-  expect(loginWithSocial.user.email).toEqual(email);
+  expect(typeof data?.loginWithSocial.token).toEqual('string');
+  expect(data?.loginWithSocial.user.email).toEqual(email);
 
   // User should be verified
-  const { verified } = await global.config.db.user.findUnique({ where: { id: loginWithSocial.user.id } });
-  expect(verified).toBeTruthy();
+  const user = await global.config.db.user.findUnique({ where: { id: data?.loginWithSocial.user.id } });
+  expect(user?.verified).toBeTruthy();
 });
 
 test('(google) - should succeed and return general access token for existing user', async () => {
@@ -123,7 +123,7 @@ test('(google) - should succeed and return general access token for existing use
     },
   });
 
-  const { data: { loginWithSocial } } = await global.config.client.rawRequest<Response, Variables>(query,
+  const { data } = await global.config.client.rawRequest<Response, Variables>(query,
     {
       data: {
         provider: SocialProvider.GOOGLE,
@@ -136,9 +136,9 @@ test('(google) - should succeed and return general access token for existing use
       })}`,
     });
 
-  expect(typeof loginWithSocial.token).toEqual('string');
-  expect(loginWithSocial.user.id).toEqual(user.id);
-  expect(loginWithSocial.user.email).toEqual(user.email);
+  expect(typeof data?.loginWithSocial.token).toEqual('string');
+  expect(data?.loginWithSocial.user.id).toEqual(user.id);
+  expect(data?.loginWithSocial.user.email).toEqual(user.email);
 });
 
 /**
@@ -147,38 +147,41 @@ test('(google) - should succeed and return general access token for existing use
 
 test('should succeed with same email across both social platforms', async () => {
   const email = TestUtils.randomEmail();
-
-  const { data: { loginWithSocial: loginWithSocialFacebook } } = await global.config.client.rawRequest<Response, Variables>(query,
-    {
-      data: {
-        provider: SocialProvider.FACEBOOK,
+  {
+    const { data } = await global.config.client.rawRequest<Response, Variables>(query,
+      {
+        data: {
+          provider: SocialProvider.FACEBOOK,
+        },
       },
-    },
-    {
-      authorization: `Bearer ${JSON.stringify({
-        id: TestUtils.randomString(),
-        email,
-      })}`,
-    });
+      {
+        authorization: `Bearer ${JSON.stringify({
+          id: TestUtils.randomString(),
+          email,
+        })}`,
+      });
 
-  expect(loginWithSocialFacebook.token).toBeTruthy();
+    expect(data?.loginWithSocial.token).toBeTruthy();
+  }
 
-  const { data: { loginWithSocial: loginWithSocialGoogle } } = await global.config.client.rawRequest<Response, Variables>(query,
-    {
-      data: {
-        provider: SocialProvider.GOOGLE,
+  {
+    const { data } = await global.config.client.rawRequest<Response, Variables>(query,
+      {
+        data: {
+          provider: SocialProvider.GOOGLE,
+        },
       },
-    },
-    {
-      authorization: `Bearer ${JSON.stringify({
-        sub: TestUtils.randomString(),
-        email,
-      })}`,
-    });
+      {
+        authorization: `Bearer ${JSON.stringify({
+          sub: TestUtils.randomString(),
+          email,
+        })}`,
+      });
 
-  expect(loginWithSocialGoogle.token).toBeTruthy();
+    expect(data?.loginWithSocial.token).toBeTruthy();
+  }
 
   const user = await global.config.db.user.findUnique({ where: { email } });
-  expect(user.facebookId).toBeTruthy();
-  expect(user.googleId).toBeTruthy();
+  expect(user?.facebookId).toBeTruthy();
+  expect(user?.googleId).toBeTruthy();
 });

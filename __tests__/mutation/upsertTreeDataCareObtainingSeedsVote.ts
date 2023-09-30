@@ -53,7 +53,7 @@ test('should create result', async () => {
     { authorization: `Bearer ${user.token}` },
   );
 
-  expect(data?.upsertTreeDataCareObtainingSeedsVote.careObtainingSeedsResult.content.id).toBe(content.id);
+  expect(data?.upsertTreeDataCareObtainingSeedsVote?.careObtainingSeedsResult?.content?.id).toBe(content.id);
 });
 
 
@@ -120,7 +120,7 @@ test('should upsert result', async () => {
     { authorization: `Bearer ${user.token}` },
   );
 
-  expect(data?.upsertTreeDataCareObtainingSeedsVote.careObtainingSeedsResult.content.id).toBe(content2.id);
+  expect(data?.upsertTreeDataCareObtainingSeedsVote?.careObtainingSeedsResult?.content?.id).toBe(content2.id);
 });
 
 

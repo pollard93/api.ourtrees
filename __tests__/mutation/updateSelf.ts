@@ -82,7 +82,7 @@ test('should succeed updating profile picture', async () => {
 
   // Test resolvers
   expect(data?.updateSelf.profilePicture.mime).toEqual('image/jpeg');
-  expect(data?.updateSelf.profilePicture.url.full).toEqual(`${FileHandler.config.siteUrl}/public/users/${user.user.id}/profile-picture.jpeg`);
+  expect(data?.updateSelf.profilePicture.url.full).toEqual(`${FileHandler.config.siteUrl}/public/users/${user.user.id}/profile-picture.full.jpeg`);
 
   const { updateSelf: updateSelfAfter } = await global.config.client.request<Response, Variables>(
     query,

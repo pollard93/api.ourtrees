@@ -35,7 +35,7 @@ export class Seeder {
       width: number;
       height: number;
     };
-   }): Promise<Prisma.FileCreateInput> {
+   }): Promise<Prisma.FileCreateInput | null> {
     const requestOptions = {
       url: `https://source.unsplash.com/random/${options?.dimensions ? `${options.dimensions.width}x${options.dimensions.height}` : ''}?${options?.term ? options.term : ''}`,
       method: 'get',
@@ -50,7 +50,6 @@ export class Seeder {
         return res({
           mime: 'image/jpeg',
           path: url.full,
-          author: null,
         });
       });
     }));

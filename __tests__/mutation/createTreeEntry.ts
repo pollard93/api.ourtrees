@@ -88,7 +88,7 @@ test('should succeed with image', async () => {
 
   // Test resolvers
   expect(data?.createTreeEntry.image.mime).toEqual('image/jpeg');
-  expect(data?.createTreeEntry.image.url.full).toEqual(`${FileHandler.config.siteUrl}/public/trees/${tree.id}/entries/${data?.createTreeEntry.id}.jpeg`);
+  expect(data?.createTreeEntry.image.url.full).toEqual(`${FileHandler.config.siteUrl}/public/trees/${tree.id}/entries/${data?.createTreeEntry.id}.full.jpeg`);
   expect(data?.createTreeEntry.image.author?.id).toEqual(user.user.id);
 });
 

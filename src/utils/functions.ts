@@ -18,18 +18,18 @@ export const cleanseWhereInput = <T>(where: T, allowedKeys: (keyof T)[]) => {
 
   // Extend array of keys into all possibilities
   const keys = allowedKeys.flatMap((key) => [
-    `${key}`,
-    `${key}_contains`,
-    `${key}_every`,
-    `${key}_gt`,
-    `${key}_gte`,
-    `${key}_in`,
-    `${key}_lt`,
-    `${key}_lte`,
-    `${key}_none`,
-    `${key}_not_in`,
-    `${key}_not`,
-    `${key}_some`,
+    `${key as string}`,
+    `${key as string}_contains`,
+    `${key as string}_every`,
+    `${key as string}_gt`,
+    `${key as string}_gte`,
+    `${key as string}_in`,
+    `${key as string}_lt`,
+    `${key as string}_lte`,
+    `${key as string}_none`,
+    `${key as string}_not_in`,
+    `${key as string}_not`,
+    `${key as string}_some`,
   ]);
 
   // Create new object with only valid keys

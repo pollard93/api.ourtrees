@@ -98,7 +98,7 @@ test('should succeed with image', async () => {
   expect(data?.updateTreeEntry.id).toEqual(treeEntry.id);
   expect(data?.updateTreeEntry.notes).toEqual(notes);
   expect(data?.updateTreeEntry.image.mime).toEqual('image/jpeg');
-  expect(data?.updateTreeEntry.image.url.full).toEqual(`${FileHandler.config.siteUrl}/public/trees/${tree.id}/entries/${data?.updateTreeEntry.id}.jpeg`);
+  expect(data?.updateTreeEntry.image.url.full).toEqual(`${FileHandler.config.siteUrl}/public/trees/${tree.id}/entries/${data?.updateTreeEntry.id}.full.jpeg`);
   expect(data?.updateTreeEntry.image.author?.id).toEqual(user.user.id);
 });
 
@@ -146,7 +146,7 @@ test('should succeed with updating image', async () => {
   expect(data?.updateTreeEntry.id).toEqual(treeEntry.id);
   expect(data?.updateTreeEntry.notes).toEqual(notes);
   expect(data?.updateTreeEntry.image.mime).toEqual('image/jpeg');
-  expect(data?.updateTreeEntry.image.url.full).toEqual(`${FileHandler.config.siteUrl}/public/trees/${tree.id}/entries/${data?.updateTreeEntry.id}.jpeg`);
+  expect(data?.updateTreeEntry.image.url.full).toEqual(`${FileHandler.config.siteUrl}/public/trees/${tree.id}/entries/${data?.updateTreeEntry.id}.full.jpeg`);
   expect(data?.updateTreeEntry.image.author?.id).toEqual(user.user.id);
 });
 

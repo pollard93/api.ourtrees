@@ -17,12 +17,12 @@ type Variables = { data: RequestPasswordResetInput };
 test('should succeed', async () => {
   const user = await global.config.utils.createUser();
 
-  const { data: { requestPasswordReset } } = await global.config.client.rawRequest<Response, Variables>(
+  const { data } = await global.config.client.rawRequest<Response, Variables>(
     query,
     { data: { email: user.user.email } },
   );
 
-  expect(requestPasswordReset).toBeTruthy();
+  expect(data?.requestPasswordReset).toBeTruthy();
   expect(global.config.emailEventsStubs.emitTransactionalEmail.callCount).toEqual(1);
 });
 

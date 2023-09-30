@@ -24,15 +24,15 @@ type Variables = { data: RegisterInput }
 test('should succeed', async () => {
   const email = TestUtils.randomEmail();
 
-  const { data: { register } } = await global.config.client.rawRequest<Response, Variables>(query, {
+  const { data } = await global.config.client.rawRequest<Response, Variables>(query, {
     data: {
       email,
       password: 'password',
     },
   });
 
-  expect(typeof register.token).toEqual('string');
-  expect(register.user.email).toEqual(email);
+  expect(typeof data?.register.token).toEqual('string');
+  expect(data?.register.user.email).toEqual(email);
   expect(global.config.emailEventsStubs.emitTransactionalEmail.callCount).toEqual(1);
 });
 

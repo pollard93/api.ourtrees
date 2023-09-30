@@ -67,7 +67,7 @@ export class CreateTreeEntryResolver {
     /**
      * Processes and validates profile picture
      */
-    const processImage = async (): Promise<Prisma.FileCreateNestedOneWithoutTreeEntryInput> => {
+    const processImage = async (): Promise<Prisma.FileCreateNestedOneWithoutTreeEntriesInput> => {
       // Validate image
       const { resolved, rejected } = await FileHandler.validateGraphQLUploads([image as any], {
         mimes: ['image/jpeg'],

@@ -58,7 +58,7 @@ export default async () => {
   /**
    * Always push db
    */
-  await exec('yarn prisma db push --preview-feature');
+  await exec('yarn prisma db push');
 
 
   /**

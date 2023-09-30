@@ -18,7 +18,7 @@ test('should succeed', async () => {
   const user = await global.config.utils.createUser();
   const email = TestUtils.randomEmail();
 
-  const { data: { updateEmail } } = await global.config.client.rawRequest<Response, Variables>(
+  const { data } = await global.config.client.rawRequest<Response, Variables>(
     query,
     {
       data: {
@@ -29,7 +29,7 @@ test('should succeed', async () => {
     { authorization: `Bearer ${user.token}` },
   );
 
-  expect(updateEmail).toBeTruthy();
+  expect(data?.updateEmail).toBeTruthy();
   expect(global.config.emailEventsStubs.emitTransactionalEmail.callCount).toEqual(1);
 });
 

@@ -1,6 +1,5 @@
 // eslint-disable-next-line import/no-unresolved
-import { Request, Response } from 'express-serve-static-core';
-import { ExpressContext } from 'apollo-server-express/dist/ApolloServer';
+import { Request, Response } from 'express';
 import { Prisma } from '../prisma';
 import EmailEmitter from '../events/email/EmailEmitter';
 import NotificationEmitter from '../events/notification/NotificationEmitter';
@@ -33,7 +32,7 @@ export interface VerifiedToken<T extends TokenType | null> {
 }
 
 
-export interface Context<T extends TokenType | null> extends ExpressContext {
+export interface Context<T extends TokenType | null> {
   req: Request;
   res: Response;
   db: Prisma;

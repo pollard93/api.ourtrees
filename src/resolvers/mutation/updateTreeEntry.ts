@@ -60,7 +60,7 @@ export class UpdateTreeEntryResolver {
     /**
      * Processes and validates profile picture
      */
-    const processImage = async (): Promise<Prisma.FileUpdateOneWithoutTreeEntryInput> => {
+    const processImage = async (): Promise<Prisma.FileUpdateOneWithoutTreeEntriesNestedInput> => {
       // Validate image
       const { resolved, rejected } = await FileHandler.validateGraphQLUploads([image as any], {
         mimes: ['image/jpeg'],

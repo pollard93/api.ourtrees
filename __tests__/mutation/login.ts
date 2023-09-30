@@ -23,15 +23,15 @@ type Variables = { data: LoginInput };
 test('should succeed', async () => {
   const { user } = await global.config.utils.createUser();
 
-  const { data: { login } } = await global.config.client.rawRequest<Response, Variables>(query, {
+  const { data } = await global.config.client.rawRequest<Response, Variables>(query, {
     data: {
       email: user.email,
       password: 'password',
     },
   });
 
-  expect(typeof login.token).toEqual('string');
-  expect(login.user.email).toEqual(user.email);
+  expect(typeof data?.login.token).toEqual('string');
+  expect(data?.login.user.email).toEqual(user.email);
 });
 
 

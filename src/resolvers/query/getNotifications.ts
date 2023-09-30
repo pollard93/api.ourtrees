@@ -127,7 +127,7 @@ export class GetNotificationsResolver {
 
 
     return {
-      notifications,
+      notifications: notifications || [],
       count,
     };
   }

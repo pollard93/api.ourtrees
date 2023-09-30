@@ -48,13 +48,13 @@ test('should read notification', async () => {
     },
   });
 
-  const { data: { readNotification } } = await global.config.client.rawRequest<Response, Variables>(
+  const { data } = await global.config.client.rawRequest<Response, Variables>(
     query,
     { data: { id } },
     { authorization: `Bearer ${receiver.token}` },
   );
 
-  expect(readNotification.readDate).toBeTruthy();
+  expect(data?.readNotification.readDate).toBeTruthy();
 });
 
 
@@ -82,13 +82,13 @@ test('should unRead notification', async () => {
     },
   });
 
-  const { data: { readNotification } } = await global.config.client.rawRequest<Response, Variables>(
+  const { data } = await global.config.client.rawRequest<Response, Variables>(
     query,
     { data: { id, unRead: true } },
     { authorization: `Bearer ${receiver.token}` },
   );
 
-  expect(readNotification.readDate).toBeFalsy();
+  expect(data?.readNotification.readDate).toBeFalsy();
 });
 
 
