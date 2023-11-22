@@ -9,7 +9,7 @@ import { TokenArgs, TokenType } from '../interfaces';
  */
 const safelyDecodeAccessToken = <T extends TokenType | null>(context: Context<T>): TokenArgs<T> | null => {
   try {
-    return jwt.decode((context.req?.headers?.authorization || context.connection?.context.authorization).replace('Bearer ', ''));
+    return jwt.decode((context.req?.headers?.authorization || '').replace('Bearer ', ''));
   } catch (e) {
     return null;
   }
@@ -23,7 +23,7 @@ const safelyDecodeAccessToken = <T extends TokenType | null>(context: Context<T>
 export const verifyAccessToken = <T extends TokenType | null>(context: Context<T>): VerifiedToken<T> => {
   try {
     return {
-      data: jwt.verify((context.req?.headers?.authorization || context.connection?.context.authorization).replace('Bearer ', ''), process.env.JWT_SECRET),
+      data: jwt.verify((context.req?.headers?.authorization || '').replace('Bearer ', ''), process.env.JWT_SECRET),
     };
   } catch (error) {
     return {
@@ -48,7 +48,7 @@ const getRefreshToken = (accessTokenType: TokenType, context: Context<null>) => 
     default:
       // else require general_refresh_token
       // eslint-disable-next-line camelcase
-      return context.req?.cookies?.general_refresh_token || context.connection?.context.cookies.general_refresh_token;
+      return context.req?.cookies?.general_refresh_token;
   }
 };
 

@@ -114,7 +114,11 @@ test('should succeed with updating image', async () => {
   const treeEntry = await global.config.db.treeEntry.create({
     data: {
       notes: TestUtils.randomString(),
-      treeId: tree.id,
+      tree: {
+        connect: {
+          id: tree.id,
+        },
+      },
       image: {
         create: {
           path: '',

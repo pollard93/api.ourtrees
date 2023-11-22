@@ -107,7 +107,7 @@ export class CreateTreeEntryResolver {
         notes,
         createdAt,
         image: (image ? await processImage() : undefined),
-        treeId,
+        tree: { connect: { id: treeId } },
       },
     });
   }

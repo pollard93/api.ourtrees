@@ -11,7 +11,7 @@ import compression from 'compression';
 import mustacheExpress from 'mustache-express';
 import express from 'express';
 import path from 'path';
-import { formatError } from 'apollo-errors';
+// import { formatError } from 'apollo-errors';
 import * as tq from 'type-graphql';
 import { GraphQLScalarType } from 'graphql';
 import { DateTimeResolver } from 'graphql-scalars';
@@ -30,6 +30,7 @@ import { SortOrder } from './resolvers/query/getNotifications';
 import { SocialProvider } from './resolvers/mutation/loginWithSocial';
 import * as mutations from './resolvers/mutation';
 import * as queries from './resolvers/query';
+import * as payloads from './resolvers/payloads';
 
 
 dotenv.config();
@@ -86,12 +87,14 @@ tq.registerEnumType(TREE_CARE_GERMINATION_DIFFICULTY_TYPE, {
 const app = express();
 export const httpServer = http.createServer(app);
 export const apolloServer = new ApolloServer({
-  // uploads: false,
-  formatError: formatError as any,
+  csrfPrevention: true,
+  // uploads: true,
+  // formatError: formatError as any,
   schema: tq.buildSchemaSync({
     resolvers: [
       ...Object.values(mutations),
       ...Object.values(queries),
+      ...Object.values(payloads),
     ] as any,
     scalarsMap: [{ type: GraphQLScalarType, scalar: DateTimeResolver }],
   }),

@@ -74,7 +74,7 @@ beforeAll(async () => {
 
 
 // eslint-disable-next-line jest/no-done-callback
-afterAll(async (done) => {
+afterAll((done) => {
   global.config.server.close(async () => {
     await apolloServer.stop();
     await db.read.$disconnect();
