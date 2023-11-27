@@ -15,7 +15,7 @@ import path from 'path';
 import * as tq from 'type-graphql';
 import { GraphQLScalarType } from 'graphql';
 import { DateTimeResolver } from 'graphql-scalars';
-import { graphqlUploadExpress } from 'graphql-upload';
+import graphqlUploadExpress from 'graphql-upload/graphqlUploadExpress.js';
 import { TREE_CARE_DIFFICULTY_TYPE, TREE_CARE_GERMINATION_DIFFICULTY_TYPE, TREE_CARE_SUNLIGHT_TYPE, TREE_CARE_WATER_TYPE } from '@prisma/client';
 import { json } from 'body-parser';
 import shareRoute from './routes/shareRoute';
@@ -87,8 +87,7 @@ tq.registerEnumType(TREE_CARE_GERMINATION_DIFFICULTY_TYPE, {
 const app = express();
 export const httpServer = http.createServer(app);
 export const apolloServer = new ApolloServer({
-  csrfPrevention: true,
-  // uploads: true,
+  csrfPrevention: process.env.NODE_ENV !== 'test',
   // formatError: formatError as any,
   schema: tq.buildSchemaSync({
     resolvers: [

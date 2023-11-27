@@ -7,6 +7,9 @@ import { CreateTreeEntryInput } from '../../src/resolvers/mutation/createTreeEnt
 import { FileHandler } from '../../src/modules/FileHandler';
 import { TreeEntryProfile } from '../../src/types/TreeEntryProfile';
 
+import FormData from 'form-data';
+import fetch from 'node-fetch';
+
 
 const query = gql`
   mutation createTreeEntry($data: CreateTreeEntryInput!){
@@ -73,20 +76,30 @@ test('should succeed with image', async () => {
   const notes = await TestUtils.randomString();
   const createdAt = new Date(0).toISOString();
 
-  const { data } = await global.config.client.rawRequest<Response, Variables>(
-    query,
-    {
-      data: {
-        treeId: tree.id,
-        notes,
-        createdAt,
-        image: createReadStream(path.join(__dirname, '/../support/files/test.image.jpeg')) as any,
-      },
-    },
-    { authorization: `Bearer ${user.token}` },
-  );
+  const body = new FormData()
 
-  // Test resolvers
+  body.append(
+    'operations',
+    JSON.stringify({
+      query,
+      variables: {
+        data: {
+          treeId: tree.id,
+          notes,
+          createdAt,
+          image: null,
+        },
+      }
+    })
+  )
+  body.append('map', JSON.stringify({ 1: ['variables.data.image'] }))
+  body.append('1', createReadStream(path.join(__dirname, '/../support/files/test.image.jpeg')))
+
+  const response = await fetch(`${global.config.baseUrl}/graphql`, { method: 'POST', body, headers: { authorization: `Bearer ${user.token}`} })
+  const {data} = await response.json();
+  console.log("🚀 ~ file: createTreeEntry.ts:100 ~ test.only ~ data:", data)
+
+  // // Test resolvers
   expect(data?.createTreeEntry.image.mime).toEqual('image/jpeg');
   expect(data?.createTreeEntry.image.url.full).toEqual(`${FileHandler.config.siteUrl}/public/trees/${tree.id}/entries/${data?.createTreeEntry.id}.full.jpeg`);
   expect(data?.createTreeEntry.image.author?.id).toEqual(user.user.id);

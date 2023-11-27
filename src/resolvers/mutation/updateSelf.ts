@@ -7,7 +7,8 @@ import { Resolver,
   UseMiddleware,
   InputType,
   Field } from 'type-graphql';
-import { GraphQLUpload, FileUpload } from 'graphql-upload';
+import GraphQLUpload from 'graphql-upload/GraphQLUpload.js';
+import FileUpload from 'graphql-upload/Upload.js';
 import { Prisma, User } from '@prisma/client';
 import { FileAuthenticationError, GenericError } from '../../errors';
 import { TokenType } from '../../modules/Auth/interfaces';

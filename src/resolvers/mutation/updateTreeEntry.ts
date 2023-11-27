@@ -7,7 +7,8 @@ import { Resolver,
   Field,
   InputType } from 'type-graphql';
 import { Prisma, TreeEntry } from '@prisma/client';
-import { GraphQLUpload, FileUpload } from 'graphql-upload';
+import GraphQLUpload from 'graphql-upload/GraphQLUpload.js';
+import FileUpload from 'graphql-upload/Upload.js';
 import path from 'path';
 import { TokenType } from '../../modules/Auth/interfaces';
 import { Context } from '../../utils/types';
