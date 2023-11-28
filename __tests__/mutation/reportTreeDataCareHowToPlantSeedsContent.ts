@@ -3,16 +3,16 @@ import '../../global-variables';
 import { ReportTreeDataCareHowToPlantSeedsContentInput } from '../../src/resolvers/mutation/reportTreeDataCareHowToPlantSeedsContent';
 import TestUtils from '../utils';
 
-
 const query = gql`
-  mutation reportTreeDataCareHowToPlantSeedsContent($data: ReportTreeDataCareHowToPlantSeedsContentInput!){
+  mutation reportTreeDataCareHowToPlantSeedsContent(
+    $data: ReportTreeDataCareHowToPlantSeedsContentInput!
+  ) {
     reportTreeDataCareHowToPlantSeedsContent(data: $data)
   }
 `;
 
 type Response = { reportTreeDataCareHowToPlantSeedsContent: boolean };
 type Variables = { data: ReportTreeDataCareHowToPlantSeedsContentInput };
-
 
 test('should succeed', async () => {
   const user = await global.config.utils.createUser();
@@ -44,9 +44,14 @@ test('should succeed', async () => {
   );
 
   expect(data?.reportTreeDataCareHowToPlantSeedsContent).toBeTruthy();
-  expect((await global.config.db.treeDataCareHowToPlantSeedsContent.findUnique({ where: { id: content.id } }))?.reportedAt).toBeTruthy();
+  expect(
+    (
+      await global.config.db.treeDataCareHowToPlantSeedsContent.findUnique({
+        where: { id: content.id },
+      })
+    )?.reportedAt,
+  ).toBeTruthy();
 });
-
 
 test('should remove content from top voted result', async () => {
   const user = await global.config.utils.createUser();
@@ -72,7 +77,9 @@ test('should remove content from top voted result', async () => {
    */
   await global.config.client.rawRequest(
     gql`
-      mutation upsertTreeDataCareHowToPlantSeedsVote($data: UpsertTreeDataCareHowToPlantSeedsVoteInput!){
+      mutation upsertTreeDataCareHowToPlantSeedsVote(
+        $data: UpsertTreeDataCareHowToPlantSeedsVoteInput!
+      ) {
         upsertTreeDataCareHowToPlantSeedsVote(data: $data) {
           id
         }
@@ -97,7 +104,9 @@ test('should remove content from top voted result', async () => {
       careHowToPlantSeedsResult: true,
     },
   });
-  expect(treeDataBefore?.careHowToPlantSeedsResult.treeDataCareHowToPlantSeedsContentId).toEqual(content.id);
+  expect(treeDataBefore?.careHowToPlantSeedsResult.treeDataCareHowToPlantSeedsContentId).toEqual(
+    content.id,
+  );
 
   /**
    * Make request
@@ -123,9 +132,10 @@ test('should remove content from top voted result', async () => {
       careHowToPlantSeedsResult: true,
     },
   });
-  expect(treeDataAfter?.careHowToPlantSeedsResult.treeDataCareHowToPlantSeedsContentId).toEqual(null);
+  expect(treeDataAfter?.careHowToPlantSeedsResult.treeDataCareHowToPlantSeedsContentId).toEqual(
+    null,
+  );
 });
-
 
 test('should fail if does not exist', async () => {
   const user = await global.config.utils.createUser();

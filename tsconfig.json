@@ -9,24 +9,12 @@
     "module": "commonjs",
     "outDir": "./dist/",
     "sourceMap": true,
-    "lib": [
-      "ES2019",
-      "dom",
-      "esnext.asynciterable"
-    ],
+    "lib": ["ES2019", "dom", "esnext.asynciterable"],
     "baseUrl": "./src",
     "paths": {
-      "*": [
-        "*",
-        "dist/*"
-      ]
+      "*": ["*", "dist/*"]
     }
   },
-  "include": [
-    "./src"
-  ],
-  "exclude": [
-    "node_modules",
-    "./src/test/**/*"
-  ]
+  "include": ["./src"],
+  "exclude": ["node_modules", "./src/test/**/*"]
 }

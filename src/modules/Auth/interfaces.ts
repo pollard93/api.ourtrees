@@ -9,7 +9,6 @@ export enum TokenType {
   EMAIL_UPDATE_VERIFICATION = 'EMAIL_UPDATE_VERIFICATION',
 }
 
-
 /**
  * Define refresh token types
  */
@@ -18,20 +17,22 @@ export enum RefreshTokenType {
   OTHER = 'OTHER', // For testing
 }
 
-
 /**
  * Define the required data for each TokenType using a generic
  * `extends TokenType` requires the generic (T) to be of type TokenType
  * If we do not define any data, it will fallback to null
  */
-export type TokenData<T extends TokenType | null> =
-  T extends TokenType.GENERAL ? {id: string; email: string} :
-  T extends TokenType.RESET ? {email: string} :
-  T extends TokenType.VERIFICATION ? {id: string} :
-  T extends TokenType.REFRESH ? {id: string; type: RefreshTokenType} :
-  T extends TokenType.EMAIL_UPDATE_VERIFICATION ? {existingEmail: string; newEmail: string} :
-  null;
-
+export type TokenData<T extends TokenType | null> = T extends TokenType.GENERAL
+  ? { id: string; email: string }
+  : T extends TokenType.RESET
+    ? { email: string }
+    : T extends TokenType.VERIFICATION
+      ? { id: string }
+      : T extends TokenType.REFRESH
+        ? { id: string; type: RefreshTokenType }
+        : T extends TokenType.EMAIL_UPDATE_VERIFICATION
+          ? { existingEmail: string; newEmail: string }
+          : null;
 
 /**
  * Define the argument for the function to generate the token

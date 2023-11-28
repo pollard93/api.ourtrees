@@ -1,12 +1,5 @@
 import 'reflect-metadata';
-import { Resolver,
-  Ctx,
-  UseMiddleware,
-  Mutation,
-  Arg,
-  Field,
-  InputType,
-  Int } from 'type-graphql';
+import { Resolver, Ctx, UseMiddleware, Mutation, Arg, Field, InputType, Int } from 'type-graphql';
 import { TreeData } from '@prisma/client';
 import { TokenType } from '../../modules/Auth/interfaces';
 import { Context } from '../../utils/types';
@@ -15,20 +8,20 @@ import { TreeDataProfile } from '../../types/TreeDataProfile';
 import { GenericError } from '../../errors';
 import { setTopVotedTreeDataCareGerminationNotesContent } from '../../utils/setTopVotedTreeDataCareGerminationNotesContent';
 
-
 @InputType()
 export class UpsertTreeDataCareGerminationNotesVoteInput {
   @Field()
-  contentId: string
+  contentId: string;
 }
-
 
 @Resolver()
 export class UpsertTreeDataCareGerminationNotesVoteResolver {
   @Mutation(() => TreeDataProfile)
-  @UseMiddleware(AuthInterceptor({
-    accessTokens: [TokenType.GENERAL],
-  }))
+  @UseMiddleware(
+    AuthInterceptor({
+      accessTokens: [TokenType.GENERAL],
+    }),
+  )
   async upsertTreeDataCareGerminationNotesVote(
     @Arg('data') { contentId }: UpsertTreeDataCareGerminationNotesVoteInput,
     @Ctx() context: Context<TokenType.GENERAL>,

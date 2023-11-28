@@ -1,8 +1,8 @@
 /**
  * Reduces the args from command line into an object
  */
-export const reduceArgs = <T>(): T => process.argv.reduce(
-  (a, c) => {
+export const reduceArgs = <T>(): T =>
+  process.argv.reduce((a, c) => {
     c = c.split(':') as any; // eslint-disable-line
 
     if (c.length > 1) {
@@ -10,6 +10,4 @@ export const reduceArgs = <T>(): T => process.argv.reduce(
     }
 
     return a;
-  },
-  {},
-) as T;
+  }, {}) as T;

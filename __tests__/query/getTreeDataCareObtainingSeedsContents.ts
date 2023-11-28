@@ -1,12 +1,14 @@
 import { gql } from 'graphql-request';
 import '../../global-variables';
 import TestUtils from '../utils';
-import { GetTreeDataCareObtainingSeedsContentsInput, TreeDataCareObtainingSeedsContentProfilesPayLoad } from '../../src/resolvers/query/getTreeDataCareObtainingSeedsContents';
-
+import {
+  GetTreeDataCareObtainingSeedsContentsInput,
+  TreeDataCareObtainingSeedsContentProfilesPayLoad,
+} from '../../src/resolvers/query/getTreeDataCareObtainingSeedsContents';
 
 const query = gql`
-  query getTreeDataCareObtainingSeedsContents($data: GetTreeDataCareObtainingSeedsContentsInput!){
-    getTreeDataCareObtainingSeedsContents(data: $data){
+  query getTreeDataCareObtainingSeedsContents($data: GetTreeDataCareObtainingSeedsContentsInput!) {
+    getTreeDataCareObtainingSeedsContents(data: $data) {
       notes {
         id
       }
@@ -15,9 +17,10 @@ const query = gql`
   }
 `;
 
-type Response = { getTreeDataCareObtainingSeedsContents: TreeDataCareObtainingSeedsContentProfilesPayLoad };
+type Response = {
+  getTreeDataCareObtainingSeedsContents: TreeDataCareObtainingSeedsContentProfilesPayLoad;
+};
 type Variables = { data?: GetTreeDataCareObtainingSeedsContentsInput };
-
 
 test('should succeed', async () => {
   /**
@@ -79,10 +82,13 @@ test('should succeed', async () => {
    */
   expect(data.data?.getTreeDataCareObtainingSeedsContents.notes.length).toEqual(2);
   expect(data.data?.getTreeDataCareObtainingSeedsContents.count).toEqual(2);
-  expect(data.data?.getTreeDataCareObtainingSeedsContents.notes.find((e) => e.id === notes1.id)).toBeTruthy();
-  expect(data.data?.getTreeDataCareObtainingSeedsContents.notes.find((e) => e.id === notes2.id)).toBeTruthy();
+  expect(
+    data.data?.getTreeDataCareObtainingSeedsContents.notes.find((e) => e.id === notes1.id),
+  ).toBeTruthy();
+  expect(
+    data.data?.getTreeDataCareObtainingSeedsContents.notes.find((e) => e.id === notes2.id),
+  ).toBeTruthy();
 });
-
 
 test('should not return reported', async () => {
   /**
@@ -131,7 +137,6 @@ test('should not return reported', async () => {
   expect(data.data?.getTreeDataCareObtainingSeedsContents.notes.length).toEqual(0);
   expect(data.data?.getTreeDataCareObtainingSeedsContents.count).toEqual(0);
 });
-
 
 test('should fail if tree data does not exist', async () => {
   const user = await global.config.utils.createUser();

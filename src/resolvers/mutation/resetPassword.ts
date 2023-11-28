@@ -1,11 +1,5 @@
 import 'reflect-metadata';
-import { Resolver,
-  Mutation,
-  Arg,
-  Ctx,
-  UseMiddleware,
-  InputType,
-  Field } from 'type-graphql';
+import { Resolver, Mutation, Arg, Ctx, UseMiddleware, InputType, Field } from 'type-graphql';
 import { User } from '@prisma/client';
 import { AuthInterceptor } from '../../modules/Auth/middleware';
 import { TokenType } from '../../modules/Auth/interfaces';
@@ -15,28 +9,27 @@ import { Context } from '../../utils/types';
 import { hashPassword, setGeneralTokens, validatePassword } from '../../modules/Auth';
 import { AuthPayload } from '../../types/AuthPayload';
 
-
 @InputType()
 export class ResetPasswordInput {
   @Field()
-  password: string
+  password: string;
 }
-
 
 @Resolver()
 export class ResetPasswordResolver {
   @Mutation(() => AuthPayload)
-  @UseMiddleware(AuthInterceptor({
-    accessTokens: [TokenType.RESET],
-    refreshTokenNotRequired: true,
-  }))
+  @UseMiddleware(
+    AuthInterceptor({
+      accessTokens: [TokenType.RESET],
+      refreshTokenNotRequired: true,
+    }),
+  )
   async resetPassword(
     @Arg('data') { password }: ResetPasswordInput,
     @Ctx() context: Context<TokenType.RESET>,
-  ): Promise<{ token: string, user: User }> {
+  ): Promise<{ token: string; user: User }> {
     if (!validatePassword(password)) throw GenericError('Password Invalid');
     const { email } = context.accessToken.data;
-
 
     /**
      * Update user
@@ -46,7 +39,6 @@ export class ResetPasswordResolver {
       where: { email },
     });
 
-
     /**
      * Emit email
      */
@@ -54,7 +46,6 @@ export class ResetPasswordResolver {
       type: EMAIL_TRANSACTIONAL_TYPE.PASSWORD_CHANGED,
       receivers: [user],
     });
-
 
     return {
       token: await setGeneralTokens(context, user),

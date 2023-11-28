@@ -5,7 +5,6 @@ const fs = require('fs-extra');
 const favicons = require('favicons');
 const package = require('../package.json');
 
-
 const source = `${__dirname}/../public/images/icon.jpg`; // Source image(s). `string`, `buffer` or array of `string`
 const configuration = {
   url: package.url,
@@ -50,13 +49,11 @@ const configuration = {
   },
 };
 
-
 favicons(source, configuration, async (error, response) => {
   if (error) {
     console.error(error.message); // Error description e.g. "An unknown error has occurred"
     return;
   }
-
 
   /**
    * Save all images
@@ -64,7 +61,6 @@ favicons(source, configuration, async (error, response) => {
   for (const image of response.images) {
     await fs.writeFile(`${__dirname}/../public/icons/${image.name}`, image.contents);
   }
-
 
   /**
    * Save all files
@@ -86,7 +82,6 @@ favicons(source, configuration, async (error, response) => {
 
     await fs.writeFile(`${__dirname}/../public/${file.name}`, file.contents);
   }
-
 
   /**
    * Output html

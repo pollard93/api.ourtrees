@@ -6,7 +6,6 @@ import { generateToken, generateRefreshToken, refreshCookieConfig } from '..';
 import { TokenType, RefreshTokenType } from '../interfaces';
 import { AuthError } from '../../../errors';
 
-
 /**
  * Validates access and refresh tokens
  * A request with a valid access token is allowed to proceed without further checks
@@ -17,7 +16,11 @@ import { AuthError } from '../../../errors';
  * @param accessTokens - types of access tokens required
  * @param noRefreshRequired - if true, refresh token is not required
  */
-export const validateAndRefreshTokens = async (context: Context<any>, accessTokens: TokenType[], noRefreshRequired = false): Promise<void> => {
+export const validateAndRefreshTokens = async (
+  context: Context<any>,
+  accessTokens: TokenType[],
+  noRefreshRequired = false,
+): Promise<void> => {
   /**
    * Validate access token, will not throw if invalid as may need to be refreshed
    */
@@ -42,7 +45,6 @@ export const validateAndRefreshTokens = async (context: Context<any>, accessToke
     throw AuthError('Unauthorised');
   }
 
-
   /**
    * No refresh token endpoint handling
    */
@@ -63,12 +65,10 @@ export const validateAndRefreshTokens = async (context: Context<any>, accessToke
     }
   }
 
-
   /**
    * Expired access token handling
    * This code will only run when the the access token is expired
    */
-
 
   /**
    * Validate refresh token
@@ -96,7 +96,6 @@ export const validateAndRefreshTokens = async (context: Context<any>, accessToke
     throw AuthError('Unauthorised');
   }
 
-
   /**
    * Valid refresh token handling
    * This code will only run when the the access token is expired and the refresh token is valid
@@ -109,7 +108,11 @@ export const validateAndRefreshTokens = async (context: Context<any>, accessToke
   });
 
   // Generate new refresh token every time a new access token is issued
-  const newRefreshToken = await generateRefreshToken(context.db, refreshToken.data.data, refreshToken.data.sessionId);
+  const newRefreshToken = await generateRefreshToken(
+    context.db,
+    refreshToken.data.data,
+    refreshToken.data.sessionId,
+  );
 
   // Set access and refresh tokens in response headers
   switch (accessToken.data.type) {
@@ -117,7 +120,11 @@ export const validateAndRefreshTokens = async (context: Context<any>, accessToke
       // Set new access token
       context.res.set({ general_token: newAccessToken });
       // Set the new refresh token in the cookie
-      context.res.cookie('refresh_token', newRefreshToken.token, refreshCookieConfig(RefreshTokenType.GENERAL));
+      context.res.cookie(
+        'refresh_token',
+        newRefreshToken.token,
+        refreshCookieConfig(RefreshTokenType.GENERAL),
+      );
       break;
 
     default:
@@ -127,42 +134,42 @@ export const validateAndRefreshTokens = async (context: Context<any>, accessToke
   return Promise.resolve();
 };
 
-
 interface AuthInterceptorProps {
   accessTokens: TokenType[] | null; // Required access tokens, pass null if none are required (login)
   refreshTokenNotRequired?: true; // Pass true to not require a refresh token (resetPassword)
   fileCacheBuster?: boolean; // Set to bust file cache (see: `src/resolvers/payloads/Url.ts`)
 }
 
+export const AuthInterceptor =
+  (props: AuthInterceptorProps): MiddlewareFn<Context<any>> =>
+  async ({ context }, next) => {
+    try {
+      // Set vars from headers
+      // eslint-disable-next-line no-param-reassign
+      context.clientVersion = context.req.headers['client-version'];
+      // eslint-disable-next-line no-param-reassign
+      context.clientType = context.req.headers['client-type'];
 
-export const AuthInterceptor = (props: AuthInterceptorProps): MiddlewareFn<Context<any>> => async ({ context }, next) => {
-  try {
-    // Set vars from headers
-    // eslint-disable-next-line no-param-reassign
-    context.clientVersion = context.req.headers['client-version'];
-    // eslint-disable-next-line no-param-reassign
-    context.clientType = context.req.headers['client-type'];
+      // If no access token is required then proceed
+      if (props.accessTokens === null) {
+        return await next();
+      }
 
-    // If no access token is required then proceed
-    if (props.accessTokens === null) {
+      // Validate and refresh tokens
+      context.fileCacheBuster = props.fileCacheBuster;
+      await validateAndRefreshTokens(context, props.accessTokens, props.refreshTokenNotRequired);
+
+      // Execute resolver
       return await next();
+    } catch (err) {
+      // If error is instance of ApolloError, an error has been thrown manually and message is intended for client
+      if (err instanceof ApolloError) {
+        throw err;
+      }
+
+      // eslint-disable-next-line no-console
+      console.log('AuthInterceptor -> err', err);
+      // If an error happened elsewhere, throw unauthorised
+      throw AuthError('Unauthorised');
     }
-
-    // Validate and refresh tokens
-    context.fileCacheBuster = props.fileCacheBuster;
-    await validateAndRefreshTokens(context, props.accessTokens, props.refreshTokenNotRequired);
-
-    // Execute resolver
-    return await next();
-  } catch (err) {
-    // If error is instance of ApolloError, an error has been thrown manually and message is intended for client
-    if (err instanceof ApolloError) {
-      throw err;
-    }
-
-    // eslint-disable-next-line no-console
-    console.log('AuthInterceptor -> err', err);
-    // If an error happened elsewhere, throw unauthorised
-    throw AuthError('Unauthorised');
-  }
-};
+  };

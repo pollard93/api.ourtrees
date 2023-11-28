@@ -1,11 +1,5 @@
 import 'reflect-metadata';
-import { Resolver,
-  Ctx,
-  UseMiddleware,
-  Mutation,
-  Arg,
-  Field,
-  InputType } from 'type-graphql';
+import { Resolver, Ctx, UseMiddleware, Mutation, Arg, Field, InputType } from 'type-graphql';
 import { TreeComment } from '@prisma/client';
 import { MaxLength } from 'class-validator';
 import { TokenType } from '../../modules/Auth/interfaces';
@@ -14,30 +8,29 @@ import { AuthInterceptor } from '../../modules/Auth/middleware';
 import { TreeCommentProfile } from '../../types/TreeCommentProfile';
 import { GenericError } from '../../errors';
 
-
 @InputType()
 export class CreateTreeCommentInput {
   @Field()
-  treeId: string
+  treeId: string;
 
   @Field()
   @MaxLength(280)
-  comment: string
+  comment: string;
 }
-
 
 @Resolver()
 export class CreateTreeCommentResolver {
   @Mutation(() => TreeCommentProfile)
-  @UseMiddleware(AuthInterceptor({
-    accessTokens: [TokenType.GENERAL],
-  }))
+  @UseMiddleware(
+    AuthInterceptor({
+      accessTokens: [TokenType.GENERAL],
+    }),
+  )
   async createTreeComment(
     @Arg('data') { treeId, comment }: CreateTreeCommentInput,
     @Ctx() context: Context<TokenType.GENERAL>,
   ): Promise<TreeComment> {
     const { id: creatorId } = context.accessToken.data;
-
 
     /**
      * Get tree and validate owner
@@ -48,7 +41,6 @@ export class CreateTreeCommentResolver {
       },
     });
     if (!tree) throw GenericError('Tree does not exist');
-
 
     /**
      * Create

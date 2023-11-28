@@ -1,15 +1,14 @@
 import 'reflect-metadata';
 import { ObjectType, Field } from 'type-graphql';
 
-
 @ObjectType()
 export class TreeDataCareObtainingSeedsContentProfile {
   @Field()
-  id: string
+  id: string;
 
   @Field()
-  content: string
+  content: string;
 
   @Field()
-  voteCount: number
+  voteCount: number;
 }

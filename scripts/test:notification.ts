@@ -19,7 +19,6 @@ InitFileHandler();
 void (async function () {
   const prisma = new PrismaClient();
 
-
   /**
    * Set emitter and listener
    */
@@ -27,22 +26,19 @@ void (async function () {
   // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
   const listener = new NotificationListener(prisma, emitter);
 
-
   /**
    * Get target user
    */
   const targetUser = await prisma.user.findUnique({ where: { email: 'dev@madebyprism.com' } });
-
 
   /**
    * Get and validate args
    */
   const { type } = reduceArgs<{ type: NOTIFICATION_TYPE }>();
   if (!type) {
-    console.error(chalk.red('Please supply argument: \'type\''));
+    console.error(chalk.red("Please supply argument: 'type'"));
     process.exit(0);
   }
-
 
   /**
    * Emit notification based on type
@@ -62,4 +58,4 @@ void (async function () {
     default:
       break;
   }
-}());
+})();

@@ -4,7 +4,6 @@ import { TreeEntryProfile } from '../../types/TreeEntryProfile';
 import { Context } from '../../utils/types';
 import { FileProfile } from '../../types/FileProfile';
 
-
 @Resolver(() => TreeEntryProfile)
 export class TreeEntryProfileResolver {
   @FieldResolver(() => FileProfile)

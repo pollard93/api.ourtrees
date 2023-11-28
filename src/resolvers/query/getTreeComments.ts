@@ -1,5 +1,6 @@
 import 'reflect-metadata';
-import { Resolver,
+import {
+  Resolver,
   Ctx,
   Query,
   UseMiddleware,
@@ -8,7 +9,8 @@ import { Resolver,
   ObjectType,
   InputType,
   Arg,
-  ID } from 'type-graphql';
+  ID,
+} from 'type-graphql';
 import { TreeComment } from '@prisma/client';
 import { Max } from 'class-validator';
 import { TokenType } from '../../modules/Auth/interfaces';
@@ -17,69 +19,66 @@ import { AuthInterceptor } from '../../modules/Auth/middleware';
 import { TreeCommentProfile } from '../../types/TreeCommentProfile';
 import { GenericError } from '../../errors';
 
-
 export enum SortOrder {
   asc = 'asc',
   desc = 'desc',
 }
 
-
 @InputType()
 class TreeCommentWhereUniqueInput {
   @Field()
-  id: string
+  id: string;
 }
-
 
 @InputType()
 export class GetTreeCommentsInput {
   @Field(() => ID)
-  treeId: string
+  treeId: string;
 
   @Field(() => TreeCommentWhereUniqueInput, { nullable: true })
-  cursor?: TreeCommentWhereUniqueInput
+  cursor?: TreeCommentWhereUniqueInput;
 
   @Field()
   @Max(30)
-  take: number
+  take: number;
 }
-
 
 @ObjectType()
 export class TreeCommentProfilesPayLoad {
   @Field(() => [TreeCommentProfile])
-  comments: TreeCommentProfile[]
+  comments: TreeCommentProfile[];
 
   @Field(() => Int)
-  count: number
+  count: number;
 }
-
 
 @Resolver()
 export class GetTreeCommentsResolver {
   @Query(() => TreeCommentProfilesPayLoad)
-  @UseMiddleware(AuthInterceptor({
-    accessTokens: [TokenType.GENERAL],
-  }))
+  @UseMiddleware(
+    AuthInterceptor({
+      accessTokens: [TokenType.GENERAL],
+    }),
+  )
   async getTreeComments(
     @Arg('data') data: GetTreeCommentsInput,
     @Ctx() context: Context<TokenType.GENERAL>,
-  ): Promise<{ comments: TreeComment[], count: number }> {
+  ): Promise<{ comments: TreeComment[]; count: number }> {
     /**
      * Get comments and return
      * @TODO - must not return reported (add delete and report)
      */
-    const comments = await context.db.read.tree.findUnique({ where: { id: data.treeId } }).comments({
-      cursor: data.cursor,
-      take: data.take,
-    });
-
+    const comments = await context.db.read.tree
+      .findUnique({ where: { id: data.treeId } })
+      .comments({
+        cursor: data.cursor,
+        take: data.take,
+      });
 
     /**
      * If tree does not exist
      */
     if (comments === null) throw GenericError('Tree does not exist');
-
 
     /**
      * Count
@@ -89,7 +88,6 @@ export class GetTreeCommentsResolver {
         treeId: data.treeId,
       },
     });
-
 
     return {
       comments,

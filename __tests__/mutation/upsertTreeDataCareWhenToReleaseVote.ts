@@ -3,25 +3,24 @@ import '../../global-variables';
 import { TreeDataProfile } from '../../src/types/TreeDataProfile';
 import { UpsertTreeDataCareWhenToReleaseVoteInput } from '../../src/resolvers/mutation/upsertTreeDataCareWhenToReleaseVote';
 
-
 const query = gql`
-  mutation upsertTreeDataCareWhenToReleaseVote($data: UpsertTreeDataCareWhenToReleaseVoteInput!){
+  mutation upsertTreeDataCareWhenToReleaseVote($data: UpsertTreeDataCareWhenToReleaseVoteInput!) {
     upsertTreeDataCareWhenToReleaseVote(data: $data) {
       id
       careWhenToReleaseResult {
         count
-        jan        
-        feb        
-        mar        
-        apr        
-        may        
-        jun        
-        jul        
-        aug        
-        sep        
-        oct        
-        nov        
-        dec        
+        jan
+        feb
+        mar
+        apr
+        may
+        jun
+        jul
+        aug
+        sep
+        oct
+        nov
+        dec
       }
     }
   }
@@ -29,7 +28,6 @@ const query = gql`
 
 type Response = { upsertTreeDataCareWhenToReleaseVote: TreeDataProfile };
 type Variables = { data: UpsertTreeDataCareWhenToReleaseVoteInput };
-
 
 test('should create result', async () => {
   const user = await global.config.utils.createUser();
@@ -60,7 +58,6 @@ test('should create result', async () => {
   expect(data?.upsertTreeDataCareWhenToReleaseVote.careWhenToReleaseResult.nov).toBe(0);
   expect(data?.upsertTreeDataCareWhenToReleaseVote.careWhenToReleaseResult.dec).toBe(0);
 });
-
 
 test('should update result', async () => {
   const user = await global.config.utils.createUser();

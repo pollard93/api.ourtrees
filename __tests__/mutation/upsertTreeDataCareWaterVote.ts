@@ -4,9 +4,8 @@ import { TREE_CARE_WATER_TYPE } from '@prisma/client';
 import { TreeDataProfile } from '../../src/types/TreeDataProfile';
 import { UpsertTreeDataCareWaterVoteInput } from '../../src/resolvers/mutation/upsertTreeDataCareWaterVote';
 
-
 const query = gql`
-  mutation upsertTreeDataCareWaterVote($data: UpsertTreeDataCareWaterVoteInput!){
+  mutation upsertTreeDataCareWaterVote($data: UpsertTreeDataCareWaterVoteInput!) {
     upsertTreeDataCareWaterVote(data: $data) {
       id
       careWaterResult {
@@ -21,7 +20,6 @@ const query = gql`
 
 type Response = { upsertTreeDataCareWaterVote: TreeDataProfile };
 type Variables = { data: UpsertTreeDataCareWaterVoteInput };
-
 
 test('should create result', async () => {
   const user = await global.config.utils.createUser();
@@ -43,7 +41,6 @@ test('should create result', async () => {
   expect(data?.upsertTreeDataCareWaterVote.careWaterResult.biweekly).toBe(0);
   expect(data?.upsertTreeDataCareWaterVote.careWaterResult.triweekly).toBe(0);
 });
-
 
 test('should update result', async () => {
   const user = await global.config.utils.createUser();

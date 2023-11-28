@@ -1,11 +1,5 @@
 import 'reflect-metadata';
-import { Resolver,
-  Ctx,
-  UseMiddleware,
-  Mutation,
-  Arg,
-  Field,
-  InputType } from 'type-graphql';
+import { Resolver, Ctx, UseMiddleware, Mutation, Arg, Field, InputType } from 'type-graphql';
 import { Prisma, TreeEntry } from '@prisma/client';
 import GraphQLUpload from 'graphql-upload/GraphQLUpload.js';
 import FileUpload from 'graphql-upload/Upload.js';
@@ -17,26 +11,26 @@ import { FileAuthenticationError, GenericError } from '../../errors';
 import { FileHandler } from '../../modules/FileHandler';
 import { TreeEntryProfile } from '../../types/TreeEntryProfile';
 
-
 @InputType()
 export class UpdateTreeEntryInput {
   @Field()
-  id: string
+  id: string;
 
   @Field({ nullable: true })
-  notes?: string
+  notes?: string;
 
   @Field(() => GraphQLUpload, { nullable: true })
-  image?: FileUpload
+  image?: FileUpload;
 }
-
 
 @Resolver()
 export class UpdateTreeEntryResolver {
   @Mutation(() => TreeEntryProfile)
-  @UseMiddleware(AuthInterceptor({
-    accessTokens: [TokenType.GENERAL],
-  }))
+  @UseMiddleware(
+    AuthInterceptor({
+      accessTokens: [TokenType.GENERAL],
+    }),
+  )
   async updateTreeEntry(
     @Arg('data') { id, notes, image }: UpdateTreeEntryInput,
     @Ctx() context: Context<TokenType.GENERAL>,
@@ -57,7 +51,6 @@ export class UpdateTreeEntryResolver {
     if (!treeEntry) throw GenericError('Tree entry does not exist');
     if (treeEntry.tree.creatorId !== creatorId) throw GenericError('Unauthorized');
 
-
     /**
      * Processes and validates profile picture
      */
@@ -76,7 +69,10 @@ export class UpdateTreeEntryResolver {
       const imageResolved = resolved[0];
 
       // Store in bucket
-      const url = await FileHandler.putImage(`public/trees/${treeEntry.treeId}/entries/${id}${path.extname(imageResolved.filename)}`, imageResolved.buffer!);
+      const url = await FileHandler.putImage(
+        `public/trees/${treeEntry.treeId}/entries/${id}${path.extname(imageResolved.filename)}`,
+        imageResolved.buffer!,
+      );
 
       // Upsert to create if already exists
       return {
@@ -98,7 +94,6 @@ export class UpdateTreeEntryResolver {
       };
     };
 
-
     /**
      * Update and return tree entry
      */
@@ -109,7 +104,7 @@ export class UpdateTreeEntryResolver {
       data: {
         id,
         notes,
-        image: (image ? await processImage() : undefined),
+        image: image ? await processImage() : undefined,
       },
     });
   }

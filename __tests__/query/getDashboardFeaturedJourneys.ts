@@ -2,7 +2,6 @@ import { gql } from 'graphql-request';
 import '../../global-variables';
 import { GetDashboardFeaturedJourneysPayload } from '../../src/resolvers/query/getDashboardFeaturedJourneys';
 
-
 const query = gql`
   query getDashboardFeaturedJourneys {
     getDashboardFeaturedJourneys {
@@ -16,7 +15,6 @@ const query = gql`
 
 type Response = { getDashboardFeaturedJourneys: GetDashboardFeaturedJourneysPayload };
 type Variables = { data?: undefined };
-
 
 test('should succeed', async () => {
   /**
@@ -45,7 +43,6 @@ test('should succeed', async () => {
     treeDataId: null,
   });
 });
-
 
 test('should succeed with country', async () => {
   /**

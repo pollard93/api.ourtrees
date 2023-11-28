@@ -1,13 +1,5 @@
 import 'reflect-metadata';
-import {
-  Resolver,
-  Ctx,
-  UseMiddleware,
-  Mutation,
-  Arg,
-  Field,
-  InputType
-} from 'type-graphql';
+import { Resolver, Ctx, UseMiddleware, Mutation, Arg, Field, InputType } from 'type-graphql';
 import { TreeDataCareHowToPlantSeedsContent } from '@prisma/client';
 import { MaxLength } from 'class-validator';
 import { TokenType } from '../../modules/Auth/interfaces';
@@ -16,24 +8,24 @@ import { AuthInterceptor } from '../../modules/Auth/middleware';
 import { TreeDataCareHowToPlantSeedsContentProfile } from '../../types/TreeDataCareHowToPlantSeedsContentProfile';
 import { GenericError } from '../../errors';
 
-
 @InputType()
 export class CreateTreeDataCareHowToPlantSeedsContentInput {
   @Field()
-  treeDataId: number
+  treeDataId: number;
 
   @Field()
   @MaxLength(280)
-  content: string
+  content: string;
 }
-
 
 @Resolver()
 export class CreateTreeDataCareHowToPlantSeedsContentResolver {
   @Mutation(() => TreeDataCareHowToPlantSeedsContentProfile)
-  @UseMiddleware(AuthInterceptor({
-    accessTokens: [TokenType.GENERAL],
-  }))
+  @UseMiddleware(
+    AuthInterceptor({
+      accessTokens: [TokenType.GENERAL],
+    }),
+  )
   async createTreeDataCareHowToPlantSeedsContent(
     @Arg('data') { treeDataId, content }: CreateTreeDataCareHowToPlantSeedsContentInput,
     @Ctx() context: Context<TokenType.GENERAL>,
@@ -60,9 +52,14 @@ export class CreateTreeDataCareHowToPlantSeedsContentResolver {
         },
       });
     } catch (e) {
-      if (e.meta.target === 'TreeDataCareHowToPlantSeedsContent_userId_treeDataId_key') throw GenericError('User already submitted content for this tree');
+      if (e.meta.target === 'TreeDataCareHowToPlantSeedsContent_userId_treeDataId_key')
+        throw GenericError('User already submitted content for this tree');
       // eslint-disable-next-line max-len
-      if (e.meta.cause === 'No \'TreeData\' record(s) (needed to inline the relation on \'TreeDataCareHowToPlantSeedsContent\' record(s)) was found for a nested connect on one-to-many relation \'TreeDataCareHowToPlantSeedsContents\'.') throw GenericError('Tree does not exist');
+      if (
+        e.meta.cause ===
+        "No 'TreeData' record(s) (needed to inline the relation on 'TreeDataCareHowToPlantSeedsContent' record(s)) was found for a nested connect on one-to-many relation 'TreeDataCareHowToPlantSeedsContents'."
+      )
+        throw GenericError('Tree does not exist');
       throw e;
     }
   }

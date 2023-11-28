@@ -5,10 +5,9 @@ import { TokenType } from '../../src/modules/Auth/interfaces';
 import { ResetPasswordInput } from '../../src/resolvers/mutation/resetPassword';
 import { AuthPayload } from '../../src/types/AuthPayload';
 
-
 const query = gql`
-  mutation resetPassword($data: ResetPasswordInput!){
-    resetPassword(data: $data){
+  mutation resetPassword($data: ResetPasswordInput!) {
+    resetPassword(data: $data) {
       token
     }
   }
@@ -16,7 +15,6 @@ const query = gql`
 
 type Response = { resetPassword: AuthPayload };
 type Variables = { data: ResetPasswordInput };
-
 
 test('should succeed', async () => {
   const { user } = await global.config.utils.createUser();
@@ -35,12 +33,13 @@ test('should succeed', async () => {
   );
 
   expect(data?.resetPassword.token).toBeTruthy();
-  expect(await comparePassword({
-    pwd: 'new-password',
-    hash: (await global.config.db.user.findUnique({ where: { id: user.id } }))?.password,
-  })).toBeTruthy();
+  expect(
+    await comparePassword({
+      pwd: 'new-password',
+      hash: (await global.config.db.user.findUnique({ where: { id: user.id } }))?.password,
+    }),
+  ).toBeTruthy();
 });
-
 
 test('should fail - Password Invalid', async () => {
   const { user } = await global.config.utils.createUser();

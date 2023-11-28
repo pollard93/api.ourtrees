@@ -5,30 +5,29 @@ import { UserSelf } from './UserSelf';
 @ObjectType()
 export class UrlProfile {
   @Field(() => String)
-  splash: string
+  splash: string;
 
   @Field(() => String)
-  small: string
+  small: string;
 
   @Field(() => String)
-  large: string
+  large: string;
 
   @Field(() => String)
-  full: string
+  full: string;
 }
-
 
 @ObjectType()
 export class FileProfile {
   @Field(() => ID)
-  id: number
+  id: number;
 
   @Field(() => UserSelf, { nullable: true })
-  author: UserSelf | null
+  author: UserSelf | null;
 
   @Field(() => String)
-  mime: string
+  mime: string;
 
   @Field(() => UrlProfile)
-  url: UrlProfile
+  url: UrlProfile;
 }

@@ -5,8 +5,8 @@ import { UserSelf } from './UserSelf';
 @ObjectType()
 export class AuthPayload {
   @Field(() => String)
-  token: string
+  token: string;
 
   @Field(() => UserSelf)
-  user: UserSelf
+  user: UserSelf;
 }

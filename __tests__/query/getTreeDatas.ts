@@ -3,10 +3,9 @@ import '../../global-variables';
 import TestUtils from '../utils';
 import { GetTreeDatasInput, TreeDataProfilesPayLoad } from '../../src/resolvers/query/getTreeDatas';
 
-
 const query = gql`
-  query getTreeDatas($data: GetTreeDatasInput!){
-    getTreeDatas(data: $data){
+  query getTreeDatas($data: GetTreeDatasInput!) {
+    getTreeDatas(data: $data) {
       treeDatas {
         id
         taxon
@@ -19,7 +18,6 @@ const query = gql`
 
 type Response = { getTreeDatas: TreeDataProfilesPayLoad };
 type Variables = { data: GetTreeDatasInput };
-
 
 test('should succeed with country name', async () => {
   const user = await global.config.utils.createUser();
@@ -64,7 +62,6 @@ test('should succeed with country name', async () => {
   expect(data?.getTreeDatas.treeDatas.length).toEqual(1);
   expect(data?.getTreeDatas.count).toEqual(1);
 });
-
 
 test('should succeed to search taxon', async () => {
   const user = await global.config.utils.createUser();
@@ -116,7 +113,6 @@ test('should succeed to search taxon', async () => {
   expect(data?.getTreeDatas.treeDatas.length).toEqual(1);
   expect(data?.getTreeDatas.count).toEqual(1);
 });
-
 
 test('should succeed to search family', async () => {
   const user = await global.config.utils.createUser();

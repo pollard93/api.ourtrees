@@ -3,16 +3,14 @@ import '../../global-variables';
 import TestUtils from '../utils';
 import { DeleteNotificationInput } from '../../src/resolvers/mutation/deleteNotification';
 
-
 const query = gql`
-  mutation deleteNotification($data: DeleteNotificationInput!){
+  mutation deleteNotification($data: DeleteNotificationInput!) {
     deleteNotification(data: $data)
   }
 `;
 
 type Response = { deleteNotification: boolean };
 type Variables = { data: DeleteNotificationInput };
-
 
 test('should succeed', async () => {
   const receiver = await global.config.utils.createUser();
@@ -51,7 +49,6 @@ test('should succeed', async () => {
   expect(after).toBeFalsy();
 });
 
-
 test('should fail to delete notification that requestor is not a receiver of', async () => {
   const receiver = await global.config.utils.createUser();
   const sender = await global.config.utils.createUser();
@@ -88,7 +85,6 @@ test('should fail to delete notification that requestor is not a receiver of', a
     expect(error.response.errors[0].message).toEqual('Unauthorised');
   }
 });
-
 
 test('should fail to delete notification that does not exist', async () => {
   const user = await global.config.utils.createUser();

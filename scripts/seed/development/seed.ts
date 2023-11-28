@@ -16,14 +16,14 @@ void (async function main() {
     const userSeeder = new UserSeeder(prisma);
     await userSeeder.createUser('dev@madebyprism.com', 'password');
     // eslint-disable-next-line no-empty
-  } catch { }
+  } catch {}
 
   try {
     // Seed trees
     const treeDataSeeder = new TreeDataSeeder(prisma);
     await treeDataSeeder.createTrees();
     // eslint-disable-next-line no-empty
-  } catch { }
+  } catch {}
 
   await prisma.$disconnect();
-}());
+})();

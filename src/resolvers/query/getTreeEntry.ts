@@ -1,12 +1,5 @@
 import 'reflect-metadata';
-import { Resolver,
-  Ctx,
-  Query,
-  UseMiddleware,
-  Field,
-  InputType,
-  Arg,
-  ID } from 'type-graphql';
+import { Resolver, Ctx, Query, UseMiddleware, Field, InputType, Arg, ID } from 'type-graphql';
 import { TreeEntry } from '@prisma/client';
 import { TokenType } from '../../modules/Auth/interfaces';
 import { Context } from '../../utils/types';
@@ -14,20 +7,20 @@ import { AuthInterceptor } from '../../modules/Auth/middleware';
 import { TreeEntryProfile } from '../../types/TreeEntryProfile';
 import { GenericError } from '../../errors';
 
-
 @InputType()
 export class GetTreeEntryInput {
   @Field(() => ID)
-  id: string
+  id: string;
 }
-
 
 @Resolver()
 export class GetTreeEntryResolver {
   @Query(() => TreeEntryProfile)
-  @UseMiddleware(AuthInterceptor({
-    accessTokens: [TokenType.GENERAL],
-  }))
+  @UseMiddleware(
+    AuthInterceptor({
+      accessTokens: [TokenType.GENERAL],
+    }),
+  )
   async getTreeEntry(
     @Arg('data') data: GetTreeEntryInput,
     @Ctx() context: Context<TokenType.GENERAL>,

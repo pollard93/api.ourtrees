@@ -1,6 +1,11 @@
 import { EventEmitter } from 'events';
 import { NOTIFICATION_TYPE } from '@prisma/client';
-import { DBNotificationArgs, NotificationEventType, PushNotificationArgs, NotificationArgs } from './types';
+import {
+  DBNotificationArgs,
+  NotificationEventType,
+  PushNotificationArgs,
+  NotificationArgs,
+} from './types';
 
 export default class NotificationEmitter extends EventEmitter {
   emitDBNotification<T extends NOTIFICATION_TYPE>(data: DBNotificationArgs<T>) {

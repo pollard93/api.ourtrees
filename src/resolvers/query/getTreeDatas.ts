@@ -1,5 +1,6 @@
 import 'reflect-metadata';
-import { Resolver,
+import {
+  Resolver,
   Ctx,
   Query,
   UseMiddleware,
@@ -7,7 +8,8 @@ import { Resolver,
   Field,
   ObjectType,
   InputType,
-  Arg } from 'type-graphql';
+  Arg,
+} from 'type-graphql';
 import { TreeData, Prisma } from '@prisma/client';
 import { Max } from 'class-validator';
 import { TokenType } from '../../modules/Auth/interfaces';
@@ -15,77 +17,72 @@ import { Context } from '../../utils/types';
 import { AuthInterceptor } from '../../modules/Auth/middleware';
 import { TreeDataProfile } from '../../types/TreeDataProfile';
 
-
 export enum SortOrder {
   asc = 'asc',
   desc = 'desc',
 }
 
-
 @InputType()
 class TreeDataWhereInput {
   @Field()
-  countryName: string
+  countryName: string;
 
   @Field({ nullable: true })
-  nameSearch?: string
+  nameSearch?: string;
 }
-
 
 @InputType()
 class TreeDataWhereUniqueInput {
   @Field()
-  id: number
+  id: number;
 }
-
 
 @InputType()
 class TreeDataOrderByInput {
   @Field()
-  taxon?: SortOrder
+  taxon?: SortOrder;
 
   @Field()
-  family?: SortOrder
+  family?: SortOrder;
 }
-
 
 @InputType()
 export class GetTreeDatasInput {
   @Field(() => TreeDataWhereInput)
-  where: TreeDataWhereInput
+  where: TreeDataWhereInput;
 
   @Field(() => TreeDataWhereUniqueInput, { nullable: true })
-  cursor?: TreeDataWhereUniqueInput
+  cursor?: TreeDataWhereUniqueInput;
 
   @Field()
   @Max(30)
-  take: number
+  take: number;
 
   @Field(() => [TreeDataOrderByInput], { nullable: true })
-  orderBy?: TreeDataOrderByInput[]
+  orderBy?: TreeDataOrderByInput[];
 }
-
 
 @ObjectType()
 export class TreeDataProfilesPayLoad {
   @Field(() => [TreeDataProfile])
-  treeDatas: TreeDataProfile[]
+  treeDatas: TreeDataProfile[];
 
   @Field(() => Int)
-  count: number
+  count: number;
 }
-
 
 @Resolver()
 export class GetTreeDatasResolver {
   @Query(() => TreeDataProfilesPayLoad)
-  @UseMiddleware(AuthInterceptor({
-    accessTokens: [TokenType.GENERAL],
-  }))
+  @UseMiddleware(
+    AuthInterceptor({
+      accessTokens: [TokenType.GENERAL],
+    }),
+  )
   async getTreeDatas(
     @Arg('data') data: GetTreeDatasInput,
     @Ctx() context: Context<TokenType.GENERAL>,
-  ): Promise<{ treeDatas: TreeData[], count: number }> {
+  ): Promise<{ treeDatas: TreeData[]; count: number }> {
     /**
      * Always query users own countries treeDatas only
      */
@@ -95,14 +92,15 @@ export class GetTreeDatasResolver {
           name: data.where.countryName,
         },
       },
-      ...(data.where.nameSearch ? {
-        OR: [
-          { taxon: { contains: data.where.nameSearch } },
-          { family: { contains: data.where.nameSearch } },
-        ],
-      } : undefined),
+      ...(data.where.nameSearch
+        ? {
+            OR: [
+              { taxon: { contains: data.where.nameSearch } },
+              { family: { contains: data.where.nameSearch } },
+            ],
+          }
+        : undefined),
     };
-
 
     /**
      * Get treeDatas and return
@@ -114,14 +112,12 @@ export class GetTreeDatasResolver {
       orderBy: data?.orderBy,
     });
 
-
     /**
      * Count
      */
     const count = await context.db.read.treeData.count({
       where,
     });
-
 
     return {
       treeDatas,

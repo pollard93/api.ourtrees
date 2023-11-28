@@ -12,31 +12,30 @@ export class RequiresUpdate {
   playStoreUrl: string;
 }
 
-
 @ObjectType()
 export class UserSelf {
   @Field(() => ID)
-  id: string
+  id: string;
 
   @Field(() => String, { nullable: true })
-  name?: string | null
+  name?: string | null;
 
   @Field()
   @IsEmail()
-  email: string
+  email: string;
 
   @Field(() => Boolean)
-  verified: boolean
+  verified: boolean;
 
   @Field(() => String, { nullable: true })
-  countryName?: string | null
+  countryName?: string | null;
 
   @Field(() => FileProfile, { nullable: true })
-  profilePicture: FileProfile
+  profilePicture: FileProfile;
 
   @Field(() => Int)
-  unreadNotificationCount: number
+  unreadNotificationCount: number;
 
   @Field(() => RequiresUpdate, { nullable: true })
-  requiresUpdate: RequiresUpdate
+  requiresUpdate: RequiresUpdate;
 }

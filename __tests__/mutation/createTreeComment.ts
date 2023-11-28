@@ -4,9 +4,8 @@ import TestUtils from '../utils';
 import { CreateTreeCommentInput } from '../../src/resolvers/mutation/createTreeComment';
 import { TreeCommentProfile } from '../../src/types/TreeCommentProfile';
 
-
 const query = gql`
-  mutation createTreeComment($data: CreateTreeCommentInput!){
+  mutation createTreeComment($data: CreateTreeCommentInput!) {
     createTreeComment(data: $data) {
       comment
       createdAt
@@ -19,7 +18,6 @@ const query = gql`
 
 type Response = { createTreeComment: TreeCommentProfile };
 type Variables = { data: CreateTreeCommentInput };
-
 
 test('should succeed', async () => {
   const user = await global.config.utils.createUser();

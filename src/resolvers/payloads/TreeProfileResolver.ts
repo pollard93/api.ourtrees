@@ -5,7 +5,6 @@ import { Context } from '../../utils/types';
 import { TreeDataProfile } from '../../types/TreeDataProfile';
 import { UserProfile } from '../../types/UserProfile';
 
-
 @Resolver(() => TreeProfile)
 export class TreeProfileResolver {
   @FieldResolver(() => TreeDataProfile)

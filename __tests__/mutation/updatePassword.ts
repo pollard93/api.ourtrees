@@ -3,16 +3,14 @@ import '../../global-variables';
 import { comparePassword } from '../../src/modules/Auth';
 import { UpdatePasswordInput } from '../../src/resolvers/mutation/updatePassword';
 
-
 const query = gql`
-  mutation updatePassword($data: UpdatePasswordInput!){
+  mutation updatePassword($data: UpdatePasswordInput!) {
     updatePassword(data: $data)
   }
 `;
 
 type Response = { updatePassword: boolean };
 type Variables = { data: UpdatePasswordInput };
-
 
 test('should succeed', async () => {
   const user = await global.config.utils.createUser();
@@ -29,12 +27,13 @@ test('should succeed', async () => {
   );
 
   expect(data?.updatePassword).toBeTruthy();
-  expect(await comparePassword({
-    pwd: 'new-password',
-    hash: (await global.config.db.user.findUnique({ where: { id: user.user.id } }))?.password,
-  })).toBeTruthy();
+  expect(
+    await comparePassword({
+      pwd: 'new-password',
+      hash: (await global.config.db.user.findUnique({ where: { id: user.user.id } }))?.password,
+    }),
+  ).toBeTruthy();
 });
-
 
 test('should fail - Invalid new password', async () => {
   const user = await global.config.utils.createUser();
@@ -56,7 +55,6 @@ test('should fail - Invalid new password', async () => {
     expect(error.response.errors[0].message).toEqual('Invalid new password');
   }
 });
-
 
 test('should fail - Password Incorrect', async () => {
   const user = await global.config.utils.createUser();

@@ -1,36 +1,28 @@
 import 'reflect-metadata';
-import {
-  Resolver,
-  Ctx,
-  UseMiddleware,
-  Mutation,
-  Arg,
-  Field,
-  InputType
-} from 'type-graphql';
+import { Resolver, Ctx, UseMiddleware, Mutation, Arg, Field, InputType } from 'type-graphql';
 import { TreeData, TREE_CARE_SUNLIGHT_TYPE } from '@prisma/client';
 import { TokenType } from '../../modules/Auth/interfaces';
 import { Context } from '../../utils/types';
 import { AuthInterceptor } from '../../modules/Auth/middleware';
 import { TreeDataProfile } from '../../types/TreeDataProfile';
 
-
 @InputType()
 export class UpsertTreeDataCareSunlightVoteInput {
   @Field()
-  treeDataId: number
+  treeDataId: number;
 
   @Field(() => TREE_CARE_SUNLIGHT_TYPE)
-  type: TREE_CARE_SUNLIGHT_TYPE
+  type: TREE_CARE_SUNLIGHT_TYPE;
 }
-
 
 @Resolver()
 export class UpsertTreeDataCareSunlightVoteResolver {
   @Mutation(() => TreeDataProfile)
-  @UseMiddleware(AuthInterceptor({
-    accessTokens: [TokenType.GENERAL],
-  }))
+  @UseMiddleware(
+    AuthInterceptor({
+      accessTokens: [TokenType.GENERAL],
+    }),
+  )
   async upsertTreeDataCareSunlightVote(
     @Arg('data') { treeDataId, type }: UpsertTreeDataCareSunlightVoteInput,
     @Ctx() context: Context<TokenType.GENERAL>,
@@ -86,16 +78,32 @@ export class UpsertTreeDataCareSunlightVoteResolver {
         careSunlightResult: {
           upsert: {
             create: {
-              count: await context.db.read.treeDataCareSunlightVote.count({ where: { treeDataId } }),
-              indirect: await context.db.read.treeDataCareSunlightVote.count({ where: { treeDataId, type: TREE_CARE_SUNLIGHT_TYPE.INDIRECT } }),
-              partial: await context.db.read.treeDataCareSunlightVote.count({ where: { treeDataId, type: TREE_CARE_SUNLIGHT_TYPE.PARTIAL } }),
-              direct: await context.db.read.treeDataCareSunlightVote.count({ where: { treeDataId, type: TREE_CARE_SUNLIGHT_TYPE.DIRECT } }),
+              count: await context.db.read.treeDataCareSunlightVote.count({
+                where: { treeDataId },
+              }),
+              indirect: await context.db.read.treeDataCareSunlightVote.count({
+                where: { treeDataId, type: TREE_CARE_SUNLIGHT_TYPE.INDIRECT },
+              }),
+              partial: await context.db.read.treeDataCareSunlightVote.count({
+                where: { treeDataId, type: TREE_CARE_SUNLIGHT_TYPE.PARTIAL },
+              }),
+              direct: await context.db.read.treeDataCareSunlightVote.count({
+                where: { treeDataId, type: TREE_CARE_SUNLIGHT_TYPE.DIRECT },
+              }),
             },
             update: {
-              count: await context.db.read.treeDataCareSunlightVote.count({ where: { treeDataId } }),
-              indirect: await context.db.read.treeDataCareSunlightVote.count({ where: { treeDataId, type: TREE_CARE_SUNLIGHT_TYPE.INDIRECT } }),
-              partial: await context.db.read.treeDataCareSunlightVote.count({ where: { treeDataId, type: TREE_CARE_SUNLIGHT_TYPE.PARTIAL } }),
-              direct: await context.db.read.treeDataCareSunlightVote.count({ where: { treeDataId, type: TREE_CARE_SUNLIGHT_TYPE.DIRECT } }),
+              count: await context.db.read.treeDataCareSunlightVote.count({
+                where: { treeDataId },
+              }),
+              indirect: await context.db.read.treeDataCareSunlightVote.count({
+                where: { treeDataId, type: TREE_CARE_SUNLIGHT_TYPE.INDIRECT },
+              }),
+              partial: await context.db.read.treeDataCareSunlightVote.count({
+                where: { treeDataId, type: TREE_CARE_SUNLIGHT_TYPE.PARTIAL },
+              }),
+              direct: await context.db.read.treeDataCareSunlightVote.count({
+                where: { treeDataId, type: TREE_CARE_SUNLIGHT_TYPE.DIRECT },
+              }),
             },
           },
         },

@@ -4,9 +4,8 @@ import { TreeDataProfile } from '../../src/types/TreeDataProfile';
 import { UpsertTreeDataCareObtainingSeedsVoteInput } from '../../src/resolvers/mutation/upsertTreeDataCareObtainingSeedsVote';
 import TestUtils from '../utils';
 
-
 const query = gql`
-  mutation upsertTreeDataCareObtainingSeedsVote($data: UpsertTreeDataCareObtainingSeedsVoteInput!){
+  mutation upsertTreeDataCareObtainingSeedsVote($data: UpsertTreeDataCareObtainingSeedsVoteInput!) {
     upsertTreeDataCareObtainingSeedsVote(data: $data) {
       id
       careObtainingSeedsResult {
@@ -14,7 +13,7 @@ const query = gql`
           id
           content
           voteCount
-        }     
+        }
       }
     }
   }
@@ -22,7 +21,6 @@ const query = gql`
 
 type Response = { upsertTreeDataCareObtainingSeedsVote: TreeDataProfile };
 type Variables = { data: UpsertTreeDataCareObtainingSeedsVoteInput };
-
 
 test('should create result', async () => {
   const user = await global.config.utils.createUser();
@@ -53,9 +51,10 @@ test('should create result', async () => {
     { authorization: `Bearer ${user.token}` },
   );
 
-  expect(data?.upsertTreeDataCareObtainingSeedsVote?.careObtainingSeedsResult?.content?.id).toBe(content.id);
+  expect(data?.upsertTreeDataCareObtainingSeedsVote?.careObtainingSeedsResult?.content?.id).toBe(
+    content.id,
+  );
 });
-
 
 test('should upsert result', async () => {
   const user = await global.config.utils.createUser();
@@ -90,7 +89,6 @@ test('should upsert result', async () => {
     { authorization: `Bearer ${user.token}` },
   );
 
-
   /**
    * Same user votes for another
    */
@@ -120,9 +118,10 @@ test('should upsert result', async () => {
     { authorization: `Bearer ${user.token}` },
   );
 
-  expect(data?.upsertTreeDataCareObtainingSeedsVote?.careObtainingSeedsResult?.content?.id).toBe(content2.id);
+  expect(data?.upsertTreeDataCareObtainingSeedsVote?.careObtainingSeedsResult?.content?.id).toBe(
+    content2.id,
+  );
 });
-
 
 test('should fail if content does not exist', async () => {
   const user = await global.config.utils.createUser();

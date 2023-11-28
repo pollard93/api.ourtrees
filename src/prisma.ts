@@ -1,7 +1,6 @@
 import { DeepOmit } from 'ts-essentials';
 import { Prisma, PrismaClient } from '@prisma/client';
 
-
 /**
  * Remap prisma instances and omit read and write actions appropriately
  */
@@ -16,7 +15,7 @@ export interface Prisma {
         count: never;
         aggregate: never;
         groupBy: never;
-      }
+      };
     }
   >;
   read: DeepOmit<
@@ -34,7 +33,6 @@ export interface Prisma {
     }
   >;
 }
-
 
 export default (): Prisma => ({
   write: new PrismaClient({ datasources: { db: { url: process.env.DATABASE_URL_WRITE } } }) as any,

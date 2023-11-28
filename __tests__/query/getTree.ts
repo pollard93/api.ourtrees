@@ -4,10 +4,9 @@ import TestUtils from '../utils';
 import { GetTreeInput } from '../../src/resolvers/query/getTree';
 import { TreeProfile } from '../../src/types/TreeProfile';
 
-
 const query = gql`
-  query getTree($data: GetTreeInput!){
-    getTree(data: $data){
+  query getTree($data: GetTreeInput!) {
+    getTree(data: $data) {
       id
     }
   }
@@ -15,7 +14,6 @@ const query = gql`
 
 type Response = { getTree: TreeProfile };
 type Variables = { data?: GetTreeInput };
-
 
 test('should succeed', async () => {
   const user = await global.config.utils.createUser();
@@ -39,7 +37,6 @@ test('should succeed', async () => {
    */
   expect(data.data?.getTree.id).toEqual(tree.id);
 });
-
 
 test('should fail if entry does not exist', async () => {
   const user = await global.config.utils.createUser();

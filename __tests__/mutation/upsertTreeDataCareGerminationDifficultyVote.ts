@@ -4,9 +4,10 @@ import { TREE_CARE_GERMINATION_DIFFICULTY_TYPE } from '@prisma/client';
 import { TreeDataProfile } from '../../src/types/TreeDataProfile';
 import { UpsertTreeDataCareGerminationDifficultyVoteInput } from '../../src/resolvers/mutation/upsertTreeDataCareGerminationDifficultyVote';
 
-
 const query = gql`
-  mutation upsertTreeDataCareGerminationDifficultyVote($data: UpsertTreeDataCareGerminationDifficultyVoteInput!){
+  mutation upsertTreeDataCareGerminationDifficultyVote(
+    $data: UpsertTreeDataCareGerminationDifficultyVoteInput!
+  ) {
     upsertTreeDataCareGerminationDifficultyVote(data: $data) {
       id
       careGerminationDifficultyResult {
@@ -21,7 +22,6 @@ const query = gql`
 
 type Response = { upsertTreeDataCareGerminationDifficultyVote: TreeDataProfile };
 type Variables = { data: UpsertTreeDataCareGerminationDifficultyVoteInput };
-
 
 test('should create result', async () => {
   const user = await global.config.utils.createUser();
@@ -38,12 +38,19 @@ test('should create result', async () => {
     { authorization: `Bearer ${user.token}` },
   );
 
-  expect(data?.upsertTreeDataCareGerminationDifficultyVote.careGerminationDifficultyResult.count).toBe(1);
-  expect(data?.upsertTreeDataCareGerminationDifficultyVote.careGerminationDifficultyResult.easy).toBe(1);
-  expect(data?.upsertTreeDataCareGerminationDifficultyVote.careGerminationDifficultyResult.moderate).toBe(0);
-  expect(data?.upsertTreeDataCareGerminationDifficultyVote.careGerminationDifficultyResult.hard).toBe(0);
+  expect(
+    data?.upsertTreeDataCareGerminationDifficultyVote.careGerminationDifficultyResult.count,
+  ).toBe(1);
+  expect(
+    data?.upsertTreeDataCareGerminationDifficultyVote.careGerminationDifficultyResult.easy,
+  ).toBe(1);
+  expect(
+    data?.upsertTreeDataCareGerminationDifficultyVote.careGerminationDifficultyResult.moderate,
+  ).toBe(0);
+  expect(
+    data?.upsertTreeDataCareGerminationDifficultyVote.careGerminationDifficultyResult.hard,
+  ).toBe(0);
 });
-
 
 test('should update result', async () => {
   const user = await global.config.utils.createUser();
@@ -69,8 +76,16 @@ test('should update result', async () => {
     { authorization: `Bearer ${user.token}` },
   );
 
-  expect(data?.upsertTreeDataCareGerminationDifficultyVote.careGerminationDifficultyResult.count).toBe(1);
-  expect(data?.upsertTreeDataCareGerminationDifficultyVote.careGerminationDifficultyResult.easy).toBe(1);
-  expect(data?.upsertTreeDataCareGerminationDifficultyVote.careGerminationDifficultyResult.moderate).toBe(0);
-  expect(data?.upsertTreeDataCareGerminationDifficultyVote.careGerminationDifficultyResult.hard).toBe(0);
+  expect(
+    data?.upsertTreeDataCareGerminationDifficultyVote.careGerminationDifficultyResult.count,
+  ).toBe(1);
+  expect(
+    data?.upsertTreeDataCareGerminationDifficultyVote.careGerminationDifficultyResult.easy,
+  ).toBe(1);
+  expect(
+    data?.upsertTreeDataCareGerminationDifficultyVote.careGerminationDifficultyResult.moderate,
+  ).toBe(0);
+  expect(
+    data?.upsertTreeDataCareGerminationDifficultyVote.careGerminationDifficultyResult.hard,
+  ).toBe(0);
 });

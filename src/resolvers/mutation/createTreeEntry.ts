@@ -1,11 +1,5 @@
 import 'reflect-metadata';
-import { Resolver,
-  Ctx,
-  UseMiddleware,
-  Mutation,
-  Arg,
-  Field,
-  InputType } from 'type-graphql';
+import { Resolver, Ctx, UseMiddleware, Mutation, Arg, Field, InputType } from 'type-graphql';
 import { Prisma, TreeEntry } from '@prisma/client';
 import GraphQLUpload from 'graphql-upload/GraphQLUpload.js';
 import FileUpload from 'graphql-upload/Upload.js';
@@ -18,29 +12,29 @@ import { FileAuthenticationError, GenericError } from '../../errors';
 import { FileHandler } from '../../modules/FileHandler';
 import { TreeEntryProfile } from '../../types/TreeEntryProfile';
 
-
 @InputType()
 export class CreateTreeEntryInput {
   @Field()
-  treeId: string
+  treeId: string;
 
   @Field()
-  notes: string
+  notes: string;
 
   @Field()
-  createdAt: string
+  createdAt: string;
 
   @Field(() => GraphQLUpload, { nullable: true })
-  image?: FileUpload
+  image?: FileUpload;
 }
-
 
 @Resolver()
 export class CreateTreeEntryResolver {
   @Mutation(() => TreeEntryProfile)
-  @UseMiddleware(AuthInterceptor({
-    accessTokens: [TokenType.GENERAL],
-  }))
+  @UseMiddleware(
+    AuthInterceptor({
+      accessTokens: [TokenType.GENERAL],
+    }),
+  )
   async createTreeEntry(
     @Arg('data') { treeId, notes, createdAt, image }: CreateTreeEntryInput,
     @Ctx() context: Context<TokenType.GENERAL>,
@@ -58,12 +52,10 @@ export class CreateTreeEntryResolver {
     if (!tree) throw GenericError('Tree does not exist');
     if (tree.creatorId !== creatorId) throw GenericError('Unauthorized');
 
-
     /**
      * Create id so can be used for image url
      */
     const id = uuid4();
-
 
     /**
      * Processes and validates profile picture
@@ -83,7 +75,10 @@ export class CreateTreeEntryResolver {
       const imageResolved = resolved[0];
 
       // Store in bucket
-      const url = await FileHandler.putImage(`public/trees/${treeId}/entries/${id}${path.extname(imageResolved.filename)}`, imageResolved.buffer!);
+      const url = await FileHandler.putImage(
+        `public/trees/${treeId}/entries/${id}${path.extname(imageResolved.filename)}`,
+        imageResolved.buffer!,
+      );
 
       // Create
       return {
@@ -107,7 +102,7 @@ export class CreateTreeEntryResolver {
         id,
         notes,
         createdAt,
-        image: (image ? await processImage() : undefined),
+        image: image ? await processImage() : undefined,
         tree: { connect: { id: treeId } },
       },
     });

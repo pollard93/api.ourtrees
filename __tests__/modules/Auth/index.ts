@@ -8,14 +8,12 @@ import { LoginInput } from '../../../src/resolvers/mutation/login';
 import { ResetPasswordInput } from '../../../src/resolvers/mutation/resetPassword';
 import { RegisterInput } from '../../../src/resolvers/mutation/register';
 
-
 // -- AUTH ENDPOINTS -- //
-
 
 test('should login', async () => {
   const query = gql`
-    mutation login($data: LoginInput!){
-      login(data: $data){
+    mutation login($data: LoginInput!) {
+      login(data: $data) {
         token
       }
     }
@@ -26,15 +24,12 @@ test('should login', async () => {
 
   const { user } = await global.config.utils.createUser();
 
-  const { data, headers } = await global.config.client.rawRequest<Response, Variables>(
-    query,
-    {
-      data: {
-        email: user.email,
-        password: 'password',
-      },
+  const { data, headers } = await global.config.client.rawRequest<Response, Variables>(query, {
+    data: {
+      email: user.email,
+      password: 'password',
     },
-  );
+  });
 
   // Token returned is also set in the response headers
   expect(headers.get('general_token')).toEqual(data?.login.token);
@@ -54,15 +49,12 @@ test('should login', async () => {
   expect(refreshTokens.length).toEqual(1);
 
   // Logging in again
-  await global.config.client.rawRequest<Response, Variables>(
-    query,
-    {
-      data: {
-        email: user.email,
-        password: 'password',
-      },
+  await global.config.client.rawRequest<Response, Variables>(query, {
+    data: {
+      email: user.email,
+      password: 'password',
     },
-  );
+  });
 
   // Should have 2 refresh token in the database
   const refreshTokensAfter = await global.config.db.refreshToken.findMany({
@@ -75,11 +67,10 @@ test('should login', async () => {
   expect(refreshTokensAfter.length).toEqual(2);
 });
 
-
 test('should resetPassword', async () => {
   const query = gql`
-    mutation resetPassword($data: ResetPasswordInput!){
-      resetPassword(data: $data){
+    mutation resetPassword($data: ResetPasswordInput!) {
+      resetPassword(data: $data) {
         token
       }
     }
@@ -121,11 +112,10 @@ test('should resetPassword', async () => {
   expect(refreshTokens.length).toEqual(1);
 });
 
-
 test('should fail to resetPassword with expired token', async () => {
   const query = gql`
-    mutation resetPassword($data: ResetPasswordInput!){
-      resetPassword(data: $data){
+    mutation resetPassword($data: ResetPasswordInput!) {
+      resetPassword(data: $data) {
         token
       }
     }
@@ -157,11 +147,10 @@ test('should fail to resetPassword with expired token', async () => {
   }
 });
 
-
 test('should register', async () => {
   const query = gql`
     mutation register($data: RegisterInput!) {
-      register(data: $data){
+      register(data: $data) {
         token
         user {
           id

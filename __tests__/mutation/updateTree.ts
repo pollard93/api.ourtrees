@@ -4,9 +4,8 @@ import TestUtils from '../utils';
 import { UpdateTreeInput } from '../../src/resolvers/mutation/updateTree';
 import { TreeProfile } from '../../src/types/TreeProfile';
 
-
 const query = gql`
-  mutation updateTree($data: UpdateTreeInput!){
+  mutation updateTree($data: UpdateTreeInput!) {
     updateTree(data: $data) {
       id
       name
@@ -23,7 +22,6 @@ const query = gql`
 
 type Response = { updateTree: TreeProfile };
 type Variables = { data: UpdateTreeInput };
-
 
 test('should succeed without data', async () => {
   const user = await global.config.utils.createUser();
@@ -48,7 +46,6 @@ test('should succeed without data', async () => {
   expect(data?.updateTree.name).toEqual(tree.name);
   expect(data?.updateTree.cultivationDate).toEqual(tree.cultivationDate.toISOString());
 });
-
 
 test('should succeed with data', async () => {
   const user = await global.config.utils.createUser();

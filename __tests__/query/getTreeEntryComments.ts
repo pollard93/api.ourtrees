@@ -1,12 +1,14 @@
 import { gql } from 'graphql-request';
 import '../../global-variables';
 import TestUtils from '../utils';
-import { GetTreeEntryCommentsInput, TreeEntryCommentProfilesPayLoad } from '../../src/resolvers/query/getTreeEntryComments';
-
+import {
+  GetTreeEntryCommentsInput,
+  TreeEntryCommentProfilesPayLoad,
+} from '../../src/resolvers/query/getTreeEntryComments';
 
 const query = gql`
-  query getTreeEntryComments($data: GetTreeEntryCommentsInput!){
-    getTreeEntryComments(data: $data){
+  query getTreeEntryComments($data: GetTreeEntryCommentsInput!) {
+    getTreeEntryComments(data: $data) {
       comments {
         id
       }
@@ -17,7 +19,6 @@ const query = gql`
 
 type Response = { getTreeEntryComments: TreeEntryCommentProfilesPayLoad };
 type Variables = { data?: GetTreeEntryCommentsInput };
-
 
 test('should succeed', async () => {
   /**
@@ -70,10 +71,13 @@ test('should succeed', async () => {
    */
   expect(data.data?.getTreeEntryComments.comments.length).toEqual(2);
   expect(data.data?.getTreeEntryComments.count).toEqual(2);
-  expect(data.data?.getTreeEntryComments.comments.find((e) => e.id === treeEntryComment1.id)).toBeTruthy();
-  expect(data.data?.getTreeEntryComments.comments.find((e) => e.id === treeEntryComment2.id)).toBeTruthy();
+  expect(
+    data.data?.getTreeEntryComments.comments.find((e) => e.id === treeEntryComment1.id),
+  ).toBeTruthy();
+  expect(
+    data.data?.getTreeEntryComments.comments.find((e) => e.id === treeEntryComment2.id),
+  ).toBeTruthy();
 });
-
 
 test('should fail if tree entry does not exist', async () => {
   const user = await global.config.utils.createUser();

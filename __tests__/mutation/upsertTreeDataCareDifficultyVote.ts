@@ -4,9 +4,8 @@ import { TREE_CARE_DIFFICULTY_TYPE } from '@prisma/client';
 import { TreeDataProfile } from '../../src/types/TreeDataProfile';
 import { UpsertTreeDataCareDifficultyVoteInput } from '../../src/resolvers/mutation/upsertTreeDataCareDifficultyVote';
 
-
 const query = gql`
-  mutation upsertTreeDataCareDifficultyVote($data: UpsertTreeDataCareDifficultyVoteInput!){
+  mutation upsertTreeDataCareDifficultyVote($data: UpsertTreeDataCareDifficultyVoteInput!) {
     upsertTreeDataCareDifficultyVote(data: $data) {
       id
       careDifficultyResult {
@@ -21,7 +20,6 @@ const query = gql`
 
 type Response = { upsertTreeDataCareDifficultyVote: TreeDataProfile };
 type Variables = { data: UpsertTreeDataCareDifficultyVoteInput };
-
 
 test('should create result', async () => {
   const user = await global.config.utils.createUser();
@@ -43,7 +41,6 @@ test('should create result', async () => {
   expect(data?.upsertTreeDataCareDifficultyVote.careDifficultyResult.moderate).toBe(0);
   expect(data?.upsertTreeDataCareDifficultyVote.careDifficultyResult.hard).toBe(0);
 });
-
 
 test('should update result', async () => {
   const user = await global.config.utils.createUser();

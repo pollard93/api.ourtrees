@@ -1,27 +1,35 @@
 ## Setup
 
 ##### Prerequisites
+
 Install node, npm, docker and docker-compose, yarn and run `yarn install`
 
 ##### Update name
+
 Search and replace `api-ourtrees`
 
 ##### Add .env
+
 `cp .env.template .env`
 
 ##### Run minio and mysql
+
 `yarn dev`
 
 ##### Setup devlopment bucket
+
 `yarn ensure:bucket stage:development`
 
 ##### Deploy development database
+
 `yarn dev:deploy`
 
 ##### Generate prisma client and typescript interfaces
+
 `yarn dev:generate`
 
 ##### Start Server
+
 `yarn start`
 
 ## Testing
@@ -47,9 +55,9 @@ Search and replace `api-ourtrees`
 `yarn test:lint` or `yarn test:lint --fix`
 
 ##### To Visually see errors and fix on save in VSCODE
+
 Install eslint plugin and add below to settings.json
-`
-  "eslint.autoFixOnSave":  true,
+`  "eslint.autoFixOnSave":  true,
   "eslint.validate":  [
     "javascript",
     "javascriptreact",
@@ -68,9 +76,7 @@ Install eslint plugin and add below to settings.json
   },
   "[typescriptreact]":  {
     "editor.formatOnSave":  false,
-  },
-`
-
+  },`
 
 ## Build
 

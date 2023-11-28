@@ -2,13 +2,11 @@ import { FileHandlerInstance, FileHandler as FileHandlerClass } from 'node-fileh
 import Jimp from 'jimp';
 import { UrlProfile } from '../../types/FileProfile';
 
-
 /**
  * Type Filehandler with thumbnails by making a reference
  * Import this variable to use typed reference to singleton class
  */
 export const FileHandler = FileHandlerInstance as FileHandlerClass<keyof UrlProfile>;
-
 
 /**
  * Init Typed FileHandler
@@ -16,11 +14,11 @@ export const FileHandler = FileHandlerInstance as FileHandlerClass<keyof UrlProf
  */
 export const InitFileHandler = () => {
   if (
-    !process.env.SITE_URL
-    || !process.env.MINIO_ENDPOINT
-    || !process.env.MINIO_PORT
-    || !process.env.MINIO_ACCESS_KEY
-    || !process.env.MINIO_SECRET_KEY
+    !process.env.SITE_URL ||
+    !process.env.MINIO_ENDPOINT ||
+    !process.env.MINIO_PORT ||
+    !process.env.MINIO_ACCESS_KEY ||
+    !process.env.MINIO_SECRET_KEY
   ) {
     throw new Error('FileHandler env issue');
   }

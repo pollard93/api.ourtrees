@@ -4,7 +4,6 @@ import { TreeEntryCommentProfile } from '../../types/TreeEntryCommentProfile';
 import { Context } from '../../utils/types';
 import { UserProfile } from '../../types/UserProfile';
 
-
 @Resolver(() => TreeEntryCommentProfile)
 export class TreeEntryCommentProfileResolver {
   @FieldResolver(() => UserProfile)

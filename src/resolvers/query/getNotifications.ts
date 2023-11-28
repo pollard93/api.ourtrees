@@ -1,5 +1,6 @@
 import 'reflect-metadata';
-import { Resolver,
+import {
+  Resolver,
   Ctx,
   Query,
   UseMiddleware,
@@ -7,7 +8,8 @@ import { Resolver,
   Field,
   ObjectType,
   InputType,
-  Arg } from 'type-graphql';
+  Arg,
+} from 'type-graphql';
 import { Notification, Prisma } from '@prisma/client';
 import { Max } from 'class-validator';
 import { TokenType } from '../../modules/Auth/interfaces';
@@ -15,87 +17,82 @@ import { Context } from '../../utils/types';
 import { AuthInterceptor } from '../../modules/Auth/middleware';
 import { NotificationProfile } from '../../types/NotificationProfile';
 
-
 export enum SortOrder {
   asc = 'asc',
   desc = 'desc',
 }
 
-
 @InputType()
 class NotificationWhereUniqueInput {
   @Field()
-  id: string
+  id: string;
 }
-
 
 @InputType()
 class NotificationOrderByInput {
   @Field()
-  createdAt?: SortOrder
+  createdAt?: SortOrder;
 
   @Field()
-  id?: SortOrder
+  id?: SortOrder;
 
   @Field()
-  message?: SortOrder
+  message?: SortOrder;
 
   @Field()
-  onOpenType?: SortOrder
+  onOpenType?: SortOrder;
 
   @Field()
-  readDate?: SortOrder
+  readDate?: SortOrder;
 
   @Field()
-  receiverId?: SortOrder
+  receiverId?: SortOrder;
 
   @Field()
-  senderId?: SortOrder
+  senderId?: SortOrder;
 
   @Field()
-  type?: SortOrder
+  type?: SortOrder;
 
   @Field()
-  updatedAt?: SortOrder
+  updatedAt?: SortOrder;
 }
-
 
 @InputType()
 export class GetNotificationsInput {
   @Field(() => NotificationWhereUniqueInput)
-  cursor: NotificationWhereUniqueInput
+  cursor: NotificationWhereUniqueInput;
 
   @Field()
   @Max(30)
-  take: number
+  take: number;
 
   @Field(() => [NotificationOrderByInput])
-  orderBy: NotificationOrderByInput[]
+  orderBy: NotificationOrderByInput[];
 }
-
 
 @ObjectType()
 export class NotificationProfilesPayLoad {
   @Field(() => [NotificationProfile])
-  notifications: NotificationProfile[]
+  notifications: NotificationProfile[];
 
   @Field(() => Int)
-  count: number
+  count: number;
 }
-
 
 @Resolver()
 export class GetNotificationsResolver {
   @Query(() => NotificationProfilesPayLoad)
-  @UseMiddleware(AuthInterceptor({
-    accessTokens: [TokenType.GENERAL],
-  }))
+  @UseMiddleware(
+    AuthInterceptor({
+      accessTokens: [TokenType.GENERAL],
+    }),
+  )
   async getNotifications(
     @Arg('data', { nullable: true }) data: GetNotificationsInput,
     @Ctx() context: Context<TokenType.GENERAL>,
-  ): Promise<{ notifications: Notification[], count: number }> {
+  ): Promise<{ notifications: Notification[]; count: number }> {
     const { email } = context.accessToken.data;
-
 
     /**
      * Always query users own notifications only
@@ -106,17 +103,17 @@ export class GetNotificationsResolver {
       },
     };
 
-
     /**
      * Get notifications and return
      */
-    const notifications = await context.db.read.user.findUnique({ where: { email } }).notificationsReceived({
-      where,
-      cursor: data?.cursor,
-      take: data?.take,
-      orderBy: data?.orderBy,
-    });
-
+    const notifications = await context.db.read.user
+      .findUnique({ where: { email } })
+      .notificationsReceived({
+        where,
+        cursor: data?.cursor,
+        take: data?.take,
+        orderBy: data?.orderBy,
+      });
 
     /**
      * Count
@@ -124,7 +121,6 @@ export class GetNotificationsResolver {
     const count = await context.db.read.notification.count({
       where,
     });
-
 
     return {
       notifications: notifications || [],

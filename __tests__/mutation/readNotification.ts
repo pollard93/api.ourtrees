@@ -4,10 +4,9 @@ import TestUtils from '../utils';
 import { ReadNotificationInput } from '../../src/resolvers/mutation/readNotification';
 import { NotificationProfile } from '../../src/types/NotificationProfile';
 
-
 const query = gql`
-  mutation readNotification($data: ReadNotificationInput!){
-    readNotification(data: $data){
+  mutation readNotification($data: ReadNotificationInput!) {
+    readNotification(data: $data) {
       id
       receiver {
         id
@@ -22,7 +21,6 @@ const query = gql`
 
 type Response = { readNotification: NotificationProfile };
 type Variables = { data: ReadNotificationInput };
-
 
 test('should read notification', async () => {
   const receiver = await global.config.utils.createUser();
@@ -57,7 +55,6 @@ test('should read notification', async () => {
   expect(data?.readNotification.readDate).toBeTruthy();
 });
 
-
 test('should unRead notification', async () => {
   const receiver = await global.config.utils.createUser();
   const sender = await global.config.utils.createUser();
@@ -90,7 +87,6 @@ test('should unRead notification', async () => {
 
   expect(data?.readNotification.readDate).toBeFalsy();
 });
-
 
 test('should fail to read notification that requestor is not a receiver of', async () => {
   const receiver = await global.config.utils.createUser();
@@ -128,7 +124,6 @@ test('should fail to read notification that requestor is not a receiver of', asy
     expect(error.response.errors[0].message).toEqual('Unauthorised');
   }
 });
-
 
 test('should fail to read notification that does not exist', async () => {
   const user = await global.config.utils.createUser();

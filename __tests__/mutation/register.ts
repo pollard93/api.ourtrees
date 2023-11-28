@@ -4,10 +4,9 @@ import '../../global-variables';
 import { AuthPayload } from '../../src/types/AuthPayload';
 import { RegisterInput } from '../../src/resolvers/mutation/register';
 
-
 const query = gql`
   mutation register($data: RegisterInput!) {
-    register(data: $data){
+    register(data: $data) {
       token
       user {
         id
@@ -18,8 +17,7 @@ const query = gql`
 `;
 
 type Response = { register: AuthPayload };
-type Variables = { data: RegisterInput }
-
+type Variables = { data: RegisterInput };
 
 test('should succeed', async () => {
   const email = TestUtils.randomEmail();
@@ -35,7 +33,6 @@ test('should succeed', async () => {
   expect(data?.register.user.email).toEqual(email);
   expect(global.config.emailEventsStubs.emitTransactionalEmail.callCount).toEqual(1);
 });
-
 
 test('should fail if email already exists', async () => {
   const { user } = await global.config.utils.createUser();
@@ -54,7 +51,6 @@ test('should fail if email already exists', async () => {
   }
 });
 
-
 test('should fail if email invalid', async () => {
   try {
     await global.config.client.rawRequest<Response, Variables>(query, {
@@ -69,7 +65,6 @@ test('should fail if email invalid', async () => {
     expect(error.response.errors[0].message).toEqual('Email Invalid');
   }
 });
-
 
 test('should fail if password invalid', async () => {
   try {

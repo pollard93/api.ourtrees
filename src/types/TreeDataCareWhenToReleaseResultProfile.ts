@@ -2,45 +2,44 @@ import { TREE_CARE_DIFFICULTY_TYPE } from '@prisma/client';
 import 'reflect-metadata';
 import { ObjectType, Field, ID } from 'type-graphql';
 
-
 @ObjectType()
 export class TreeDataCareWhenToReleaseResultProfile {
   @Field()
-  count: number
+  count: number;
 
   @Field()
-  jan: number
+  jan: number;
 
   @Field()
-  feb: number
+  feb: number;
 
   @Field()
-  mar: number
+  mar: number;
 
   @Field()
-  apr: number
+  apr: number;
 
   @Field()
-  may: number
+  may: number;
 
   @Field()
-  jun: number
+  jun: number;
 
   @Field()
-  jul: number
+  jul: number;
 
   @Field()
-  aug: number
+  aug: number;
 
   @Field()
-  sep: number
+  sep: number;
 
   @Field()
-  oct: number
+  oct: number;
 
   @Field()
-  nov: number
+  nov: number;
 
   @Field()
-  dec: number
+  dec: number;
 }

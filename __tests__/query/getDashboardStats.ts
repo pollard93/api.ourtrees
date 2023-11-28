@@ -2,7 +2,6 @@ import { gql } from 'graphql-request';
 import '../../global-variables';
 import { DashboardStatsProfilesPayLoad } from '../../src/resolvers/query/getDashboardStats';
 
-
 const query = gql`
   query getDashboardStats {
     getDashboardStats {
@@ -16,7 +15,6 @@ const query = gql`
 
 type Response = { getDashboardStats: DashboardStatsProfilesPayLoad };
 type Variables = { data?: undefined };
-
 
 test('should succeed', async () => {
   /**
@@ -42,7 +40,6 @@ test('should succeed', async () => {
   expect(data.data?.getDashboardStats.items[0].header).toBeTruthy();
   expect(data.data?.getDashboardStats.items[0].content).toEqual('Trees Planted');
 });
-
 
 test('should succeed with country', async () => {
   /**

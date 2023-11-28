@@ -1,5 +1,6 @@
 import 'reflect-metadata';
-import { Resolver,
+import {
+  Resolver,
   Ctx,
   Query,
   UseMiddleware,
@@ -7,7 +8,8 @@ import { Resolver,
   Field,
   ObjectType,
   InputType,
-  Arg } from 'type-graphql';
+  Arg,
+} from 'type-graphql';
 import { Tree, Prisma } from '@prisma/client';
 import { Max } from 'class-validator';
 import { TokenType } from '../../modules/Auth/interfaces';
@@ -15,70 +17,66 @@ import { Context } from '../../utils/types';
 import { AuthInterceptor } from '../../modules/Auth/middleware';
 import { TreeProfile } from '../../types/TreeProfile';
 
-
 export enum SortOrder {
   asc = 'asc',
   desc = 'desc',
 }
 
-
 @InputType()
 class TreeWhereInput {
   @Field({ nullable: true })
-  treeDataId?: number
+  treeDataId?: number;
 
   @Field({ nullable: true })
-  creatorId?: string
+  creatorId?: string;
 
   @Field({ nullable: true })
-  followerId?: string
+  followerId?: string;
 
   @Field({ nullable: true })
-  countryName?: string
+  countryName?: string;
 }
-
 
 @InputType()
 class TreeWhereUniqueInput {
   @Field()
-  id: string
+  id: string;
 }
-
 
 @InputType()
 export class GetTreesInput {
   @Field(() => TreeWhereInput)
-  where: TreeWhereInput
+  where: TreeWhereInput;
 
   @Field(() => TreeWhereUniqueInput, { nullable: true })
-  cursor?: TreeWhereUniqueInput
+  cursor?: TreeWhereUniqueInput;
 
   @Field()
   @Max(30)
-  take: number
+  take: number;
 }
-
 
 @ObjectType()
 export class TreeProfilesPayLoad {
   @Field(() => [TreeProfile])
-  trees: TreeProfile[]
+  trees: TreeProfile[];
 
   @Field(() => Int)
-  count: number
+  count: number;
 }
-
 
 @Resolver()
 export class GetTreesResolver {
   @Query(() => TreeProfilesPayLoad)
-  @UseMiddleware(AuthInterceptor({
-    accessTokens: [TokenType.GENERAL],
-  }))
+  @UseMiddleware(
+    AuthInterceptor({
+      accessTokens: [TokenType.GENERAL],
+    }),
+  )
   async getTrees(
     @Arg('data') data: GetTreesInput,
     @Ctx() context: Context<TokenType.GENERAL>,
-  ): Promise<{ trees: Tree[], count: number }> {
+  ): Promise<{ trees: Tree[]; count: number }> {
     /**
      * Where
      */
@@ -89,7 +87,6 @@ export class GetTreesResolver {
       ...(data.where.countryName ? { creator: { countryName: data.where.countryName } } : {}),
     };
 
-
     /**
      * Get trees and return
      */
@@ -99,14 +96,12 @@ export class GetTreesResolver {
       take: data.take,
     });
 
-
     /**
      * Count
      */
     const count = await context.db.read.tree.count({
       where,
     });
-
 
     return {
       trees,

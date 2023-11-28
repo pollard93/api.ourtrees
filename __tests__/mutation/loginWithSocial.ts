@@ -4,10 +4,9 @@ import TestUtils from '../utils';
 import { LoginWithSocialInput, SocialProvider } from '../../src/resolvers/mutation/loginWithSocial';
 import { AuthPayload } from '../../src/types/AuthPayload';
 
-
 const query = gql`
-  mutation loginWithSocial($data: LoginWithSocialInput!){
-    loginWithSocial(data: $data){
+  mutation loginWithSocial($data: LoginWithSocialInput!) {
+    loginWithSocial(data: $data) {
       token
       user {
         id
@@ -20,7 +19,6 @@ const query = gql`
 type Response = { loginWithSocial: AuthPayload };
 type Variables = { data: LoginWithSocialInput };
 
-
 /**
  * FACEBOOK
  */
@@ -28,7 +26,8 @@ type Variables = { data: LoginWithSocialInput };
 test('(facebook) - should succeed and return general access token for new user', async () => {
   const email = TestUtils.randomEmail();
 
-  const { data } = await global.config.client.rawRequest<Response, Variables>(query,
+  const { data } = await global.config.client.rawRequest<Response, Variables>(
+    query,
     {
       data: {
         provider: SocialProvider.FACEBOOK,
@@ -39,13 +38,16 @@ test('(facebook) - should succeed and return general access token for new user',
         id: TestUtils.randomString(),
         email,
       })}`,
-    });
+    },
+  );
 
   expect(typeof data?.loginWithSocial.token).toEqual('string');
   expect(data?.loginWithSocial.user.email).toEqual(email);
 
   // User should be verified
-  const user = await global.config.db.user.findUnique({ where: { id: data?.loginWithSocial.user.id } });
+  const user = await global.config.db.user.findUnique({
+    where: { id: data?.loginWithSocial.user.id },
+  });
   expect(user?.verified).toBeTruthy();
 });
 
@@ -64,7 +66,8 @@ test('(facebook) - should succeed and return general access token for existing u
     },
   });
 
-  const { data } = await global.config.client.rawRequest<Response, Variables>(query,
+  const { data } = await global.config.client.rawRequest<Response, Variables>(
+    query,
     {
       data: {
         provider: SocialProvider.FACEBOOK,
@@ -72,13 +75,13 @@ test('(facebook) - should succeed and return general access token for existing u
     },
     {
       authorization: `Bearer ${JSON.stringify(user)}`,
-    });
+    },
+  );
 
   expect(typeof data?.loginWithSocial.token).toEqual('string');
   expect(data?.loginWithSocial.user.id).toEqual(user.id);
   expect(data?.loginWithSocial.user.email).toEqual(user.email);
 });
-
 
 /**
  * GOOGLE
@@ -87,7 +90,8 @@ test('(facebook) - should succeed and return general access token for existing u
 test('(google) - should succeed and return general access token for new user', async () => {
   const email = TestUtils.randomEmail();
 
-  const { data } = await global.config.client.rawRequest<Response, Variables>(query,
+  const { data } = await global.config.client.rawRequest<Response, Variables>(
+    query,
     {
       data: {
         provider: SocialProvider.GOOGLE,
@@ -98,13 +102,16 @@ test('(google) - should succeed and return general access token for new user', a
         sub: TestUtils.randomString(),
         email,
       })}`,
-    });
+    },
+  );
 
   expect(typeof data?.loginWithSocial.token).toEqual('string');
   expect(data?.loginWithSocial.user.email).toEqual(email);
 
   // User should be verified
-  const user = await global.config.db.user.findUnique({ where: { id: data?.loginWithSocial.user.id } });
+  const user = await global.config.db.user.findUnique({
+    where: { id: data?.loginWithSocial.user.id },
+  });
   expect(user?.verified).toBeTruthy();
 });
 
@@ -123,7 +130,8 @@ test('(google) - should succeed and return general access token for existing use
     },
   });
 
-  const { data } = await global.config.client.rawRequest<Response, Variables>(query,
+  const { data } = await global.config.client.rawRequest<Response, Variables>(
+    query,
     {
       data: {
         provider: SocialProvider.GOOGLE,
@@ -134,7 +142,8 @@ test('(google) - should succeed and return general access token for existing use
         sub: user.id,
         email: user.email,
       })}`,
-    });
+    },
+  );
 
   expect(typeof data?.loginWithSocial.token).toEqual('string');
   expect(data?.loginWithSocial.user.id).toEqual(user.id);
@@ -148,7 +157,8 @@ test('(google) - should succeed and return general access token for existing use
 test('should succeed with same email across both social platforms', async () => {
   const email = TestUtils.randomEmail();
   {
-    const { data } = await global.config.client.rawRequest<Response, Variables>(query,
+    const { data } = await global.config.client.rawRequest<Response, Variables>(
+      query,
       {
         data: {
           provider: SocialProvider.FACEBOOK,
@@ -159,13 +169,15 @@ test('should succeed with same email across both social platforms', async () => 
           id: TestUtils.randomString(),
           email,
         })}`,
-      });
+      },
+    );
 
     expect(data?.loginWithSocial.token).toBeTruthy();
   }
 
   {
-    const { data } = await global.config.client.rawRequest<Response, Variables>(query,
+    const { data } = await global.config.client.rawRequest<Response, Variables>(
+      query,
       {
         data: {
           provider: SocialProvider.GOOGLE,
@@ -176,7 +188,8 @@ test('should succeed with same email across both social platforms', async () => 
           sub: TestUtils.randomString(),
           email,
         })}`,
-      });
+      },
+    );
 
     expect(data?.loginWithSocial.token).toBeTruthy();
   }

@@ -11,7 +11,6 @@ import TestUtils from './__tests__/utils';
 import './global-variables';
 import { InitFileHandler } from './src/modules/FileHandler';
 
-
 export type Config = {
   server: http.Server;
   db: PrismaClient;
@@ -30,9 +29,7 @@ export type Config = {
   };
 };
 
-
 jest.setTimeout(10000);
-
 
 beforeAll(async () => {
   /**
@@ -43,12 +40,10 @@ beforeAll(async () => {
   // eslint-disable-next-line global-require
   const fetch = require('fetch-cookie')(crossFetch);
 
-
   /**
    * Init FileHandler
    */
   InitFileHandler();
-
 
   /**
    * Setup config
@@ -57,7 +52,9 @@ beforeAll(async () => {
     server,
     db: db.write as any,
     utils: new TestUtils(db.write as any),
-    client: new GraphQLClient(`http://localhost:${(server.address() as any).port}/graphql`, { fetch }),
+    client: new GraphQLClient(`http://localhost:${(server.address() as any).port}/graphql`, {
+      fetch,
+    }),
     baseUrl: `http://localhost:${(server.address() as any).port}`,
     notificationEventsStubs: {
       emitDBNotification: sinon.stub(NotificationEmitter.prototype, 'emitDBNotification'),
@@ -71,7 +68,6 @@ beforeAll(async () => {
     },
   };
 });
-
 
 // eslint-disable-next-line jest/no-done-callback
 afterAll((done) => {

@@ -4,9 +4,8 @@ import TestUtils from '../utils';
 import { CreateTreeInput } from '../../src/resolvers/mutation/createTree';
 import { TreeProfile } from '../../src/types/TreeProfile';
 
-
 const query = gql`
-  mutation createTree($data: CreateTreeInput!){
+  mutation createTree($data: CreateTreeInput!) {
     createTree(data: $data) {
       id
       name
@@ -23,7 +22,6 @@ const query = gql`
 
 type Response = { createTree: TreeProfile };
 type Variables = { data: CreateTreeInput };
-
 
 test('should succeed', async () => {
   const user = await global.config.utils.createUser();
@@ -46,7 +44,6 @@ test('should succeed', async () => {
   expect(data?.createTree.treeData.id).toEqual(treeData.id);
   expect(data?.createTree.creator.id).toEqual(user.user.id);
 });
-
 
 test('should succeed with cultivation date', async () => {
   const user = await global.config.utils.createUser();

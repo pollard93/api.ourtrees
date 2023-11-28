@@ -1,10 +1,12 @@
 import { Context } from './types';
 
-
 /**
  * Update tree data with top voted content
  */
-export const setTopVotedTreeDataCareHowToPlantSeedsContent = async (context: Context<any>, treeDataId: number) => {
+export const setTopVotedTreeDataCareHowToPlantSeedsContent = async (
+  context: Context<any>,
+  treeDataId: number,
+) => {
   /**
    * Get all content for the tree data with votes counted
    * Exclude reportedAt
@@ -41,20 +43,24 @@ export const setTopVotedTreeDataCareHowToPlantSeedsContent = async (context: Con
       careHowToPlantSeedsResult: {
         upsert: {
           create: {
-            content: topVoted ? {
-              connect: {
-                id: topVoted.id,
-              },
-            } : undefined,
+            content: topVoted
+              ? {
+                  connect: {
+                    id: topVoted.id,
+                  },
+                }
+              : undefined,
           },
           update: {
-            content: topVoted ? {
-              connect: {
-                id: topVoted.id,
-              },
-            } : {
-              disconnect: true,
-            },
+            content: topVoted
+              ? {
+                  connect: {
+                    id: topVoted.id,
+                  },
+                }
+              : {
+                  disconnect: true,
+                },
           },
         },
       },

@@ -1,6 +1,12 @@
 import { EventEmitter } from 'events';
 import { MailDataRequired } from '@sendgrid/mail';
-import { EMAIL_EVENT_TYPE, EMAIL_TRANSACTIONAL_TYPE, TransactionalEmailArgs, InternalEmailArgs, EMAIL_INTERNAL_TYPE } from './types';
+import {
+  EMAIL_EVENT_TYPE,
+  EMAIL_TRANSACTIONAL_TYPE,
+  TransactionalEmailArgs,
+  InternalEmailArgs,
+  EMAIL_INTERNAL_TYPE,
+} from './types';
 
 export default class EmailEmitter extends EventEmitter {
   emitRawEmail(data: MailDataRequired) {

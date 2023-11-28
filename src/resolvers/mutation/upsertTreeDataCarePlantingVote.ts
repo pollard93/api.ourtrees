@@ -1,37 +1,28 @@
 import 'reflect-metadata';
-import {
-  Resolver,
-  Ctx,
-  UseMiddleware,
-  Mutation,
-  Arg,
-  Field,
-  InputType,
-  Int
-} from 'type-graphql';
+import { Resolver, Ctx, UseMiddleware, Mutation, Arg, Field, InputType, Int } from 'type-graphql';
 import { TreeData } from '@prisma/client';
 import { TokenType } from '../../modules/Auth/interfaces';
 import { Context } from '../../utils/types';
 import { AuthInterceptor } from '../../modules/Auth/middleware';
 import { TreeDataProfile } from '../../types/TreeDataProfile';
 
-
 @InputType()
 export class UpsertTreeDataCarePlantingVoteInput {
   @Field()
-  treeDataId: number
+  treeDataId: number;
 
   @Field(() => [Int])
-  months: number[]
+  months: number[];
 }
-
 
 @Resolver()
 export class UpsertTreeDataCarePlantingVoteResolver {
   @Mutation(() => TreeDataProfile)
-  @UseMiddleware(AuthInterceptor({
-    accessTokens: [TokenType.GENERAL],
-  }))
+  @UseMiddleware(
+    AuthInterceptor({
+      accessTokens: [TokenType.GENERAL],
+    }),
+  )
   async upsertTreeDataCarePlantingVote(
     @Arg('data') { treeDataId, months }: UpsertTreeDataCarePlantingVoteInput,
     @Ctx() context: Context<TokenType.GENERAL>,
@@ -109,34 +100,86 @@ export class UpsertTreeDataCarePlantingVoteResolver {
         carePlantingResult: {
           upsert: {
             create: {
-              count: await context.db.read.treeDataCarePlantingVote.count({ where: { treeDataId } }),
-              jan: await context.db.read.treeDataCarePlantingVote.count({ where: { treeDataId, jan: true } }),
-              feb: await context.db.read.treeDataCarePlantingVote.count({ where: { treeDataId, feb: true } }),
-              mar: await context.db.read.treeDataCarePlantingVote.count({ where: { treeDataId, mar: true } }),
-              apr: await context.db.read.treeDataCarePlantingVote.count({ where: { treeDataId, apr: true } }),
-              may: await context.db.read.treeDataCarePlantingVote.count({ where: { treeDataId, may: true } }),
-              jun: await context.db.read.treeDataCarePlantingVote.count({ where: { treeDataId, jun: true } }),
-              jul: await context.db.read.treeDataCarePlantingVote.count({ where: { treeDataId, jul: true } }),
-              aug: await context.db.read.treeDataCarePlantingVote.count({ where: { treeDataId, aug: true } }),
-              sep: await context.db.read.treeDataCarePlantingVote.count({ where: { treeDataId, sep: true } }),
-              oct: await context.db.read.treeDataCarePlantingVote.count({ where: { treeDataId, oct: true } }),
-              nov: await context.db.read.treeDataCarePlantingVote.count({ where: { treeDataId, nov: true } }),
-              dec: await context.db.read.treeDataCarePlantingVote.count({ where: { treeDataId, dec: true } }),
+              count: await context.db.read.treeDataCarePlantingVote.count({
+                where: { treeDataId },
+              }),
+              jan: await context.db.read.treeDataCarePlantingVote.count({
+                where: { treeDataId, jan: true },
+              }),
+              feb: await context.db.read.treeDataCarePlantingVote.count({
+                where: { treeDataId, feb: true },
+              }),
+              mar: await context.db.read.treeDataCarePlantingVote.count({
+                where: { treeDataId, mar: true },
+              }),
+              apr: await context.db.read.treeDataCarePlantingVote.count({
+                where: { treeDataId, apr: true },
+              }),
+              may: await context.db.read.treeDataCarePlantingVote.count({
+                where: { treeDataId, may: true },
+              }),
+              jun: await context.db.read.treeDataCarePlantingVote.count({
+                where: { treeDataId, jun: true },
+              }),
+              jul: await context.db.read.treeDataCarePlantingVote.count({
+                where: { treeDataId, jul: true },
+              }),
+              aug: await context.db.read.treeDataCarePlantingVote.count({
+                where: { treeDataId, aug: true },
+              }),
+              sep: await context.db.read.treeDataCarePlantingVote.count({
+                where: { treeDataId, sep: true },
+              }),
+              oct: await context.db.read.treeDataCarePlantingVote.count({
+                where: { treeDataId, oct: true },
+              }),
+              nov: await context.db.read.treeDataCarePlantingVote.count({
+                where: { treeDataId, nov: true },
+              }),
+              dec: await context.db.read.treeDataCarePlantingVote.count({
+                where: { treeDataId, dec: true },
+              }),
             },
             update: {
-              count: await context.db.read.treeDataCarePlantingVote.count({ where: { treeDataId } }),
-              jan: await context.db.read.treeDataCarePlantingVote.count({ where: { treeDataId, jan: true } }),
-              feb: await context.db.read.treeDataCarePlantingVote.count({ where: { treeDataId, feb: true } }),
-              mar: await context.db.read.treeDataCarePlantingVote.count({ where: { treeDataId, mar: true } }),
-              apr: await context.db.read.treeDataCarePlantingVote.count({ where: { treeDataId, apr: true } }),
-              may: await context.db.read.treeDataCarePlantingVote.count({ where: { treeDataId, may: true } }),
-              jun: await context.db.read.treeDataCarePlantingVote.count({ where: { treeDataId, jun: true } }),
-              jul: await context.db.read.treeDataCarePlantingVote.count({ where: { treeDataId, jul: true } }),
-              aug: await context.db.read.treeDataCarePlantingVote.count({ where: { treeDataId, aug: true } }),
-              sep: await context.db.read.treeDataCarePlantingVote.count({ where: { treeDataId, sep: true } }),
-              oct: await context.db.read.treeDataCarePlantingVote.count({ where: { treeDataId, oct: true } }),
-              nov: await context.db.read.treeDataCarePlantingVote.count({ where: { treeDataId, nov: true } }),
-              dec: await context.db.read.treeDataCarePlantingVote.count({ where: { treeDataId, dec: true } }),
+              count: await context.db.read.treeDataCarePlantingVote.count({
+                where: { treeDataId },
+              }),
+              jan: await context.db.read.treeDataCarePlantingVote.count({
+                where: { treeDataId, jan: true },
+              }),
+              feb: await context.db.read.treeDataCarePlantingVote.count({
+                where: { treeDataId, feb: true },
+              }),
+              mar: await context.db.read.treeDataCarePlantingVote.count({
+                where: { treeDataId, mar: true },
+              }),
+              apr: await context.db.read.treeDataCarePlantingVote.count({
+                where: { treeDataId, apr: true },
+              }),
+              may: await context.db.read.treeDataCarePlantingVote.count({
+                where: { treeDataId, may: true },
+              }),
+              jun: await context.db.read.treeDataCarePlantingVote.count({
+                where: { treeDataId, jun: true },
+              }),
+              jul: await context.db.read.treeDataCarePlantingVote.count({
+                where: { treeDataId, jul: true },
+              }),
+              aug: await context.db.read.treeDataCarePlantingVote.count({
+                where: { treeDataId, aug: true },
+              }),
+              sep: await context.db.read.treeDataCarePlantingVote.count({
+                where: { treeDataId, sep: true },
+              }),
+              oct: await context.db.read.treeDataCarePlantingVote.count({
+                where: { treeDataId, oct: true },
+              }),
+              nov: await context.db.read.treeDataCarePlantingVote.count({
+                where: { treeDataId, nov: true },
+              }),
+              dec: await context.db.read.treeDataCarePlantingVote.count({
+                where: { treeDataId, dec: true },
+              }),
             },
           },
         },

@@ -3,16 +3,14 @@ import '../../global-variables';
 import { ReportTreeCommentInput } from '../../src/resolvers/mutation/reportTreeComment';
 import TestUtils from '../utils';
 
-
 const query = gql`
-  mutation reportTreeComment($data: ReportTreeCommentInput!){
+  mutation reportTreeComment($data: ReportTreeCommentInput!) {
     reportTreeComment(data: $data)
   }
 `;
 
 type Response = { reportTreeComment: boolean };
 type Variables = { data: ReportTreeCommentInput };
-
 
 test('should succeed', async () => {
   const user = await global.config.utils.createUser();
@@ -44,9 +42,10 @@ test('should succeed', async () => {
   );
 
   expect(data?.reportTreeComment).toBeTruthy();
-  expect((await global.config.db.treeComment.findUnique({ where: { id: comment.id } }))?.reportedAt).toBeTruthy();
+  expect(
+    (await global.config.db.treeComment.findUnique({ where: { id: comment.id } }))?.reportedAt,
+  ).toBeTruthy();
 });
-
 
 test('should fail if does not exist', async () => {
   const user = await global.config.utils.createUser();

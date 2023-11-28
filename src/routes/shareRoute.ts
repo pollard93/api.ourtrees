@@ -5,14 +5,12 @@ import { getMobileClientUrl } from '../utils/functions';
 import Prisma from '../prisma';
 import { BaseRouteProps } from './interfaces';
 
-
 interface ShareViewProps extends BaseRouteProps {
   title: string;
   description: string;
   url: string;
   imageUrl: string;
 }
-
 
 /**
  * Route used for sharing
@@ -27,7 +25,9 @@ const shareRoute = (e: express.Application) => {
         case 'user':
           const user = await prisma.read.user.findUnique({ where: { id: req.params.id } });
           if (!user) throw new Error();
-          const image = await prisma.read.user.findUnique({ where: { id: req.params.id } }).profilePicture();
+          const image = await prisma.read.user
+            .findUnique({ where: { id: req.params.id } })
+            .profilePicture();
 
           const props: ShareViewProps = {
             title: user.name || '',
@@ -37,10 +37,12 @@ const shareRoute = (e: express.Application) => {
               host: req.get('host'),
               pathname: req.originalUrl,
             }),
-            imageUrl: image ? await FileHandler.getUrl({
-              path: image.path,
-              thumbnail: 'large',
-            }) : '',
+            imageUrl: image
+              ? await FileHandler.getUrl({
+                  path: image.path,
+                  thumbnail: 'large',
+                })
+              : '',
             deepLink: `${getMobileClientUrl()}user/${req.params.id}`,
             appStoreUrl: process.env.APP_STORE_URL || '',
             playStoreUrl: process.env.PLAY_STORE_URL || '',

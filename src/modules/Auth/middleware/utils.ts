@@ -2,12 +2,13 @@ import * as jwt from 'jsonwebtoken';
 import { Context, VerifiedToken } from '../../../utils/types';
 import { TokenArgs, TokenType } from '../interfaces';
 
-
 /**
  * Safely decodes access token from context, does not verify
  * Return null if error
  */
-const safelyDecodeAccessToken = <T extends TokenType | null>(context: Context<T>): TokenArgs<T> | null => {
+const safelyDecodeAccessToken = <T extends TokenType | null>(
+  context: Context<T>,
+): TokenArgs<T> | null => {
   try {
     return jwt.decode((context.req?.headers?.authorization || '').replace('Bearer ', ''));
   } catch (e) {
@@ -15,15 +16,19 @@ const safelyDecodeAccessToken = <T extends TokenType | null>(context: Context<T>
   }
 };
 
-
 /**
  * Safely verifies access token
  * Returns data and error
  */
-export const verifyAccessToken = <T extends TokenType | null>(context: Context<T>): VerifiedToken<T> => {
+export const verifyAccessToken = <T extends TokenType | null>(
+  context: Context<T>,
+): VerifiedToken<T> => {
   try {
     return {
-      data: jwt.verify((context.req?.headers?.authorization || '').replace('Bearer ', ''), process.env.JWT_SECRET),
+      data: jwt.verify(
+        (context.req?.headers?.authorization || '').replace('Bearer ', ''),
+        process.env.JWT_SECRET,
+      ),
     };
   } catch (error) {
     return {
@@ -32,7 +37,6 @@ export const verifyAccessToken = <T extends TokenType | null>(context: Context<T
     };
   }
 };
-
 
 /**
  * Gets refresh token from context based on access token type
@@ -52,12 +56,14 @@ const getRefreshToken = (accessTokenType: TokenType, context: Context<null>) => 
   }
 };
 
-
 /**
  * Safely decodes access token from context, does not verify
  * Return null if error
  */
-const safelyDecodeRefreshToken = (accessTokenType: TokenType, context: Context<null>): TokenArgs<TokenType.REFRESH> | null => {
+const safelyDecodeRefreshToken = (
+  accessTokenType: TokenType,
+  context: Context<null>,
+): TokenArgs<TokenType.REFRESH> | null => {
   try {
     return jwt.decode(getRefreshToken(accessTokenType, context).replace('Bearer ', ''));
   } catch (e) {
@@ -65,16 +71,21 @@ const safelyDecodeRefreshToken = (accessTokenType: TokenType, context: Context<n
   }
 };
 
-
 /**
  * Verifies refresh token from context
  * Checks the session id exists in database
  * Returns data and error
  */
-export const verifyRefreshToken = async (accessTokenType: TokenType, context: Context<null>): Promise<VerifiedToken<TokenType.REFRESH>> => {
+export const verifyRefreshToken = async (
+  accessTokenType: TokenType,
+  context: Context<null>,
+): Promise<VerifiedToken<TokenType.REFRESH>> => {
   try {
     // Verify from header
-    const data: TokenArgs<TokenType.REFRESH> = jwt.verify(getRefreshToken(accessTokenType, context), process.env.JWT_SECRET);
+    const data: TokenArgs<TokenType.REFRESH> = jwt.verify(
+      getRefreshToken(accessTokenType, context),
+      process.env.JWT_SECRET,
+    );
 
     // Check the token is stored in db
     const storedToken = await context.db.read.refreshToken.findUnique({

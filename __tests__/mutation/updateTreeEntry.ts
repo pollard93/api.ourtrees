@@ -9,9 +9,8 @@ import { TreeEntryProfile } from '../../src/types/TreeEntryProfile';
 import FormData from 'form-data';
 import fetch from 'node-fetch';
 
-
 const query = gql`
-  mutation updateTreeEntry($data: UpdateTreeEntryInput!){
+  mutation updateTreeEntry($data: UpdateTreeEntryInput!) {
     updateTreeEntry(data: $data) {
       id
       notes
@@ -31,7 +30,6 @@ const query = gql`
 
 type Response = { updateTreeEntry: TreeEntryProfile };
 type Variables = { data: UpdateTreeEntryInput };
-
 
 test('should succeed', async () => {
   const user = await global.config.utils.createUser();
@@ -85,7 +83,7 @@ test('should succeed with image', async () => {
 
   const notes = await TestUtils.randomString();
 
-  const body = new FormData()
+  const body = new FormData();
 
   body.append(
     'operations',
@@ -97,19 +95,25 @@ test('should succeed with image', async () => {
           notes,
           image: null,
         },
-      }
-    })
-  )
-  body.append('map', JSON.stringify({ 1: ['variables.data.image'] }))
-  body.append('1', createReadStream(path.join(__dirname, '/../support/files/test.image.jpeg')))
+      },
+    }),
+  );
+  body.append('map', JSON.stringify({ 1: ['variables.data.image'] }));
+  body.append('1', createReadStream(path.join(__dirname, '/../support/files/test.image.jpeg')));
 
-  const response = await fetch(`${global.config.baseUrl}/graphql`, { method: 'POST', body, headers: { authorization: `Bearer ${user.token}`} })
-  const {data} = await response.json();
+  const response = await fetch(`${global.config.baseUrl}/graphql`, {
+    method: 'POST',
+    body,
+    headers: { authorization: `Bearer ${user.token}` },
+  });
+  const { data } = await response.json();
 
   expect(data?.updateTreeEntry.id).toEqual(treeEntry.id);
   expect(data?.updateTreeEntry.notes).toEqual(notes);
   expect(data?.updateTreeEntry.image.mime).toEqual('image/jpeg');
-  expect(data?.updateTreeEntry.image.url.full).toEqual(`${FileHandler.config.siteUrl}/public/trees/${tree.id}/entries/${data?.updateTreeEntry.id}.full.jpeg`);
+  expect(data?.updateTreeEntry.image.url.full).toEqual(
+    `${FileHandler.config.siteUrl}/public/trees/${tree.id}/entries/${data?.updateTreeEntry.id}.full.jpeg`,
+  );
   expect(data?.updateTreeEntry.image.author?.id).toEqual(user.user.id);
 });
 
@@ -146,7 +150,7 @@ test('should succeed with updating image', async () => {
 
   const notes = await TestUtils.randomString();
 
-  const body = new FormData()
+  const body = new FormData();
 
   body.append(
     'operations',
@@ -158,19 +162,25 @@ test('should succeed with updating image', async () => {
           notes,
           image: null,
         },
-      }
-    })
-  )
-  body.append('map', JSON.stringify({ 1: ['variables.data.image'] }))
-  body.append('1', createReadStream(path.join(__dirname, '/../support/files/test.image.jpeg')))
+      },
+    }),
+  );
+  body.append('map', JSON.stringify({ 1: ['variables.data.image'] }));
+  body.append('1', createReadStream(path.join(__dirname, '/../support/files/test.image.jpeg')));
 
-  const response = await fetch(`${global.config.baseUrl}/graphql`, { method: 'POST', body, headers: { authorization: `Bearer ${user.token}`} })
-  const {data} = await response.json();
+  const response = await fetch(`${global.config.baseUrl}/graphql`, {
+    method: 'POST',
+    body,
+    headers: { authorization: `Bearer ${user.token}` },
+  });
+  const { data } = await response.json();
 
   expect(data?.updateTreeEntry.id).toEqual(treeEntry.id);
   expect(data?.updateTreeEntry.notes).toEqual(notes);
   expect(data?.updateTreeEntry.image.mime).toEqual('image/jpeg');
-  expect(data?.updateTreeEntry.image.url.full).toEqual(`${FileHandler.config.siteUrl}/public/trees/${tree.id}/entries/${data?.updateTreeEntry.id}.full.jpeg`);
+  expect(data?.updateTreeEntry.image.url.full).toEqual(
+    `${FileHandler.config.siteUrl}/public/trees/${tree.id}/entries/${data?.updateTreeEntry.id}.full.jpeg`,
+  );
   expect(data?.updateTreeEntry.image.author?.id).toEqual(user.user.id);
 });
 

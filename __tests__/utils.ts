@@ -9,7 +9,7 @@ export default class TestUtils {
     this.db = db;
   }
 
-  async createUser(data?: Partial<Prisma.UserCreateInput>): Promise<{ token: string, user: User }> {
+  async createUser(data?: Partial<Prisma.UserCreateInput>): Promise<{ token: string; user: User }> {
     const user = await this.db.user.create({
       data: {
         name: TestUtils.randomString(),
@@ -168,7 +168,10 @@ export default class TestUtils {
   }
 
   static getCookie(cookieString: string, name: string) {
-    const parts = cookieString.split('; ').find((s) => s.startsWith(name))?.split('=');
+    const parts = cookieString
+      .split('; ')
+      .find((s) => s.startsWith(name))
+      ?.split('=');
     if (parts?.length === 2) return parts[1];
     return null;
   }

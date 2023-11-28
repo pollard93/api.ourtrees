@@ -3,16 +3,16 @@ import '../../global-variables';
 import { ReportTreeDataCareObtainingSeedsContentInput } from '../../src/resolvers/mutation/reportTreeDataCareObtainingSeedsContent';
 import TestUtils from '../utils';
 
-
 const query = gql`
-  mutation reportTreeDataCareObtainingSeedsContent($data: ReportTreeDataCareObtainingSeedsContentInput!){
+  mutation reportTreeDataCareObtainingSeedsContent(
+    $data: ReportTreeDataCareObtainingSeedsContentInput!
+  ) {
     reportTreeDataCareObtainingSeedsContent(data: $data)
   }
 `;
 
 type Response = { reportTreeDataCareObtainingSeedsContent: boolean };
 type Variables = { data: ReportTreeDataCareObtainingSeedsContentInput };
-
 
 test('should succeed', async () => {
   const user = await global.config.utils.createUser();
@@ -44,9 +44,14 @@ test('should succeed', async () => {
   );
 
   expect(data?.reportTreeDataCareObtainingSeedsContent).toBeTruthy();
-  expect((await global.config.db.treeDataCareObtainingSeedsContent.findUnique({ where: { id: content.id } }))?.reportedAt).toBeTruthy();
+  expect(
+    (
+      await global.config.db.treeDataCareObtainingSeedsContent.findUnique({
+        where: { id: content.id },
+      })
+    )?.reportedAt,
+  ).toBeTruthy();
 });
-
 
 test('should remove content from top voted result', async () => {
   const user = await global.config.utils.createUser();
@@ -72,7 +77,9 @@ test('should remove content from top voted result', async () => {
    */
   await global.config.client.rawRequest(
     gql`
-      mutation upsertTreeDataCareObtainingSeedsVote($data: UpsertTreeDataCareObtainingSeedsVoteInput!){
+      mutation upsertTreeDataCareObtainingSeedsVote(
+        $data: UpsertTreeDataCareObtainingSeedsVoteInput!
+      ) {
         upsertTreeDataCareObtainingSeedsVote(data: $data) {
           id
         }
@@ -97,7 +104,9 @@ test('should remove content from top voted result', async () => {
       careObtainingSeedsResult: true,
     },
   });
-  expect(treeDataBefore?.careObtainingSeedsResult.treeDataCareObtainingSeedsContentId).toEqual(content.id);
+  expect(treeDataBefore?.careObtainingSeedsResult.treeDataCareObtainingSeedsContentId).toEqual(
+    content.id,
+  );
 
   /**
    * Make request
@@ -125,7 +134,6 @@ test('should remove content from top voted result', async () => {
   });
   expect(treeDataAfter?.careObtainingSeedsResult.treeDataCareObtainingSeedsContentId).toEqual(null);
 });
-
 
 test('should fail if does not exist', async () => {
   const user = await global.config.utils.createUser();

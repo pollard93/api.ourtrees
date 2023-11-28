@@ -10,42 +10,41 @@ import { TreeDataCareObtainingSeedsResultProfile } from './TreeDataCareObtaining
 import { TreeDataCareHowToPlantSeedsResultProfile } from './TreeDataCareHowToPlantSeedsResultProfile';
 import { TreeDataCareGerminationNotesResultProfile } from './TreeDataCareGerminationNotesResultProfile';
 
-
 @ObjectType()
 export class TreeDataProfile {
   @Field()
-  id: number
+  id: number;
 
   @Field()
-  taxon: string
+  taxon: string;
 
   @Field()
-  family: string
+  family: string;
 
   @Field(() => TreeDataCareDifficultyResultProfile)
-  careDifficultyResult: TreeDataCareDifficultyResultProfile
+  careDifficultyResult: TreeDataCareDifficultyResultProfile;
 
   @Field(() => TreeDataCareWaterResultProfile)
-  careWaterResult: TreeDataCareWaterResultProfile
+  careWaterResult: TreeDataCareWaterResultProfile;
 
   @Field(() => TreeDataCareSunlightResultProfile)
-  careSunlightResult: TreeDataCareSunlightResultProfile
+  careSunlightResult: TreeDataCareSunlightResultProfile;
 
   @Field(() => TreeDataCarePlantingResultProfile)
-  carePlantingResult: TreeDataCarePlantingResultProfile
+  carePlantingResult: TreeDataCarePlantingResultProfile;
 
   @Field(() => TreeDataCareGerminationDifficultyResultProfile)
-  careGerminationDifficultyResult: TreeDataCareGerminationDifficultyResultProfile
+  careGerminationDifficultyResult: TreeDataCareGerminationDifficultyResultProfile;
 
   @Field(() => TreeDataCareWhenToReleaseResultProfile)
-  careWhenToReleaseResult: TreeDataCareWhenToReleaseResultProfile
+  careWhenToReleaseResult: TreeDataCareWhenToReleaseResultProfile;
 
   @Field(() => TreeDataCareObtainingSeedsResultProfile, { nullable: true })
-  careObtainingSeedsResult?: TreeDataCareObtainingSeedsResultProfile
+  careObtainingSeedsResult?: TreeDataCareObtainingSeedsResultProfile;
 
   @Field(() => TreeDataCareHowToPlantSeedsResultProfile, { nullable: true })
-  careHowToPlantSeedsResult?: TreeDataCareHowToPlantSeedsResultProfile
+  careHowToPlantSeedsResult?: TreeDataCareHowToPlantSeedsResultProfile;
 
   @Field(() => TreeDataCareGerminationNotesResultProfile, { nullable: true })
-  careGerminationNotesResult?: TreeDataCareGerminationNotesResultProfile
+  careGerminationNotesResult?: TreeDataCareGerminationNotesResultProfile;
 }

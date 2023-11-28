@@ -3,16 +3,16 @@ import '../../global-variables';
 import { DeleteTreeDataCareObtainingSeedsContentInput } from '../../src/resolvers/mutation/deleteTreeDataObtainingSeedsContent';
 import TestUtils from '../utils';
 
-
 const query = gql`
-  mutation deleteTreeDataCareObtainingSeedsContent($data: DeleteTreeDataCareObtainingSeedsContentInput!){
+  mutation deleteTreeDataCareObtainingSeedsContent(
+    $data: DeleteTreeDataCareObtainingSeedsContentInput!
+  ) {
     deleteTreeDataCareObtainingSeedsContent(data: $data)
   }
 `;
 
 type Response = { deleteTreeDataCareObtainingSeedsContent: boolean };
 type Variables = { data: DeleteTreeDataCareObtainingSeedsContentInput };
-
 
 test('should succeed', async () => {
   const user = await global.config.utils.createUser();
@@ -44,9 +44,12 @@ test('should succeed', async () => {
   );
 
   expect(data?.deleteTreeDataCareObtainingSeedsContent).toBeTruthy();
-  expect(await global.config.db.treeDataCareObtainingSeedsContent.findUnique({ where: { id: content.id } })).toBeFalsy();
+  expect(
+    await global.config.db.treeDataCareObtainingSeedsContent.findUnique({
+      where: { id: content.id },
+    }),
+  ).toBeFalsy();
 });
-
 
 test('should fail if user does not own content', async () => {
   const user = await global.config.utils.createUser();
@@ -84,7 +87,6 @@ test('should fail if user does not own content', async () => {
     expect(error.response.errors[0].message).toEqual('Unauthorized');
   }
 });
-
 
 test('should fail if does not exist', async () => {
   const user = await global.config.utils.createUser();

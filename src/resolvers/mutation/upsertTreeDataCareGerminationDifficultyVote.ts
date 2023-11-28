@@ -1,36 +1,28 @@
 import 'reflect-metadata';
-import {
-  Resolver,
-  Ctx,
-  UseMiddleware,
-  Mutation,
-  Arg,
-  Field,
-  InputType
-} from 'type-graphql';
+import { Resolver, Ctx, UseMiddleware, Mutation, Arg, Field, InputType } from 'type-graphql';
 import { TreeData, TREE_CARE_GERMINATION_DIFFICULTY_TYPE } from '@prisma/client';
 import { TokenType } from '../../modules/Auth/interfaces';
 import { Context } from '../../utils/types';
 import { AuthInterceptor } from '../../modules/Auth/middleware';
 import { TreeDataProfile } from '../../types/TreeDataProfile';
 
-
 @InputType()
 export class UpsertTreeDataCareGerminationDifficultyVoteInput {
   @Field()
-  treeDataId: number
+  treeDataId: number;
 
   @Field(() => TREE_CARE_GERMINATION_DIFFICULTY_TYPE)
-  type: TREE_CARE_GERMINATION_DIFFICULTY_TYPE
+  type: TREE_CARE_GERMINATION_DIFFICULTY_TYPE;
 }
-
 
 @Resolver()
 export class UpsertTreeDataCareGerminationDifficultyVoteResolver {
   @Mutation(() => TreeDataProfile)
-  @UseMiddleware(AuthInterceptor({
-    accessTokens: [TokenType.GENERAL],
-  }))
+  @UseMiddleware(
+    AuthInterceptor({
+      accessTokens: [TokenType.GENERAL],
+    }),
+  )
   async upsertTreeDataCareGerminationDifficultyVote(
     @Arg('data') { treeDataId, type }: UpsertTreeDataCareGerminationDifficultyVoteInput,
     @Ctx() context: Context<TokenType.GENERAL>,
@@ -86,16 +78,32 @@ export class UpsertTreeDataCareGerminationDifficultyVoteResolver {
         careGerminationDifficultyResult: {
           upsert: {
             create: {
-              count: await context.db.read.treeDataCareGerminationDifficultyVote.count({ where: { treeDataId } }),
-              easy: await context.db.read.treeDataCareGerminationDifficultyVote.count({ where: { treeDataId, type: TREE_CARE_GERMINATION_DIFFICULTY_TYPE.EASY } }),
-              moderate: await context.db.read.treeDataCareGerminationDifficultyVote.count({ where: { treeDataId, type: TREE_CARE_GERMINATION_DIFFICULTY_TYPE.MODERATE } }),
-              hard: await context.db.read.treeDataCareGerminationDifficultyVote.count({ where: { treeDataId, type: TREE_CARE_GERMINATION_DIFFICULTY_TYPE.HARD } }),
+              count: await context.db.read.treeDataCareGerminationDifficultyVote.count({
+                where: { treeDataId },
+              }),
+              easy: await context.db.read.treeDataCareGerminationDifficultyVote.count({
+                where: { treeDataId, type: TREE_CARE_GERMINATION_DIFFICULTY_TYPE.EASY },
+              }),
+              moderate: await context.db.read.treeDataCareGerminationDifficultyVote.count({
+                where: { treeDataId, type: TREE_CARE_GERMINATION_DIFFICULTY_TYPE.MODERATE },
+              }),
+              hard: await context.db.read.treeDataCareGerminationDifficultyVote.count({
+                where: { treeDataId, type: TREE_CARE_GERMINATION_DIFFICULTY_TYPE.HARD },
+              }),
             },
             update: {
-              count: await context.db.read.treeDataCareGerminationDifficultyVote.count({ where: { treeDataId } }),
-              easy: await context.db.read.treeDataCareGerminationDifficultyVote.count({ where: { treeDataId, type: TREE_CARE_GERMINATION_DIFFICULTY_TYPE.EASY } }),
-              moderate: await context.db.read.treeDataCareGerminationDifficultyVote.count({ where: { treeDataId, type: TREE_CARE_GERMINATION_DIFFICULTY_TYPE.MODERATE } }),
-              hard: await context.db.read.treeDataCareGerminationDifficultyVote.count({ where: { treeDataId, type: TREE_CARE_GERMINATION_DIFFICULTY_TYPE.HARD } }),
+              count: await context.db.read.treeDataCareGerminationDifficultyVote.count({
+                where: { treeDataId },
+              }),
+              easy: await context.db.read.treeDataCareGerminationDifficultyVote.count({
+                where: { treeDataId, type: TREE_CARE_GERMINATION_DIFFICULTY_TYPE.EASY },
+              }),
+              moderate: await context.db.read.treeDataCareGerminationDifficultyVote.count({
+                where: { treeDataId, type: TREE_CARE_GERMINATION_DIFFICULTY_TYPE.MODERATE },
+              }),
+              hard: await context.db.read.treeDataCareGerminationDifficultyVote.count({
+                where: { treeDataId, type: TREE_CARE_GERMINATION_DIFFICULTY_TYPE.HARD },
+              }),
             },
           },
         },

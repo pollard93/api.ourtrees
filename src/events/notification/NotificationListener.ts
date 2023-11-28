@@ -3,12 +3,21 @@ import { Prisma as PrismaInterface } from 'prisma';
 import { Prisma, NOTIFICATION_TYPE, NOTIFICATION_ON_OPEN_TYPE } from '@prisma/client';
 import NotificationEmitter from './NotificationEmitter';
 import { OneSignalClient } from '../../modules/OneSignal';
-import { NotificationEventType, DBNotificationArgs, PushNotificationArgs, NotificationArgs } from './types';
+import {
+  NotificationEventType,
+  DBNotificationArgs,
+  PushNotificationArgs,
+  NotificationArgs,
+} from './types';
 
 export default class NotificationListener {
   private oneSignal = OneSignalClient();
 
-  constructor(private readonly prisma: PrismaInterface, private readonly userEmitter: NotificationEmitter, disableInitialBind = false) {
+  constructor(
+    private readonly prisma: PrismaInterface,
+    private readonly userEmitter: NotificationEmitter,
+    disableInitialBind = false,
+  ) {
     /**
      * For testing we need to bind after assigning spies/stubs to class methods
      */
@@ -22,7 +31,6 @@ export default class NotificationListener {
     this.userEmitter.addListener(NotificationEventType.PUSH, this.handlePush.bind(this));
     this.userEmitter.addListener(NotificationEventType.SEND, this.handleSend.bind(this));
   }
-
 
   /**
    * Creates a Notficiation in the database
@@ -39,7 +47,6 @@ export default class NotificationListener {
       sender: data.sender ? { connect: { id: data.sender.id } } : {},
     };
 
-
     /**
      * Connect optional data dependant on NOTIFICATION_TYPE
      */
@@ -48,7 +55,6 @@ export default class NotificationListener {
         break;
     }
 
-
     /**
      * Create and return
      * (seems to break unit test if returned directly)
@@ -56,7 +62,6 @@ export default class NotificationListener {
     const notification = await this.prisma.write.notification.create({ data: notificationData });
     return notification;
   }
-
 
   /**
    * Uses OneSignal to send a push a notification
@@ -76,7 +81,6 @@ export default class NotificationListener {
       console.error('NotificationListener -> handlePush', e);
     }
   }
-
 
   /**
    * Puts the notification in the database and sends a push notification if applicable

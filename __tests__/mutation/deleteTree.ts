@@ -2,16 +2,14 @@ import { gql } from 'graphql-request';
 import '../../global-variables';
 import { DeleteTreeInput } from '../../src/resolvers/mutation/deleteTree';
 
-
 const query = gql`
-  mutation deleteTree($data: DeleteTreeInput!){
+  mutation deleteTree($data: DeleteTreeInput!) {
     deleteTree(data: $data)
   }
 `;
 
 type Response = { deleteTree: boolean };
 type Variables = { data: DeleteTreeInput };
-
 
 test('should succeed', async () => {
   const user = await global.config.utils.createUser();

@@ -5,7 +5,6 @@ import { FileProfile, UrlProfile } from '../../types/FileProfile';
 import { UserProfile } from '../../types/UserProfile';
 import { Context } from '../../utils/types';
 
-
 @Resolver(() => FileProfile)
 export class FileProfileResolver {
   @FieldResolver(() => UserProfile, { nullable: true })

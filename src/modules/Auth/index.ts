@@ -16,7 +16,6 @@ export const comparePassword = ({ pwd, hash }) => bcrypt.compare(pwd, hash) as b
 
 export const signToken = (data) => jwt.sign(data, process.env.JWT_SECRET);
 
-
 /**
  * Generates and signs token with data
  * If no data.exp is passed as undefined, defaults to 15 minute
@@ -34,7 +33,6 @@ export const generateToken = <T extends TokenType>(data: TokenArgs<T>): string =
   return signToken(data);
 };
 
-
 /**
  * Upserts refresh token in db database
  * GENERAL token type has 7 day expiry
@@ -42,11 +40,16 @@ export const generateToken = <T extends TokenType>(data: TokenArgs<T>): string =
  * @param tokenData - token data
  * @param sessionId - optional session if wanting to upsert, otherwise session is created
  */
-export const generateRefreshToken = async (db: Context<null>['db'], tokenData: TokenData<TokenType.REFRESH>, sessionId = uuidv4()) => {
+export const generateRefreshToken = async (
+  db: Context<null>['db'],
+  tokenData: TokenData<TokenType.REFRESH>,
+  sessionId = uuidv4(),
+) => {
   // 7 days from today - seconds
-  const expires = tokenData.type === RefreshTokenType.GENERAL
-    ? Math.floor(Date.now() / 1000) + (604800) // 7 days
-    : Math.floor(Date.now() / 1000) + (3600); // 1 hour
+  const expires =
+    tokenData.type === RefreshTokenType.GENERAL
+      ? Math.floor(Date.now() / 1000) + 604800 // 7 days
+      : Math.floor(Date.now() / 1000) + 3600; // 1 hour
 
   // Need to wait a second for unit testing
   if (process.env.NODE_ENV === 'test') {
@@ -84,14 +87,13 @@ export const generateRefreshToken = async (db: Context<null>['db'], tokenData: T
         },
       },
     });
-  } catch (e) { } // eslint-disable-line no-empty
+  } catch (e) {} // eslint-disable-line no-empty
 
   return {
     sessionId,
     token,
   };
 };
-
 
 /**
  * Config for cookie
@@ -100,16 +102,16 @@ export const generateRefreshToken = async (db: Context<null>['db'], tokenData: T
  */
 export const refreshCookieConfig = (type: RefreshTokenType) => {
   // Expires in seconds
-  const expires = type === RefreshTokenType.GENERAL
-    ? new Date(Date.now() + 604800000) // 7 days
-    : new Date(Date.now() + 3600000); // 1 hour
+  const expires =
+    type === RefreshTokenType.GENERAL
+      ? new Date(Date.now() + 604800000) // 7 days
+      : new Date(Date.now() + 3600000); // 1 hour
 
   return {
     httpOnly: true,
     expires,
   };
 };
-
 
 /**
  * Set general access and refresh token in context
@@ -124,8 +126,11 @@ export const setGeneralTokens = async (context: Context<any>, user: User) => {
     id: user.id,
     type: RefreshTokenType.GENERAL,
   });
-  context.res.cookie('general_refresh_token', refreshToken, refreshCookieConfig(RefreshTokenType.GENERAL));
-
+  context.res.cookie(
+    'general_refresh_token',
+    refreshToken,
+    refreshCookieConfig(RefreshTokenType.GENERAL),
+  );
 
   /**
    * Create general token

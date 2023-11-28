@@ -2,10 +2,9 @@ import { gql } from 'graphql-request';
 import '../../global-variables';
 import { GetTreesInput, TreeProfilesPayLoad } from '../../src/resolvers/query/getTrees';
 
-
 const query = gql`
-  query getTrees($data: GetTreesInput!){
-    getTrees(data: $data){
+  query getTrees($data: GetTreesInput!) {
+    getTrees(data: $data) {
       trees {
         id
       }
@@ -16,7 +15,6 @@ const query = gql`
 
 type Response = { getTrees: TreeProfilesPayLoad };
 type Variables = { data: GetTreesInput };
-
 
 test('should succeed with creator', async () => {
   const user = await global.config.utils.createUser();
@@ -47,7 +45,6 @@ test('should succeed with creator', async () => {
   expect(data?.getTrees.count).toEqual(1);
 });
 
-
 test('should succeed with treeData', async () => {
   const user = await global.config.utils.createUser();
   const treeData = await global.config.utils.createTreeData();
@@ -77,7 +74,6 @@ test('should succeed with treeData', async () => {
   expect(data?.getTrees.trees[0].id).toEqual(tree.id);
   expect(data?.getTrees.count).toEqual(1);
 });
-
 
 test('should succeed with creator and treeData', async () => {
   const user = await global.config.utils.createUser();
@@ -114,7 +110,6 @@ test('should succeed with creator and treeData', async () => {
   expect(data?.getTrees.trees[0].id).toEqual(tree.id);
   expect(data?.getTrees.count).toEqual(1);
 });
-
 
 test('should succeed with follower', async () => {
   const user = await global.config.utils.createUser();

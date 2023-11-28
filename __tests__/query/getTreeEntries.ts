@@ -1,12 +1,14 @@
 import { gql } from 'graphql-request';
 import '../../global-variables';
 import TestUtils from '../utils';
-import { GetTreeEntriesInput, TreeEntryProfilesPayLoad } from '../../src/resolvers/query/getTreeEntries';
-
+import {
+  GetTreeEntriesInput,
+  TreeEntryProfilesPayLoad,
+} from '../../src/resolvers/query/getTreeEntries';
 
 const query = gql`
-  query getTreeEntries($data: GetTreeEntriesInput!){
-    getTreeEntries(data: $data){
+  query getTreeEntries($data: GetTreeEntriesInput!) {
+    getTreeEntries(data: $data) {
       entries {
         id
       }
@@ -17,7 +19,6 @@ const query = gql`
 
 type Response = { getTreeEntries: TreeEntryProfilesPayLoad };
 type Variables = { data?: GetTreeEntriesInput };
-
 
 test('should succeed', async () => {
   /**
@@ -65,7 +66,6 @@ test('should succeed', async () => {
   expect(data.data?.getTreeEntries.entries.find((e) => e.id === treeEntry1.id)).toBeTruthy();
   expect(data.data?.getTreeEntries.entries.find((e) => e.id === treeEntry2.id)).toBeTruthy();
 });
-
 
 test('should fail if tree does not exist', async () => {
   const user = await global.config.utils.createUser();

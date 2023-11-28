@@ -1,11 +1,5 @@
 import 'reflect-metadata';
-import { Resolver,
-  Mutation,
-  Arg,
-  Ctx,
-  UseMiddleware,
-  Field,
-  InputType } from 'type-graphql';
+import { Resolver, Mutation, Arg, Ctx, UseMiddleware, Field, InputType } from 'type-graphql';
 import { AuthInterceptor } from '../../modules/Auth/middleware';
 import { TokenType } from '../../modules/Auth/interfaces';
 import { EMAIL_TRANSACTIONAL_TYPE } from '../../events/email/types';
@@ -13,23 +7,23 @@ import { GenericError } from '../../errors';
 import { Context } from '../../utils/types';
 import { comparePassword, generateToken } from '../../modules/Auth';
 
-
 @InputType()
 export class UpdateEmailInput {
   @Field()
-  email: string
+  email: string;
 
   @Field()
-  password: string
+  password: string;
 }
-
 
 @Resolver()
 export class UpdateEmailResolver {
   @Mutation(() => Boolean)
-  @UseMiddleware(AuthInterceptor({
-    accessTokens: [TokenType.GENERAL],
-  }))
+  @UseMiddleware(
+    AuthInterceptor({
+      accessTokens: [TokenType.GENERAL],
+    }),
+  )
   async updateEmail(
     @Arg('data') { email, password }: UpdateEmailInput,
     @Ctx() context: Context<TokenType.GENERAL>,
@@ -38,7 +32,6 @@ export class UpdateEmailResolver {
     const user = await context.db.read.user.findUnique({ where: { email: existingEmail } });
     if (!user) throw GenericError('User does not exist');
 
-
     /**
      * Check theres no user in the database with the email
      * that is trying to be changed to
@@ -46,13 +39,11 @@ export class UpdateEmailResolver {
     const emailInUse = await context.db.read.user.findUnique({ where: { email } });
     if (emailInUse) throw GenericError('Invalid Email');
 
-
     /**
      * Check the password is valid before going any further
      */
     const validPassword = await comparePassword({ pwd: password, hash: user.password });
     if (!validPassword) throw GenericError('Password Incorrect');
-
 
     /**
      * Send verification request to the new email for confirmation
@@ -64,7 +55,7 @@ export class UpdateEmailResolver {
         clientType: context.clientType,
         token: generateToken({
           type: TokenType.EMAIL_UPDATE_VERIFICATION,
-          exp: Math.floor(Date.now() + 3.6e+6), // 1 hour,
+          exp: Math.floor(Date.now() + 3.6e6), // 1 hour,
           data: {
             newEmail: email,
             existingEmail,
@@ -72,7 +63,6 @@ export class UpdateEmailResolver {
         }),
       },
     });
-
 
     return true;
   }

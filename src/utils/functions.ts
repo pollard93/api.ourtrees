@@ -1,12 +1,13 @@
 import { RequiresUpdate } from 'types/UserSelf';
 
-
 /**
  * Generate a random numeric only code
  * @param length
  */
-export const randomNumericCode = (length: number = 6): string => Array.from(Array(length).keys()).map(() => Math.round(Math.random() * 9)).join('');
-
+export const randomNumericCode = (length: number = 6): string =>
+  Array.from(Array(length).keys())
+    .map(() => Math.round(Math.random() * 9))
+    .join('');
 
 /**
  * Creates a new object with only allowed keys given
@@ -40,7 +41,6 @@ export const cleanseWhereInput = <T>(where: T, allowedKeys: (keyof T)[]) => {
     return res;
   }, {} as T);
 };
-
 
 /**
  * Test client version is greater than the minimum given
@@ -76,7 +76,6 @@ export const requiresUpdate = (c: string, m: string): RequiresUpdate | null => {
     return null;
   }
 };
-
 
 /**
  * Get client url type based on stage

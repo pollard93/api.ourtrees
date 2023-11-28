@@ -4,10 +4,9 @@ import TestUtils from '../utils';
 import { GetTreeDataInput } from '../../src/resolvers/query/getTreeData';
 import { TreeDataProfile } from '../../src/types/TreeDataProfile';
 
-
 const query = gql`
-  query getTreeData($data: GetTreeDataInput!){
-    getTreeData(data: $data){
+  query getTreeData($data: GetTreeDataInput!) {
+    getTreeData(data: $data) {
       id
       careDifficultyResult {
         count
@@ -29,18 +28,18 @@ const query = gql`
       }
       carePlantingResult {
         count
-        jan        
-        feb        
-        mar        
-        apr        
-        may        
-        jun        
-        jul        
-        aug        
-        sep        
-        oct        
-        nov        
-        dec        
+        jan
+        feb
+        mar
+        apr
+        may
+        jun
+        jul
+        aug
+        sep
+        oct
+        nov
+        dec
       }
       careGerminationDifficultyResult {
         count
@@ -50,33 +49,33 @@ const query = gql`
       }
       careWhenToReleaseResult {
         count
-        jan        
-        feb        
-        mar        
-        apr        
-        may        
-        jun        
-        jul        
-        aug        
-        sep        
-        oct        
-        nov        
-        dec        
+        jan
+        feb
+        mar
+        apr
+        may
+        jun
+        jul
+        aug
+        sep
+        oct
+        nov
+        dec
       }
       careObtainingSeedsResult {
         content {
           id
-        }      
+        }
       }
       careHowToPlantSeedsResult {
         content {
           id
-        }      
+        }
       }
       careGerminationNotesResult {
         content {
           id
-        }      
+        }
       }
     }
   }
@@ -84,7 +83,6 @@ const query = gql`
 
 type Response = { getTreeData: TreeDataProfile | null };
 type Variables = { data: GetTreeDataInput };
-
 
 test('should succeed', async () => {
   const user = await global.config.utils.createUser();
@@ -102,7 +100,6 @@ test('should succeed', async () => {
 
   expect(data?.getTreeData?.id).toEqual(treeData.id);
 });
-
 
 test('should error if does not exist', async () => {
   const user = await global.config.utils.createUser();
@@ -123,7 +120,6 @@ test('should error if does not exist', async () => {
     expect(error.response.errors[0].message).toEqual('Resource does not exist');
   }
 });
-
 
 test('should resolve careDifficultyResult', async () => {
   const user = await global.config.utils.createUser();
@@ -156,7 +152,6 @@ test('should resolve careDifficultyResult', async () => {
   });
 });
 
-
 test('should resolve careWaterResult', async () => {
   const user = await global.config.utils.createUser();
   const treeData = await global.config.utils.createTreeData({
@@ -188,7 +183,6 @@ test('should resolve careWaterResult', async () => {
   });
 });
 
-
 test('should resolve careSunlightResult', async () => {
   const user = await global.config.utils.createUser();
   const treeData = await global.config.utils.createTreeData({
@@ -219,7 +213,6 @@ test('should resolve careSunlightResult', async () => {
     direct: 4,
   });
 });
-
 
 test('should resolve carePlantingResult', async () => {
   const user = await global.config.utils.createUser();
@@ -270,7 +263,6 @@ test('should resolve carePlantingResult', async () => {
   });
 });
 
-
 test('should resolve careGerminationDifficultyResult', async () => {
   const user = await global.config.utils.createUser();
   const treeData = await global.config.utils.createTreeData({
@@ -301,7 +293,6 @@ test('should resolve careGerminationDifficultyResult', async () => {
     hard: 4,
   });
 });
-
 
 test('should resolve careWhenToReleaseResult', async () => {
   const user = await global.config.utils.createUser();
@@ -352,7 +343,6 @@ test('should resolve careWhenToReleaseResult', async () => {
   });
 });
 
-
 test('should resolve careObtainingSeedsResult', async () => {
   const user = await global.config.utils.createUser();
   const treeData = await global.config.utils.createTreeData();
@@ -394,7 +384,6 @@ test('should resolve careObtainingSeedsResult', async () => {
   expect(data?.getTreeData?.careObtainingSeedsResult?.content?.id).toEqual(content.id);
 });
 
-
 test('should resolve careHowToPlantSeedsResult', async () => {
   const user = await global.config.utils.createUser();
   const treeData = await global.config.utils.createTreeData();
@@ -435,7 +424,6 @@ test('should resolve careHowToPlantSeedsResult', async () => {
 
   expect(data?.getTreeData?.careHowToPlantSeedsResult?.content?.id).toEqual(content.id);
 });
-
 
 test('should resolve careGerminationNotesResult', async () => {
   const user = await global.config.utils.createUser();

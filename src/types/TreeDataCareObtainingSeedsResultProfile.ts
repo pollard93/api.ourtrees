@@ -3,9 +3,8 @@ import 'reflect-metadata';
 import { ObjectType, Field, ID } from 'type-graphql';
 import { TreeDataCareObtainingSeedsContentProfile } from './TreeDataCareObtainingSeedsContentProfile';
 
-
 @ObjectType()
 export class TreeDataCareObtainingSeedsResultProfile {
   @Field(() => TreeDataCareObtainingSeedsContentProfile, { nullable: true })
-  content?: TreeDataCareObtainingSeedsContentProfile
+  content?: TreeDataCareObtainingSeedsContentProfile;
 }

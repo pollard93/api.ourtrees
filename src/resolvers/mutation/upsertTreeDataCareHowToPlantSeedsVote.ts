@@ -1,11 +1,5 @@
 import 'reflect-metadata';
-import { Resolver,
-  Ctx,
-  UseMiddleware,
-  Mutation,
-  Arg,
-  Field,
-  InputType } from 'type-graphql';
+import { Resolver, Ctx, UseMiddleware, Mutation, Arg, Field, InputType } from 'type-graphql';
 import { TreeData } from '@prisma/client';
 import { TokenType } from '../../modules/Auth/interfaces';
 import { Context } from '../../utils/types';
@@ -14,20 +8,20 @@ import { TreeDataProfile } from '../../types/TreeDataProfile';
 import { GenericError } from '../../errors';
 import { setTopVotedTreeDataCareHowToPlantSeedsContent } from '../../utils/setTopVotedTreeDataCareHowToPlantSeedsContent';
 
-
 @InputType()
 export class UpsertTreeDataCareHowToPlantSeedsVoteInput {
   @Field()
-  contentId: string
+  contentId: string;
 }
-
 
 @Resolver()
 export class UpsertTreeDataCareHowToPlantSeedsVoteResolver {
   @Mutation(() => TreeDataProfile)
-  @UseMiddleware(AuthInterceptor({
-    accessTokens: [TokenType.GENERAL],
-  }))
+  @UseMiddleware(
+    AuthInterceptor({
+      accessTokens: [TokenType.GENERAL],
+    }),
+  )
   async upsertTreeDataCareHowToPlantSeedsVote(
     @Arg('data') { contentId }: UpsertTreeDataCareHowToPlantSeedsVoteInput,
     @Ctx() context: Context<TokenType.GENERAL>,
@@ -89,7 +83,6 @@ export class UpsertTreeDataCareHowToPlantSeedsVoteResolver {
         },
       },
     });
-
 
     /**
      * Update tree data with counts

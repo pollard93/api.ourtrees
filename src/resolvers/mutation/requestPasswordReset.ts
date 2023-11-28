@@ -1,11 +1,5 @@
 import 'reflect-metadata';
-import { Resolver,
-  Mutation,
-  Arg,
-  Ctx,
-  UseMiddleware,
-  InputType,
-  Field } from 'type-graphql';
+import { Resolver, Mutation, Arg, Ctx, UseMiddleware, InputType, Field } from 'type-graphql';
 import { AuthInterceptor } from '../../modules/Auth/middleware';
 import { TokenType } from '../../modules/Auth/interfaces';
 import { EMAIL_TRANSACTIONAL_TYPE } from '../../events/email/types';
@@ -13,20 +7,20 @@ import { GenericError } from '../../errors';
 import { Context } from '../../utils/types';
 import { generateToken } from '../../modules/Auth';
 
-
 @InputType()
 export class RequestPasswordResetInput {
   @Field()
-  email: string
+  email: string;
 }
-
 
 @Resolver()
 export class RequestPasswordResetResolver {
   @Mutation(() => Boolean)
-  @UseMiddleware(AuthInterceptor({
-    accessTokens: null,
-  }))
+  @UseMiddleware(
+    AuthInterceptor({
+      accessTokens: null,
+    }),
+  )
   async requestPasswordReset(
     @Arg('data') { email }: RequestPasswordResetInput,
     @Ctx() context: Context<null>,
@@ -36,7 +30,6 @@ export class RequestPasswordResetResolver {
      */
     const user = await context.db.read.user.findUnique({ where: { email } });
     if (!user) throw GenericError('User Does Not Exist');
-
 
     /**
      * Emit email
@@ -54,7 +47,6 @@ export class RequestPasswordResetResolver {
         }),
       },
     });
-
 
     return true;
   }

@@ -1,12 +1,14 @@
 import { gql } from 'graphql-request';
 import '../../global-variables';
 import TestUtils from '../utils';
-import { GetNotificationsInput, NotificationProfilesPayLoad } from '../../src/resolvers/query/getNotifications';
-
+import {
+  GetNotificationsInput,
+  NotificationProfilesPayLoad,
+} from '../../src/resolvers/query/getNotifications';
 
 const query = gql`
-  query getNotifications($data: GetNotificationsInput){
-    getNotifications(data: $data){
+  query getNotifications($data: GetNotificationsInput) {
+    getNotifications(data: $data) {
       notifications {
         receiver {
           id
@@ -22,7 +24,6 @@ const query = gql`
 
 type Response = { getNotifications: NotificationProfilesPayLoad };
 type Variables = { data?: GetNotificationsInput };
-
 
 test('should succeed', async () => {
   const receiver = await global.config.utils.createUser();

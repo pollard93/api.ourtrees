@@ -1,35 +1,28 @@
 import 'reflect-metadata';
-import { Resolver,
-  Ctx,
-  UseMiddleware,
-  Mutation,
-  Arg,
-  Field,
-  InputType } from 'type-graphql';
+import { Resolver, Ctx, UseMiddleware, Mutation, Arg, Field, InputType } from 'type-graphql';
 import { TokenType } from '../../modules/Auth/interfaces';
 import { Context } from '../../utils/types';
 import { AuthInterceptor } from '../../modules/Auth/middleware';
 
-
 @InputType()
 export class DeleteNotificationInput {
   @Field()
-  id: string
+  id: string;
 }
-
 
 @Resolver()
 export class DeleteNotificationResolver {
   @Mutation(() => Boolean)
-  @UseMiddleware(AuthInterceptor({
-    accessTokens: [TokenType.GENERAL],
-  }))
+  @UseMiddleware(
+    AuthInterceptor({
+      accessTokens: [TokenType.GENERAL],
+    }),
+  )
   async deleteNotification(
     @Arg('data') { id }: DeleteNotificationInput,
     @Ctx() context: Context<TokenType.GENERAL>,
   ): Promise<boolean> {
     const { id: userId } = context.accessToken.data;
-
 
     /**
      * Get and validate the requester owns the notification
@@ -41,7 +34,6 @@ export class DeleteNotificationResolver {
     });
     if (!notification || notification.receiverId !== userId) throw new Error();
 
-
     /**
      * Delete
      */
@@ -50,7 +42,6 @@ export class DeleteNotificationResolver {
         id,
       },
     });
-
 
     return true;
   }

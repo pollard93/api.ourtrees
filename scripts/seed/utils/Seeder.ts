@@ -3,14 +3,12 @@ import request from 'request';
 import uuidv4 from 'uuid/v4';
 import { FileHandler } from '../../../src/modules/FileHandler';
 
-
 export class Seeder {
   public prisma: PrismaClient;
 
   constructor(prisma: PrismaClient) {
     this.prisma = prisma;
   }
-
 
   /**
    * Utility to get a random image from unsplash
@@ -35,23 +33,29 @@ export class Seeder {
       width: number;
       height: number;
     };
-   }): Promise<Prisma.FileCreateInput | null> {
+  }): Promise<Prisma.FileCreateInput | null> {
     const requestOptions = {
-      url: `https://source.unsplash.com/random/${options?.dimensions ? `${options.dimensions.width}x${options.dimensions.height}` : ''}?${options?.term ? options.term : ''}`,
+      url: `https://source.unsplash.com/random/${
+        options?.dimensions ? `${options.dimensions.width}x${options.dimensions.height}` : ''
+      }?${options?.term ? options.term : ''}`,
       method: 'get',
       encoding: null,
     };
 
-    return (new Promise((res) => {
+    return new Promise((res) => {
       request(requestOptions, async (error, response, body) => {
         if (error) return res(null);
 
-        const url = await FileHandler.putImage(`${options?.isPublic ? 'public/' : ''}testing/${uuidv4()}.jpeg`, body, true);
+        const url = await FileHandler.putImage(
+          `${options?.isPublic ? 'public/' : ''}testing/${uuidv4()}.jpeg`,
+          body,
+          true,
+        );
         return res({
           mime: 'image/jpeg',
           path: url.full,
         });
       });
-    }));
+    });
   }
 }

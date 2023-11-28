@@ -49,4 +49,4 @@ void (async function () {
     console.error(chalk.red(e.message));
     process.exit(0);
   }
-}());
+})();

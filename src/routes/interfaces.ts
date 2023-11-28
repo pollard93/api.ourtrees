@@ -1,4 +1,3 @@
-
 export interface BaseRouteProps {
   title: string;
   appStoreUrl: string;

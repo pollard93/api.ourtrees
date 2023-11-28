@@ -1,37 +1,30 @@
 import 'reflect-metadata';
-import {
-  Resolver,
-  Ctx,
-  Query,
-  UseMiddleware,
-  ObjectType,
-  Field
-} from 'type-graphql';
+import { Resolver, Ctx, Query, UseMiddleware, ObjectType, Field } from 'type-graphql';
 import { Country } from '@prisma/client';
 import { TokenType } from '../../modules/Auth/interfaces';
 import { Context } from '../../utils/types';
 import { AuthInterceptor } from '../../modules/Auth/middleware';
 import { CountryProfile } from '../../types/CountryProfile';
 
-
 @ObjectType()
 export class CountryProfilesPayload {
   @Field(() => [CountryProfile])
-  countries: CountryProfile[]
+  countries: CountryProfile[];
 }
-
 
 @Resolver()
 export class GetCountriesResolver {
   @Query(() => CountryProfilesPayload)
-  @UseMiddleware(AuthInterceptor({
-    accessTokens: [TokenType.GENERAL],
-  }))
+  @UseMiddleware(
+    AuthInterceptor({
+      accessTokens: [TokenType.GENERAL],
+    }),
+  )
   async getCountries(
     @Ctx() context: Context<TokenType.GENERAL>,
   ): Promise<{ countries: Country[] }> {
-    return ({
+    return {
       countries: await context.db.read.country.findMany(),
-    });
+    };
   }
 }

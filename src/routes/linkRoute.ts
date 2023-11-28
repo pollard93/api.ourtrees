@@ -1,9 +1,7 @@
 import express from 'express';
 import { BaseRouteProps } from './interfaces';
 
-
-interface LinkRouteProps extends BaseRouteProps { }
-
+interface LinkRouteProps extends BaseRouteProps {}
 
 /**
  * Route used for deep links from api, reset password etc

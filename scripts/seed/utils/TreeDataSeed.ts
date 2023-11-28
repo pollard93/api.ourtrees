@@ -25,16 +25,14 @@ class TreeDataSeeder extends Seeder {
               author: result.author,
               source: result.source,
               countries: {
-                connectOrCreate: result.TSGeolinks.map((t) => (
-                  {
-                    where: {
-                      name: t.country,
-                    },
-                    create: {
-                      name: t.country,
-                    },
-                  }
-                )),
+                connectOrCreate: result.TSGeolinks.map((t) => ({
+                  where: {
+                    name: t.country,
+                  },
+                  create: {
+                    name: t.country,
+                  },
+                })),
               },
               careDifficultyResult: {
                 create: {
@@ -113,16 +111,14 @@ class TreeDataSeeder extends Seeder {
               author: result.author,
               source: result.source,
               countries: {
-                connectOrCreate: result.TSGeolinks.map((t) => (
-                  {
-                    where: {
-                      name: t.country,
-                    },
-                    create: {
-                      name: t.country,
-                    },
-                  }
-                )),
+                connectOrCreate: result.TSGeolinks.map((t) => ({
+                  where: {
+                    name: t.country,
+                  },
+                  create: {
+                    name: t.country,
+                  },
+                })),
               },
             },
           });

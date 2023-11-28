@@ -2,18 +2,17 @@ import { TREE_CARE_DIFFICULTY_TYPE } from '@prisma/client';
 import 'reflect-metadata';
 import { ObjectType, Field, ID } from 'type-graphql';
 
-
 @ObjectType()
 export class TreeDataCareSunlightResultProfile {
   @Field()
-  count: number
+  count: number;
 
   @Field()
-  indirect: number
+  indirect: number;
 
   @Field()
-  partial: number
+  partial: number;
 
   @Field()
-  direct: number
+  direct: number;
 }

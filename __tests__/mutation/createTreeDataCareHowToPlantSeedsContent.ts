@@ -4,9 +4,10 @@ import { TreeDataCareHowToPlantSeedsContentProfile } from '../../src/types/TreeD
 import { CreateTreeDataCareHowToPlantSeedsContentInput } from '../../src/resolvers/mutation/createTreeDataHowToPlantSeedsContent';
 import TestUtils from '../utils';
 
-
 const query = gql`
-  mutation createTreeDataCareHowToPlantSeedsContent($data: CreateTreeDataCareHowToPlantSeedsContentInput!){
+  mutation createTreeDataCareHowToPlantSeedsContent(
+    $data: CreateTreeDataCareHowToPlantSeedsContentInput!
+  ) {
     createTreeDataCareHowToPlantSeedsContent(data: $data) {
       id
       content
@@ -15,9 +16,10 @@ const query = gql`
   }
 `;
 
-type Response = { createTreeDataCareHowToPlantSeedsContent: TreeDataCareHowToPlantSeedsContentProfile };
+type Response = {
+  createTreeDataCareHowToPlantSeedsContent: TreeDataCareHowToPlantSeedsContentProfile;
+};
 type Variables = { data: CreateTreeDataCareHowToPlantSeedsContentInput };
-
 
 test('should succeed', async () => {
   const user = await global.config.utils.createUser();
@@ -39,7 +41,6 @@ test('should succeed', async () => {
   expect(data?.createTreeDataCareHowToPlantSeedsContent.content).toBe(content);
   expect(data?.createTreeDataCareHowToPlantSeedsContent.voteCount).toBe(0);
 });
-
 
 test('should fail if user and tree are not unique', async () => {
   const user = await global.config.utils.createUser();
@@ -76,10 +77,11 @@ test('should fail if user and tree are not unique', async () => {
     throw new Error();
   } catch (error) {
     // eslint-disable-next-line jest/no-conditional-expect, jest/no-try-expect
-    expect(error.response.errors[0].message).toEqual('User already submitted content for this tree');
+    expect(error.response.errors[0].message).toEqual(
+      'User already submitted content for this tree',
+    );
   }
 });
-
 
 test('should fail if tree does not exist', async () => {
   const user = await global.config.utils.createUser();

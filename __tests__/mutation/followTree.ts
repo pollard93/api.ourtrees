@@ -3,9 +3,8 @@ import '../../global-variables';
 import { FollowTreeInput } from '../../src/resolvers/mutation/followTree';
 import { TreeProfile } from '../../src/types/TreeProfile';
 
-
 const query = gql`
-  mutation followTree($data: FollowTreeInput!){
+  mutation followTree($data: FollowTreeInput!) {
     followTree(data: $data) {
       id
     }
@@ -14,7 +13,6 @@ const query = gql`
 
 type Response = { followTree: TreeProfile };
 type Variables = { data: FollowTreeInput };
-
 
 test('should follow', async () => {
   const user = await global.config.utils.createUser();
@@ -43,7 +41,6 @@ test('should follow', async () => {
   expect(treeAfter?.followers.length).toEqual(1);
   expect(treeAfter?.followers[0].id).toEqual(user.user.id);
 });
-
 
 test('should unfollow', async () => {
   const user = await global.config.utils.createUser();
