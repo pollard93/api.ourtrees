@@ -97,9 +97,8 @@ test('should succeed with image', async () => {
 
   const response = await fetch(`${global.config.baseUrl}/graphql`, { method: 'POST', body, headers: { authorization: `Bearer ${user.token}`} })
   const {data} = await response.json();
-  console.log("🚀 ~ file: createTreeEntry.ts:100 ~ test.only ~ data:", data)
 
-  // // Test resolvers
+  // Test resolvers
   expect(data?.createTreeEntry.image.mime).toEqual('image/jpeg');
   expect(data?.createTreeEntry.image.url.full).toEqual(`${FileHandler.config.siteUrl}/public/trees/${tree.id}/entries/${data?.createTreeEntry.id}.full.jpeg`);
   expect(data?.createTreeEntry.image.author?.id).toEqual(user.user.id);

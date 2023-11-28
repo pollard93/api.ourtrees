@@ -2,13 +2,13 @@ import axios from 'axios';
 import { getMobileClientUrl } from '../../src/utils/functions';
 import '../../global-variables';
 
-
 test('should succeed with image', async () => {
   const user = await global.config.utils.createUser({
     profilePicture: {
       create: {
         path: 'public/users/user-id/cover-image.jpeg',
         mime: '',
+        authorId: (await global.config.utils.createUser()).user.id,
       },
     },
   });
@@ -17,10 +17,11 @@ test('should succeed with image', async () => {
 
   expect(res.data.includes(`<title>${user.user.name}</title>`)).toBeTruthy();
   expect(res.data.includes(`<meta name="description" content="${user.user.name}" />`)).toBeTruthy();
-  expect(res.data.includes(`window.location.href = '${getMobileClientUrl()}user/${user.user.id}'`)).toBeTruthy();
+  expect(
+    res.data.includes(`window.location.href = '${getMobileClientUrl()}user/${user.user.id}'`),
+  ).toBeTruthy();
   expect(res.status).toEqual(200);
 });
-
 
 test('should succeed without image (incase of any failures)', async () => {
   const user = await global.config.utils.createUser();
@@ -28,10 +29,11 @@ test('should succeed without image (incase of any failures)', async () => {
 
   expect(res.data.includes(`<title>${user.user.name}</title>`)).toBeTruthy();
   expect(res.data.includes(`<meta name="description" content="${user.user.name}" />`)).toBeTruthy();
-  expect(res.data.includes(`window.location.href = '${getMobileClientUrl()}user/${user.user.id}'`)).toBeTruthy();
+  expect(
+    res.data.includes(`window.location.href = '${getMobileClientUrl()}user/${user.user.id}'`),
+  ).toBeTruthy();
   expect(res.status).toEqual(200);
 });
-
 
 test('should fail with unknown user id', async () => {
   try {
@@ -42,7 +44,6 @@ test('should fail with unknown user id', async () => {
     expect(e.response.status).toEqual(400);
   }
 });
-
 
 test('should fail with unknown type', async () => {
   try {

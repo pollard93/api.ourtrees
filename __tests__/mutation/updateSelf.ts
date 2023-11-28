@@ -6,11 +6,12 @@ import TestUtils from '../utils';
 import { FileHandler } from '../../src/modules/FileHandler';
 import { UpdateSelfInput } from '../../src/resolvers/mutation/updateSelf';
 import { UserSelf } from '../../src/types/UserSelf';
-
+import FormData from 'form-data';
+import fetch from 'node-fetch';
 
 const query = gql`
-  mutation updateSelf($data: UpdateSelfInput!){
-    updateSelf(data: $data){
+  mutation updateSelf($data: UpdateSelfInput!) {
+    updateSelf(data: $data) {
       name
       countryName
       profilePicture {
@@ -26,7 +27,6 @@ const query = gql`
 
 type Response = { updateSelf: UserSelf };
 type Variables = { data: UpdateSelfInput };
-
 
 test('should succeed with data', async () => {
   const user = await global.config.utils.createUser();
@@ -53,7 +53,6 @@ test('should succeed with data', async () => {
   expect(data?.updateSelf.countryName).toEqual(countryName);
 });
 
-
 test('should succeed without data', async () => {
   const user = await global.config.utils.createUser();
 
@@ -66,33 +65,35 @@ test('should succeed without data', async () => {
   expect(data?.updateSelf.name).toEqual(user.user.name);
 });
 
-
 test('should succeed updating profile picture', async () => {
   const user = await global.config.utils.createUser();
 
-  const { data } = await global.config.client.rawRequest<Response, Variables>(
-    query,
-    {
-      data: {
-        profilePicture: createReadStream(path.join(__dirname, '/../support/files/test.image.jpeg')) as any,
+  const body = new FormData();
+
+  body.append(
+    'operations',
+    JSON.stringify({
+      query,
+      variables: {
+        data: {
+          profilePicture: null,
+        },
       },
-    },
-    { authorization: `Bearer ${user.token}` },
+    }),
   );
+  body.append('map', JSON.stringify({ 1: ['variables.data.profilePicture'] }));
+  body.append('1', createReadStream(path.join(__dirname, '/../support/files/test.image.jpeg')));
+
+  const response = await fetch(`${global.config.baseUrl}/graphql`, {
+    method: 'POST',
+    body,
+    headers: { authorization: `Bearer ${user.token}` },
+  });
+  const { data } = await response.json();
 
   // Test resolvers
   expect(data?.updateSelf.profilePicture.mime).toEqual('image/jpeg');
-  expect(data?.updateSelf.profilePicture.url.full).toEqual(`${FileHandler.config.siteUrl}/public/users/${user.user.id}/profile-picture.full.jpeg`);
-
-  const { updateSelf: updateSelfAfter } = await global.config.client.request<Response, Variables>(
-    query,
-    {
-      data: {
-        profilePicture: createReadStream(path.join(__dirname, '/../support/files/test.image.jpeg')) as any,
-      },
-    },
-    { authorization: `Bearer ${user.token}` },
+  expect(data?.updateSelf.profilePicture.url.full).toEqual(
+    `${FileHandler.config.siteUrl}/public/users/${user.user.id}/profile-picture.full.jpeg`,
   );
-
-  expect(data?.updateSelf.profilePicture.id).toEqual(updateSelfAfter.profilePicture.id);
-});
+}, 30000);

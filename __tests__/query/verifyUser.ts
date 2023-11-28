@@ -4,7 +4,6 @@ import { generateToken } from '../../src/modules/Auth';
 import { TokenType } from '../../src/modules/Auth/interfaces';
 import { AuthPayload } from '../../src/types/AuthPayload';
 
-
 const query = gql`
   query verifyUser {
     verifyUser {
@@ -16,8 +15,7 @@ const query = gql`
 `;
 
 type Response = { verifyUser: AuthPayload };
-type Variables = undefined;
-
+type Variables = Record<string, unknown>;
 
 test('should succeed', async () => {
   const user = await global.config.utils.createUser();
@@ -29,17 +27,14 @@ test('should succeed', async () => {
     },
   });
 
-  const { data } = await global.config.client.rawRequest<Response, Variables>(
-    query,
-    undefined,
-    { authorization: `Bearer ${token}` },
-  );
+  const { data } = await global.config.client.rawRequest<Response, Variables>(query, undefined, {
+    authorization: `Bearer ${token}`,
+  });
 
   expect(data?.verifyUser.user.verified).toBeTruthy();
 });
 
-
-test('should fail - user doesn\'t exist', async () => {
+test("should fail - user doesn't exist", async () => {
   const token = generateToken({
     type: TokenType.VERIFICATION,
     data: {
@@ -48,11 +43,9 @@ test('should fail - user doesn\'t exist', async () => {
   });
 
   try {
-    await global.config.client.rawRequest<Response, Variables>(
-      query,
-      undefined,
-      { authorization: `Bearer ${token}` },
-    );
+    await global.config.client.rawRequest<Response, Variables>(query, undefined, {
+      authorization: `Bearer ${token}`,
+    });
     throw new Error();
   } catch (error) {
     // eslint-disable-next-line jest/no-conditional-expect, jest/no-try-expect

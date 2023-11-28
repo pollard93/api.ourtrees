@@ -5,7 +5,6 @@ import { generateToken } from '../../src/modules/Auth';
 import { TokenType } from '../../src/modules/Auth/interfaces';
 import { AuthPayload } from '../../src/types/AuthPayload';
 
-
 const query = gql`
   query verifyEmailChange {
     verifyEmailChange {
@@ -18,8 +17,7 @@ const query = gql`
 `;
 
 type Response = { verifyEmailChange: AuthPayload };
-type Variables = undefined;
-
+type Variables = Record<string, unknown>;
 
 test('should succeed', async () => {
   const user = await global.config.utils.createUser();
@@ -33,16 +31,13 @@ test('should succeed', async () => {
     },
   });
 
-  const { data } = await global.config.client.rawRequest<Response, Variables>(
-    query,
-    undefined,
-    { authorization: `Bearer ${token}` },
-  );
+  const { data } = await global.config.client.rawRequest<Response, Variables>(query, undefined, {
+    authorization: `Bearer ${token}`,
+  });
 
   // Verify the users email was updated
   expect(data?.verifyEmailChange.user.email).toEqual(email);
 });
-
 
 /**
  * Tests the case that the user has requested 2 email updates, executes
@@ -61,11 +56,9 @@ test('should fail - Token Invalid', async () => {
   });
 
   try {
-    await global.config.client.rawRequest<Response, Variables>(
-      query,
-      undefined,
-      { authorization: `Bearer ${token}` },
-    );
+    await global.config.client.rawRequest<Response, Variables>(query, undefined, {
+      authorization: `Bearer ${token}`,
+    });
     throw new Error();
   } catch (error) {
     // eslint-disable-next-line jest/no-conditional-expect, jest/no-try-expect

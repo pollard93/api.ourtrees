@@ -3,7 +3,6 @@ import '../../global-variables';
 import { UserSelf } from '../../src/types/UserSelf';
 import TestUtils from '../utils';
 
-
 const query = gql`
   query getSelf {
     getSelf {
@@ -32,8 +31,7 @@ const query = gql`
 `;
 
 type Response = { getSelf: UserSelf };
-type Variables = undefined;
-
+type Variables = Record<string, unknown>;
 
 test('should suceed, tests profilePicture', async () => {
   const user = await global.config.utils.createUser();
@@ -47,18 +45,18 @@ test('should suceed, tests profilePicture', async () => {
         },
       },
       userProfilePictures: {
-        connect: [{
-          id: user.user.id,
-        }],
+        connect: [
+          {
+            id: user.user.id,
+          },
+        ],
       },
     },
   });
 
-  const { data } = await global.config.client.rawRequest<Response, Variables>(
-    query,
-    undefined,
-    { authorization: `Bearer ${user.token}` },
-  );
+  const { data } = await global.config.client.rawRequest<Response, Variables>(query, undefined, {
+    authorization: `Bearer ${user.token}`,
+  });
 
   expect(data?.getSelf.profilePicture.id).toEqual(file.id);
   expect(data?.getSelf.profilePicture.mime).toEqual(file.mime);
@@ -66,8 +64,7 @@ test('should suceed, tests profilePicture', async () => {
   expect(data?.getSelf?.profilePicture?.author?.id).toEqual(user.user.id);
 });
 
-
-test('should suceed, tests unreadNotificationCount', async () => {
+test('should succeed, tests unreadNotificationCount', async () => {
   const user = await global.config.utils.createUser();
 
   // Create 2 notifications, one read one not
@@ -109,44 +106,35 @@ test('should suceed, tests unreadNotificationCount', async () => {
     },
   });
 
-  const { data } = await global.config.client.rawRequest<Response, Variables>(
-    query,
-    undefined,
-    { authorization: `Bearer ${user.token}` },
-  );
+  const { data } = await global.config.client.rawRequest<Response, Variables>(query, undefined, {
+    authorization: `Bearer ${user.token}`,
+  });
 
   expect(data?.getSelf.id).toEqual(user.user.id);
   expect(data?.getSelf.email).toEqual(user.user.email);
   expect(data?.getSelf.unreadNotificationCount).toEqual(1);
 });
 
-
 test('should succeed, tests requiresUpdate', async () => {
   const user = await global.config.utils.createUser();
   {
-  /**
-   * requiresUpdate should be null if no client-version header is not sent
-   */
-    const { data } = await global.config.client.rawRequest<Response, Variables>(
-      query,
-      undefined,
-      { authorization: `Bearer ${user.token}` },
-    );
+    /**
+     * requiresUpdate should be null if no client-version header is not sent
+     */
+    const { data } = await global.config.client.rawRequest<Response, Variables>(query, undefined, {
+      authorization: `Bearer ${user.token}`,
+    });
 
     expect(data?.getSelf.requiresUpdate).toEqual(null);
   }
   {
-  /**
-   * requiresUpdate should return correct urls if client-version is sent
-   */
-    const { data } = await global.config.client.rawRequest<Response, Variables>(
-      query,
-      undefined,
-      {
-        authorization: `Bearer ${user.token}`,
-        'client-version': '0.0.0',
-      },
-    );
+    /**
+     * requiresUpdate should return correct urls if client-version is sent
+     */
+    const { data } = await global.config.client.rawRequest<Response, Variables>(query, undefined, {
+      authorization: `Bearer ${user.token}`,
+      'client-version': '0.0.0',
+    });
 
     expect(data?.getSelf.requiresUpdate.appStoreUrl).toEqual(process.env.APP_STORE_URL);
     expect(data?.getSelf.requiresUpdate.playStoreUrl).toEqual(process.env.PLAY_STORE_URL);

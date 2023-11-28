@@ -8,10 +8,9 @@ import { LoginInput } from '../../../src/resolvers/mutation/login';
 import { AuthPayload } from '../../../src/types/AuthPayload';
 import { UserSelf } from '../../../src/types/UserSelf';
 
-
 const loginQuery = gql`
-  mutation login($data: LoginInput!){
-    login(data: $data){
+  mutation login($data: LoginInput!) {
+    login(data: $data) {
       token
     }
   }
@@ -19,7 +18,6 @@ const loginQuery = gql`
 
 type LoginResponse = { login: AuthPayload };
 type LoginVariables = { data: LoginInput };
-
 
 const getSelfQuery = gql`
   query getSelf {
@@ -30,8 +28,7 @@ const getSelfQuery = gql`
 `;
 
 type GetSelfResponse = { getSelf: UserSelf };
-type GetSelfVariables = undefined;
-
+type GetSelfVariables = Record<string, undefined>;
 
 test('should make a request with valid access and refresh token', async () => {
   const { user } = await global.config.utils.createUser();
@@ -53,7 +50,8 @@ test('should make a request with valid access and refresh token', async () => {
 
   // Get self with tokens
   const { data } = await global.config.client.rawRequest<GetSelfResponse, GetSelfVariables>(
-    getSelfQuery, undefined,
+    getSelfQuery,
+    undefined,
     {
       authorization: `Bearer ${accessToken}`,
       Cookie: `general_refresh_token=${refreshToken};`,
@@ -61,7 +59,6 @@ test('should make a request with valid access and refresh token', async () => {
   );
   expect(data?.getSelf.id).toEqual(user.id);
 });
-
 
 test('should make a request with an invalid access and valid refresh token', async () => {
   const { user } = await global.config.utils.createUser();
@@ -83,7 +80,9 @@ test('should make a request with an invalid access and valid refresh token', asy
 
   // Get refresh token in db
   const tokenData = jwt.verify(accessToken, process.env.JWT_SECRET);
-  const refreshTokenDB = await global.config.db.refreshToken.findUnique({ where: { sessionId: tokenData.sessionId } });
+  const refreshTokenDB = await global.config.db.refreshToken.findUnique({
+    where: { sessionId: tokenData.sessionId },
+  });
 
   // Create expired token
   const expiredToken = generateToken({
@@ -92,13 +91,13 @@ test('should make a request with an invalid access and valid refresh token', asy
   });
 
   // Get self with expired access token, valid refresh token
-  const { data, headers: getSelfHeaders } = await global.config.client.rawRequest<GetSelfResponse, GetSelfVariables>(
-    getSelfQuery, undefined,
-    {
-      authorization: `Bearer ${expiredToken}`,
-      Cookie: `general_refresh_token=${refreshToken};`,
-    },
-  );
+  const { data, headers: getSelfHeaders } = await global.config.client.rawRequest<
+    GetSelfResponse,
+    GetSelfVariables
+  >(getSelfQuery, undefined, {
+    authorization: `Bearer ${expiredToken}`,
+    Cookie: `general_refresh_token=${refreshToken};`,
+  });
   expect(data?.getSelf.id).toEqual(user.id);
 
   // Tokens should be in response
@@ -109,41 +108,43 @@ test('should make a request with an invalid access and valid refresh token', asy
 
   // The refresh token expiry should have been increased
   expect(
-    new Date(refreshTokenDB!.expires).getTime()
-    < new Date((await global.config.db.refreshToken.findUnique({ where: { sessionId: tokenData.sessionId } }))!.expires).getTime(),
+    new Date(refreshTokenDB!.expires).getTime() <
+      new Date(
+        (await global.config.db.refreshToken.findUnique({
+          where: { sessionId: tokenData.sessionId },
+        }))!.expires,
+      ).getTime(),
   ).toBeTruthy();
-
 
   /**
    * Test all scenarios of the race conditions
    */
 
   {
-  // Can make a request with the old general token and old refresh token
-  // This allows asynchronous requests to not fail after the tokens have been refreshed
-    const { data: data1 } = await global.config.client.rawRequest<GetSelfResponse, GetSelfVariables>(
-      getSelfQuery, undefined,
-      {
-        authorization: `Bearer ${accessToken}`,
-        Cookie: `general_refresh_token=${refreshToken};`,
-      },
-    );
+    // Can make a request with the old general token and old refresh token
+    // This allows asynchronous requests to not fail after the tokens have been refreshed
+    const { data: data1 } = await global.config.client.rawRequest<
+      GetSelfResponse,
+      GetSelfVariables
+    >(getSelfQuery, undefined, {
+      authorization: `Bearer ${accessToken}`,
+      Cookie: `general_refresh_token=${refreshToken};`,
+    });
     expect(data1?.getSelf.id).toEqual(user.id);
   }
 
   {
-  // Can then make a request with the new access token and new refresh token
-    const { data: data1 } = await global.config.client.rawRequest<GetSelfResponse, GetSelfVariables>(
-      getSelfQuery, undefined,
-      {
-        authorization: `Bearer ${newAccessToken}`,
-        Cookie: `general_refresh_token=${newRefreshToken};`,
-      },
-    );
+    // Can then make a request with the new access token and new refresh token
+    const { data: data1 } = await global.config.client.rawRequest<
+      GetSelfResponse,
+      GetSelfVariables
+    >(getSelfQuery, undefined, {
+      authorization: `Bearer ${newAccessToken}`,
+      Cookie: `general_refresh_token=${newRefreshToken};`,
+    });
     expect(data1?.getSelf.id).toEqual(user.id);
   }
 });
-
 
 test('should make a request with an invalid access and valid refresh token, tests that refresh tokens are cleaned up', async () => {
   const { user } = await global.config.utils.createUser();
@@ -189,7 +190,8 @@ test('should make a request with an invalid access and valid refresh token, test
 
   // Make request with expired access token, valid refresh token, this will regenerate the refresh token and should clean up expired tokens
   await global.config.client.rawRequest<GetSelfResponse, GetSelfVariables>(
-    getSelfQuery, undefined,
+    getSelfQuery,
+    undefined,
     {
       authorization: `Bearer ${expiredToken}`,
       Cookie: `general_refresh_token=${refreshToken};`,
@@ -197,18 +199,20 @@ test('should make a request with an invalid access and valid refresh token, test
   );
 
   // Should only be 1 refresh token, the expired created manually above has been deleted
-  expect((await global.config.db.refreshToken.findMany({
-    where: {
-      user: {
-        id: user.id,
-      },
-    },
-  })).length).toEqual(1);
+  expect(
+    (
+      await global.config.db.refreshToken.findMany({
+        where: {
+          user: {
+            id: user.id,
+          },
+        },
+      })
+    ).length,
+  ).toEqual(1);
 });
 
-
 // -- FAILURES -- //
-
 
 test('should fail with an expired access token and invalid refresh token', async () => {
   // Create expired general token
@@ -221,7 +225,8 @@ test('should fail with an expired access token and invalid refresh token', async
 
   try {
     await global.config.client.rawRequest<GetSelfResponse, GetSelfVariables>(
-      getSelfQuery, undefined,
+      getSelfQuery,
+      undefined,
       {
         authorization: `Bearer ${accessToken}`,
         Cookie: 'general_refresh_token=invalidtoken;',
@@ -233,7 +238,6 @@ test('should fail with an expired access token and invalid refresh token', async
     expect(error.response.errors[0].message).toEqual('Unauthorised');
   }
 });
-
 
 test('should fail with an invalid session id pair', async () => {
   // Create expired general token
@@ -255,7 +259,8 @@ test('should fail with an invalid session id pair', async () => {
 
   try {
     await global.config.client.rawRequest<GetSelfResponse, GetSelfVariables>(
-      getSelfQuery, undefined,
+      getSelfQuery,
+      undefined,
       {
         authorization: `Bearer ${accessToken}`,
         Cookie: `general_refresh_token=${refreshToken};`,
@@ -267,7 +272,6 @@ test('should fail with an invalid session id pair', async () => {
     expect(error.response.errors[0].message).toEqual('Unauthorised');
   }
 });
-
 
 test('should fail with an invalid type pair', async () => {
   // Create expired general token
@@ -289,7 +293,8 @@ test('should fail with an invalid type pair', async () => {
 
   try {
     await global.config.client.rawRequest<GetSelfResponse, GetSelfVariables>(
-      getSelfQuery, undefined,
+      getSelfQuery,
+      undefined,
       {
         authorization: `Bearer ${accessToken}`,
         Cookie: `general_refresh_token=${refreshToken};`,
@@ -301,7 +306,6 @@ test('should fail with an invalid type pair', async () => {
     expect(error.response.errors[0].message).toEqual('Unauthorised');
   }
 });
-
 
 test('should fail with an expired refresh token', async () => {
   // Create expired general token
@@ -324,7 +328,8 @@ test('should fail with an expired refresh token', async () => {
 
   try {
     await global.config.client.rawRequest<GetSelfResponse, GetSelfVariables>(
-      getSelfQuery, undefined,
+      getSelfQuery,
+      undefined,
       {
         authorization: `Bearer ${accessToken}`,
         Cookie: `general_refresh_token=${refreshToken};`,

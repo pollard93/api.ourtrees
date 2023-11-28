@@ -6,6 +6,8 @@ import TestUtils from '../utils';
 import { UpdateTreeEntryInput } from '../../src/resolvers/mutation/updateTreeEntry';
 import { FileHandler } from '../../src/modules/FileHandler';
 import { TreeEntryProfile } from '../../src/types/TreeEntryProfile';
+import FormData from 'form-data';
+import fetch from 'node-fetch';
 
 
 const query = gql`
@@ -83,17 +85,26 @@ test('should succeed with image', async () => {
 
   const notes = await TestUtils.randomString();
 
-  const { data } = await global.config.client.rawRequest<Response, Variables>(
-    query,
-    {
-      data: {
-        id: treeEntry.id,
-        notes,
-        image: createReadStream(path.join(__dirname, '/../support/files/test.image.jpeg')) as any,
-      },
-    },
-    { authorization: `Bearer ${user.token}` },
-  );
+  const body = new FormData()
+
+  body.append(
+    'operations',
+    JSON.stringify({
+      query,
+      variables: {
+        data: {
+          id: treeEntry.id,
+          notes,
+          image: null,
+        },
+      }
+    })
+  )
+  body.append('map', JSON.stringify({ 1: ['variables.data.image'] }))
+  body.append('1', createReadStream(path.join(__dirname, '/../support/files/test.image.jpeg')))
+
+  const response = await fetch(`${global.config.baseUrl}/graphql`, { method: 'POST', body, headers: { authorization: `Bearer ${user.token}`} })
+  const {data} = await response.json();
 
   expect(data?.updateTreeEntry.id).toEqual(treeEntry.id);
   expect(data?.updateTreeEntry.notes).toEqual(notes);
@@ -135,17 +146,26 @@ test('should succeed with updating image', async () => {
 
   const notes = await TestUtils.randomString();
 
-  const { data } = await global.config.client.rawRequest<Response, Variables>(
-    query,
-    {
-      data: {
-        id: treeEntry.id,
-        notes,
-        image: createReadStream(path.join(__dirname, '/../support/files/test.image.jpeg')) as any,
-      },
-    },
-    { authorization: `Bearer ${user.token}` },
-  );
+  const body = new FormData()
+
+  body.append(
+    'operations',
+    JSON.stringify({
+      query,
+      variables: {
+        data: {
+          id: treeEntry.id,
+          notes,
+          image: null,
+        },
+      }
+    })
+  )
+  body.append('map', JSON.stringify({ 1: ['variables.data.image'] }))
+  body.append('1', createReadStream(path.join(__dirname, '/../support/files/test.image.jpeg')))
+
+  const response = await fetch(`${global.config.baseUrl}/graphql`, { method: 'POST', body, headers: { authorization: `Bearer ${user.token}`} })
+  const {data} = await response.json();
 
   expect(data?.updateTreeEntry.id).toEqual(treeEntry.id);
   expect(data?.updateTreeEntry.notes).toEqual(notes);
