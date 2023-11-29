@@ -76,7 +76,7 @@ test('should fail if user and tree are not unique', async () => {
     );
     throw new Error();
   } catch (error) {
-    // eslint-disable-next-line jest/no-conditional-expect, jest/no-try-expect
+    // eslint-disable-next-line jest/no-conditional-expect
     expect(error.response.errors[0].message).toEqual(
       'User already submitted content for this tree',
     );
@@ -100,7 +100,7 @@ test('should fail if tree does not exist', async () => {
     );
     throw new Error();
   } catch (error) {
-    // eslint-disable-next-line jest/no-conditional-expect, jest/no-try-expect
+    // eslint-disable-next-line jest/no-conditional-expect
     expect(error.response.errors[0].message).toEqual('Tree does not exist');
   }
 });

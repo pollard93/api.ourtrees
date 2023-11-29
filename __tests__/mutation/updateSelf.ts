@@ -2,12 +2,12 @@ import { createReadStream } from 'fs-extra';
 import path from 'path';
 import { gql } from 'graphql-request';
 import '../../global-variables';
+import FormData from 'form-data';
+import fetch from 'node-fetch';
 import TestUtils from '../utils';
 import { FileHandler } from '../../src/modules/FileHandler';
 import { UpdateSelfInput } from '../../src/resolvers/mutation/updateSelf';
 import { UserSelf } from '../../src/types/UserSelf';
-import FormData from 'form-data';
-import fetch from 'node-fetch';
 
 const query = gql`
   mutation updateSelf($data: UpdateSelfInput!) {

@@ -142,7 +142,7 @@ test('should fail to resetPassword with expired token', async () => {
     );
     throw new Error();
   } catch (error) {
-    // eslint-disable-next-line jest/no-conditional-expect, jest/no-try-expect
+    // eslint-disable-next-line jest/no-conditional-expect
     expect(error.response.errors[0].message).toEqual('Expired Token');
   }
 });

@@ -15,6 +15,7 @@ import path from 'path';
 import * as tq from 'type-graphql';
 import { GraphQLScalarType } from 'graphql';
 import { DateTimeResolver } from 'graphql-scalars';
+// eslint-disable-next-line import/extensions
 import graphqlUploadExpress from 'graphql-upload/graphqlUploadExpress.js';
 import {
   TREE_CARE_DIFFICULTY_TYPE,
@@ -93,6 +94,7 @@ export const apolloServer = new ApolloServer({
       ...Object.values(mutations),
       ...Object.values(queries),
       ...Object.values(payloads),
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ] as any,
     scalarsMap: [{ type: GraphQLScalarType, scalar: DateTimeResolver }],
   }),

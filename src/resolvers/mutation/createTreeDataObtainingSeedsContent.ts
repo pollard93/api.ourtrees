@@ -52,14 +52,15 @@ export class CreateTreeDataCareObtainingSeedsContentResolver {
         },
       });
     } catch (e) {
-      if (e.meta.target === 'TreeDataCareObtainingSeedsContent_userId_treeDataId_key')
+      if (e.meta.target === 'TreeDataCareObtainingSeedsContent_userId_treeDataId_key') {
         throw GenericError('User already submitted content for this tree');
-      // eslint-disable-next-line max-len
+      }
       if (
         e.meta.cause ===
-        "No 'TreeData' record(s) (needed to inline the relation on 'TreeDataCareObtainingSeedsContent' record(s)) was found for a nested connect on one-to-many relation 'TreeDataCareObtainingSeedsContents'."
-      )
+        'No \'TreeData\' record(s) (needed to inline the relation on \'TreeDataCareObtainingSeedsContent\' record(s)) was found for a nested connect on one-to-many relation \'TreeDataCareObtainingSeedsContents\'.'
+      ) {
         throw GenericError('Tree does not exist');
+      }
       throw e;
     }
   }

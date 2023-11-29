@@ -118,6 +118,7 @@ export const refreshCookieConfig = (type: RefreshTokenType) => {
  * @param data
  * @param context
  */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const setGeneralTokens = async (context: Context<any>, user: User) => {
   /**
    * Set general refresh token and add to cookie in response

@@ -1,19 +1,19 @@
 /* eslint-disable no-continue */
 /* eslint-disable no-console */
 /* eslint-disable import/no-extraneous-dependencies */
-const fs = require('fs-extra');
-const favicons = require('favicons');
-const package = require('../package.json');
+import fs from 'fs-extra';
+import favicons from 'favicons';
+import packageJson from '../package.json';
 
 const source = `${__dirname}/../public/images/icon.jpg`; // Source image(s). `string`, `buffer` or array of `string`
 const configuration = {
-  url: package.url,
+  url: packageJson.url,
   path: '/', // Path for overriding default icons path. `string`
-  appName: package.name, // Your application's name. `string`
-  appShortName: package.name, // Your application's short_name. `string`. Optional. If not set, appName will be used
-  appDescription: package.description, // Your application's description. `string`
-  developerName: package.author.name, // Your (or your developer's) name. `string`
-  developerURL: package.author.url, // Your (or your developer's) URL. `string`
+  appName: packageJson.name, // Your application's name. `string`
+  appShortName: packageJson.name, // Your application's short_name. `string`. Optional. If not set, appName will be used
+  appDescription: packageJson.description, // Your application's description. `string`
+  developerName: packageJson.author, // Your (or your developer's) name. `string`
+  developerURL: packageJson.url, // Your (or your developer's) URL. `string`
   dir: 'auto', // Primary text direction for name, short_name, and description
   lang: 'en-GB', // Primary language for name and short_name
   background: '#fff', // Background colour for flattened icons. `string`
@@ -23,7 +23,7 @@ const configuration = {
   orientation: 'any', // Default orientation: "any", "natural", "portrait" or "landscape". `string`
   // scope: "/", // set of URLs that the browser considers within your app
   // start_url: "/", // Start URL when launching the application from a device. `string`
-  version: package.version, // Your application's version string. `string`
+  version: packageJson.version, // Your application's version string. `string`
   logging: true, // Print logs to console? `boolean`
   pixel_art: false, // Keeps pixels "sharp" when scaling up, for pixel art.  Only supported in offline mode.
   loadManifestWithCredentials: false, // Browsers don't send cookies when fetching a manifest, enable this to fix that. `boolean`

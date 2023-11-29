@@ -1,4 +1,4 @@
-import { RequiresUpdate } from 'types/UserSelf';
+import { RequiresUpdate } from '../types/UserSelf';
 
 /**
  * Generate a random numeric only code

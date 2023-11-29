@@ -44,7 +44,7 @@ test('should fail - invalid password', async () => {
     });
     throw new Error();
   } catch (error) {
-    // eslint-disable-next-line jest/no-conditional-expect, jest/no-try-expect
+    // eslint-disable-next-line jest/no-conditional-expect
     expect(error.response.errors[0].message).toEqual('Email or Password Incorrect');
   }
 });
@@ -59,7 +59,7 @@ test('should login fail - unknown email', async () => {
     });
     throw new Error();
   } catch (error) {
-    // eslint-disable-next-line jest/no-conditional-expect, jest/no-try-expect
+    // eslint-disable-next-line jest/no-conditional-expect
     expect(error.response.errors[0].message).toEqual('Email or Password Incorrect');
   }
 });

@@ -1,7 +1,9 @@
 import 'reflect-metadata';
 import { Resolver, Ctx, UseMiddleware, Mutation, Arg, Field, InputType } from 'type-graphql';
 import { Prisma, TreeEntry } from '@prisma/client';
+// eslint-disable-next-line import/extensions
 import GraphQLUpload from 'graphql-upload/GraphQLUpload.js';
+// eslint-disable-next-line import/extensions
 import FileUpload from 'graphql-upload/Upload.js';
 import path from 'path';
 import { TokenType } from '../../modules/Auth/interfaces';
@@ -56,13 +58,17 @@ export class UpdateTreeEntryResolver {
      */
     const processImage = async (): Promise<Prisma.FileUpdateOneWithoutTreeEntriesNestedInput> => {
       // Validate image
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const { resolved, rejected } = await FileHandler.validateGraphQLUploads([image as any], {
         mimes: ['image/jpeg'],
         maxFileSize: 5000000,
       });
 
       if (Object.keys(rejected).length) {
-        throw FileAuthenticationError('Something went wrong with your file uploads', rejected);
+        throw FileAuthenticationError('Something went wrong with your file uploads', {
+          message: 'Something went wrong with your file uploads',
+          data: rejected,
+        });
       }
 
       // eslint-disable-next-line prefer-destructuring

@@ -1,20 +1,34 @@
 {
   "env": {
-    "browser": true,
-    "es6": true
+    "jest/globals": true
   },
-  "extends": ["airbnb-base", "plugin:jest/recommended"],
+  "plugins": [
+    "@typescript-eslint",
+    "testing-library",
+    "no-only-tests",
+    "eslint-plugin-import",
+    "jest"
+  ],
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:testing-library/react",
+    "airbnb/base"
+  ],
   "globals": {
     "Atomics": "readonly",
     "SharedArrayBuffer": "readonly"
   },
   "parser": "@typescript-eslint/parser",
-  "plugins": ["@typescript-eslint", "jest"],
   "parserOptions": {
     "ecmaVersion": 2018,
     "sourceType": "module"
   },
   "rules": {
+    "implicit-arrow-linebreak": "off",
+    "no-shadow": "off",
+    "@typescript-eslint/no-shadow": "error",
+    "indent": "off",
     "max-classes-per-file": ["off"],
     "class-methods-use-this": ["off"],
     "import/extensions": [
@@ -27,6 +41,7 @@
         "tsx": "never"
       }
     ],
+    "object-curly-newline": "off",
     "no-multiple-empty-lines": [
       "error",
       {
@@ -34,26 +49,14 @@
         "maxEOF": 0
       }
     ],
-    "comma-dangle": ["error"],
     "semi": ["error", "always"],
-    "quotes": ["error", "single"],
     "no-return-assign": ["off"],
+    "operator-linebreak": "off",
+    "max-len": "off",
+    "quotes": "off",
     "import/no-named-as-default": ["off"],
     "import/no-named-as-default-member": ["off"],
-    "max-len": [
-      "error",
-      {
-        "code": 200,
-        "ignoreComments": true
-      }
-    ],
     "@typescript-eslint/no-unused-vars": ["error"],
-    "object-curly-newline": [
-      "error",
-      {
-        "ImportDeclaration": "never"
-      }
-    ],
     "no-await-in-loop": ["off"],
     "no-case-declarations": ["off"],
     "no-restricted-syntax": ["error", "WithStatement"],

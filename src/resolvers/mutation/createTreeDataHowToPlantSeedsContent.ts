@@ -52,14 +52,12 @@ export class CreateTreeDataCareHowToPlantSeedsContentResolver {
         },
       });
     } catch (e) {
-      if (e.meta.target === 'TreeDataCareHowToPlantSeedsContent_userId_treeDataId_key')
-        throw GenericError('User already submitted content for this tree');
+      if (e.meta.target === 'TreeDataCareHowToPlantSeedsContent_userId_treeDataId_key') throw GenericError('User already submitted content for this tree');
       // eslint-disable-next-line max-len
       if (
         e.meta.cause ===
-        "No 'TreeData' record(s) (needed to inline the relation on 'TreeDataCareHowToPlantSeedsContent' record(s)) was found for a nested connect on one-to-many relation 'TreeDataCareHowToPlantSeedsContents'."
-      )
-        throw GenericError('Tree does not exist');
+        'No \'TreeData\' record(s) (needed to inline the relation on \'TreeDataCareHowToPlantSeedsContent\' record(s)) was found for a nested connect on one-to-many relation \'TreeDataCareHowToPlantSeedsContents\'.'
+      ) throw GenericError('Tree does not exist');
       throw e;
     }
   }

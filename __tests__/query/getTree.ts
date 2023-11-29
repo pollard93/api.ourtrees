@@ -1,6 +1,5 @@
 import { gql } from 'graphql-request';
 import '../../global-variables';
-import TestUtils from '../utils';
 import { GetTreeInput } from '../../src/resolvers/query/getTree';
 import { TreeProfile } from '../../src/types/TreeProfile';
 
@@ -53,7 +52,7 @@ test('should fail if entry does not exist', async () => {
     );
     throw new Error();
   } catch (error) {
-    // eslint-disable-next-line jest/no-conditional-expect, jest/no-try-expect
+    // eslint-disable-next-line jest/no-conditional-expect
     expect(error.response.errors[0].message).toEqual('Tree does not exist');
   }
 });

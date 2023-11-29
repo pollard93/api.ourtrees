@@ -42,8 +42,9 @@ export class UpdatePasswordResolver {
     /**
      * Validate current password
      */
-    if (!(await comparePassword({ pwd: currentPassword, hash: user.password })))
+    if (!(await comparePassword({ pwd: currentPassword, hash: user.password }))) {
       throw GenericError('Password Incorrect');
+    }
 
     /**
      * Update user

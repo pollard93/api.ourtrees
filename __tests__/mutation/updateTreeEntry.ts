@@ -2,12 +2,12 @@ import { gql } from 'graphql-request';
 import '../../global-variables';
 import path from 'path';
 import { createReadStream } from 'fs-extra';
+import FormData from 'form-data';
+import fetch from 'node-fetch';
 import TestUtils from '../utils';
 import { UpdateTreeEntryInput } from '../../src/resolvers/mutation/updateTreeEntry';
 import { FileHandler } from '../../src/modules/FileHandler';
 import { TreeEntryProfile } from '../../src/types/TreeEntryProfile';
-import FormData from 'form-data';
-import fetch from 'node-fetch';
 
 const query = gql`
   mutation updateTreeEntry($data: UpdateTreeEntryInput!) {
@@ -208,7 +208,7 @@ test('should fail if user does not own tree', async () => {
     );
     throw new Error();
   } catch (error) {
-    // eslint-disable-next-line jest/no-conditional-expect, jest/no-try-expect
+    // eslint-disable-next-line jest/no-conditional-expect
     expect(error.response.errors[0].message).toEqual('Unauthorized');
   }
 });
@@ -230,7 +230,7 @@ test('should fail if tree entry does not exist', async () => {
     );
     throw new Error();
   } catch (error) {
-    // eslint-disable-next-line jest/no-conditional-expect, jest/no-try-expect
+    // eslint-disable-next-line jest/no-conditional-expect
     expect(error.response.errors[0].message).toEqual('Tree entry does not exist');
   }
 });

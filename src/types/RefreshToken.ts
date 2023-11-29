@@ -8,7 +8,7 @@ export class RefreshToken {
   id: number;
 
   @Field(() => String)
-  sessionId: String;
+  sessionId: string;
 
   @Field(() => UserSelf)
   user: UserSelf;

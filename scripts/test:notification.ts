@@ -4,7 +4,7 @@
 /* eslint-disable no-console */
 import * as dotenv from 'dotenv';
 import chalk from 'chalk';
-import { PrismaClient } from '@prisma/client';
+import { NOTIFICATION_TYPE, PrismaClient } from '@prisma/client';
 import { reduceArgs } from './utils';
 import NotificationEmitter from '../src/events/notification/NotificationEmitter';
 import NotificationListener from '../src/events/notification/NotificationListener';
@@ -16,6 +16,7 @@ InitFileHandler();
 /**
  * Utility to send individual notifications and push notification to a device with actual data
  */
+// eslint-disable-next-line wrap-iife
 void (async function () {
   const prisma = new PrismaClient();
 
@@ -30,6 +31,10 @@ void (async function () {
    * Get target user
    */
   const targetUser = await prisma.user.findUnique({ where: { email: 'dev@madebyprism.com' } });
+  if (!targetUser) {
+    console.error(chalk.red('No user'));
+    process.exit(0);
+  }
 
   /**
    * Get and validate args

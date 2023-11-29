@@ -6,6 +6,5 @@ startApolloServer().then(() => {
     console.log(`
     Server is running on ${process.env.SITE_URL}
     env:${process.env.NODE_ENV}
-  `),
-  );
+  `));
 });

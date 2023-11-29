@@ -1,6 +1,6 @@
 // eslint-disable-next-line import/no-unresolved
 import { Request, Response } from 'express';
-import { Prisma } from '../prisma';
+import { PrismaInterface } from '../prisma';
 import EmailEmitter from '../events/email/EmailEmitter';
 import NotificationEmitter from '../events/notification/NotificationEmitter';
 import { TokenArgs, TokenType } from '../modules/Auth/interfaces';
@@ -31,7 +31,7 @@ export interface VerifiedToken<T extends TokenType | null> {
 export interface Context<T extends TokenType | null> {
   req: Request;
   res: Response;
-  db: Prisma;
+  db: PrismaInterface;
   accessToken: TokenArgs<T>;
   clientType: CLIENT_TYPE;
   clientVersion: string;

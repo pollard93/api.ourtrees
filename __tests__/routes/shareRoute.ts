@@ -40,7 +40,7 @@ test('should fail with unknown user id', async () => {
     await axios.get(`${global.config.baseUrl}/share/user/unknown-id`);
     throw new Error();
   } catch (e) {
-    // eslint-disable-next-line jest/no-conditional-expect, jest/no-try-expect
+    // eslint-disable-next-line jest/no-conditional-expect
     expect(e.response.status).toEqual(400);
   }
 });
@@ -50,7 +50,7 @@ test('should fail with unknown type', async () => {
     await axios.get(`${global.config.baseUrl}/share/unknown-type/unknown-id`);
     throw new Error();
   } catch (e) {
-    // eslint-disable-next-line jest/no-conditional-expect, jest/no-try-expect
+    // eslint-disable-next-line jest/no-conditional-expect
     expect(e.response.status).toEqual(400);
   }
 });

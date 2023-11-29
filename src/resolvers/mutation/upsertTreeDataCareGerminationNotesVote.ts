@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import { Resolver, Ctx, UseMiddleware, Mutation, Arg, Field, InputType, Int } from 'type-graphql';
+import { Resolver, Ctx, UseMiddleware, Mutation, Arg, Field, InputType } from 'type-graphql';
 import { TreeData } from '@prisma/client';
 import { TokenType } from '../../modules/Auth/interfaces';
 import { Context } from '../../utils/types';

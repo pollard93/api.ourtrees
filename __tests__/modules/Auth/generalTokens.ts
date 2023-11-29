@@ -220,6 +220,7 @@ test('should fail with an expired access token and invalid refresh token', async
     type: TokenType.GENERAL,
     exp: 1,
     sessionId: '',
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     data: {} as any, // Not used
   });
 
@@ -234,7 +235,7 @@ test('should fail with an expired access token and invalid refresh token', async
     );
     throw new Error();
   } catch (error) {
-    // eslint-disable-next-line jest/no-conditional-expect, jest/no-try-expect
+    // eslint-disable-next-line jest/no-conditional-expect
     expect(error.response.errors[0].message).toEqual('Unauthorised');
   }
 });
@@ -245,6 +246,7 @@ test('should fail with an invalid session id pair', async () => {
     type: TokenType.GENERAL,
     exp: 1,
     sessionId: '1',
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     data: {} as any, // Not used
   });
 
@@ -254,6 +256,7 @@ test('should fail with an invalid session id pair', async () => {
     sessionId: '2',
     data: {
       type: RefreshTokenType.GENERAL,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any,
   });
 
@@ -268,7 +271,7 @@ test('should fail with an invalid session id pair', async () => {
     );
     throw new Error();
   } catch (error) {
-    // eslint-disable-next-line jest/no-conditional-expect, jest/no-try-expect
+    // eslint-disable-next-line jest/no-conditional-expect
     expect(error.response.errors[0].message).toEqual('Unauthorised');
   }
 });
@@ -279,6 +282,7 @@ test('should fail with an invalid type pair', async () => {
     type: TokenType.GENERAL,
     exp: 1,
     sessionId: '1',
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     data: {} as any, // Not used
   });
 
@@ -288,6 +292,7 @@ test('should fail with an invalid type pair', async () => {
     sessionId: '1',
     data: {
       type: RefreshTokenType.OTHER,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any,
   });
 
@@ -302,7 +307,7 @@ test('should fail with an invalid type pair', async () => {
     );
     throw new Error();
   } catch (error) {
-    // eslint-disable-next-line jest/no-conditional-expect, jest/no-try-expect
+    // eslint-disable-next-line jest/no-conditional-expect
     expect(error.response.errors[0].message).toEqual('Unauthorised');
   }
 });
@@ -313,6 +318,7 @@ test('should fail with an expired refresh token', async () => {
     type: TokenType.GENERAL,
     exp: 1,
     sessionId: '1',
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     data: {} as any, // Not used
   });
 
@@ -323,6 +329,7 @@ test('should fail with an expired refresh token', async () => {
     sessionId: '1',
     data: {
       type: RefreshTokenType.GENERAL,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any,
   });
 
@@ -337,7 +344,7 @@ test('should fail with an expired refresh token', async () => {
     );
     throw new Error();
   } catch (error) {
-    // eslint-disable-next-line jest/no-conditional-expect, jest/no-try-expect
+    // eslint-disable-next-line jest/no-conditional-expect
     expect(error.response.errors[0].message).toEqual('Expired General Token');
   }
 });

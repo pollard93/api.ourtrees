@@ -26,4 +26,4 @@ void (async function main() {
   } catch {}
 
   await prisma.$disconnect();
-})();
+}());

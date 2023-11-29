@@ -17,6 +17,7 @@ import { AuthError } from '../../../errors';
  * @param noRefreshRequired - if true, refresh token is not required
  */
 export const validateAndRefreshTokens = async (
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   context: Context<any>,
   accessTokens: TokenType[],
   noRefreshRequired = false,
@@ -141,7 +142,7 @@ interface AuthInterceptorProps {
 }
 
 export const AuthInterceptor =
-  (props: AuthInterceptorProps): MiddlewareFn<Context<any>> =>
+  (props: AuthInterceptorProps): MiddlewareFn<Context<never>> =>
   async ({ context }, next) => {
     try {
       // Set vars from headers

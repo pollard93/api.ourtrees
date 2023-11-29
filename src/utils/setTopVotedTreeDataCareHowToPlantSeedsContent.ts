@@ -1,10 +1,11 @@
+import { TokenType } from '../modules/Auth/interfaces';
 import { Context } from './types';
 
 /**
  * Update tree data with top voted content
  */
 export const setTopVotedTreeDataCareHowToPlantSeedsContent = async (
-  context: Context<any>,
+  context: Context<TokenType.GENERAL>,
   treeDataId: number,
 ) => {
   /**

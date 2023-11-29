@@ -97,11 +97,11 @@ export default class EmailListener {
                 content:
                   data.clientType === CLIENT_TYPE.MOBILE
                     ? `
-                    ${renderParagraph("Here's your reset password link")}
+                    ${renderParagraph('Here\'s your reset password link')}
                     ${renderAnchor(parseDeepLinkUrl(`reset-password/${data.token}`), 'Click me!')}
                   `
                     : `
-                    ${renderParagraph("Here's your reset password link")}
+                    ${renderParagraph('Here\'s your reset password link')}
                     ${renderAnchor(
                       `${process.env.CLIENT_URL_WEB}/login/reset-password?token=${data.token}`,
                       'Click me!',

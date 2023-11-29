@@ -43,12 +43,12 @@ void (async function () {
     clientType: CLIENT_TYPE;
   }>();
   if (!type) {
-    console.error(chalk.red("Please supply argument: 'type'"));
+    console.error(chalk.red('Please supply argument: \'type\''));
     process.exit(0);
   }
 
   if (!clientType) {
-    console.error(chalk.red("Please supply argument: 'clientType'"));
+    console.error(chalk.red('Please supply argument: \'clientType\''));
     process.exit(0);
   }
 
@@ -125,4 +125,4 @@ void (async function () {
     default:
       break;
   }
-})();
+}());

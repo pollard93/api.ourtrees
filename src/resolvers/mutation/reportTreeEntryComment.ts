@@ -36,8 +36,7 @@ export class ReportTreeEntryCommentResolver {
         },
       });
     } catch (e) {
-      if (e.message.includes('Record to update not found'))
-        throw GenericError('Resource does not exist');
+      if (e.message.includes('Record to update not found')) throw GenericError('Resource does not exist');
       throw e;
     }
 

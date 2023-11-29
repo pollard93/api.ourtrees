@@ -6,11 +6,13 @@ import { COUNTRIES } from '../../../src/utils/countries';
 class TreeDataSeeder extends Seeder {
   async createTrees() {
     for (const country of COUNTRIES) {
+      // eslint-disable-next-line no-console
       console.log(chalk.green(`Processing ${country}`));
 
       const res = await axios.get(`https://data.bgci.org/treesearch/country/${country}`);
 
       for (const result of res.data.results) {
+        // eslint-disable-next-line no-console
         console.log(chalk.green(`Processing ${result.taxon}`));
 
         try {
@@ -123,6 +125,7 @@ class TreeDataSeeder extends Seeder {
             },
           });
         } catch (error) {
+          // eslint-disable-next-line no-console
           console.log(chalk.green(`Error processing ${result.taxon} in ${country}`));
         }
       }

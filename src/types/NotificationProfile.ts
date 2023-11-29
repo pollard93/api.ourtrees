@@ -8,13 +8,13 @@ export class NotificationProfile {
   id: number;
 
   @Field(() => String)
-  type: String;
+  type: string;
 
   @Field(() => String)
-  message: String;
+  message: string;
 
   @Field(() => String)
-  onOpenType: String;
+  onOpenType: string;
 
   @Field(() => UserProfile)
   receiver: UserProfile;

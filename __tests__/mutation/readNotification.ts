@@ -120,7 +120,7 @@ test('should fail to read notification that requestor is not a receiver of', asy
     );
     throw new Error();
   } catch (error) {
-    // eslint-disable-next-line jest/no-conditional-expect, jest/no-try-expect
+    // eslint-disable-next-line jest/no-conditional-expect
     expect(error.response.errors[0].message).toEqual('Unauthorised');
   }
 });
@@ -136,7 +136,7 @@ test('should fail to read notification that does not exist', async () => {
     );
     throw new Error();
   } catch (error) {
-    // eslint-disable-next-line jest/no-conditional-expect, jest/no-try-expect
+    // eslint-disable-next-line jest/no-conditional-expect
     expect(error.response.errors[0].message).toEqual('Unauthorised');
   }
 });

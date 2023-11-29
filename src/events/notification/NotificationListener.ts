@@ -1,5 +1,5 @@
 import { Notification } from 'onesignal-node';
-import { Prisma as PrismaInterface } from 'prisma';
+import { PrismaInterface } from 'prisma';
 import { Prisma, NOTIFICATION_TYPE, NOTIFICATION_ON_OPEN_TYPE } from '@prisma/client';
 import NotificationEmitter from './NotificationEmitter';
 import { OneSignalClient } from '../../modules/OneSignal';

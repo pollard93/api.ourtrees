@@ -1,7 +1,9 @@
 import 'reflect-metadata';
 import path from 'path';
 import { Resolver, Mutation, Arg, Ctx, UseMiddleware, InputType, Field } from 'type-graphql';
+// eslint-disable-next-line import/extensions
 import GraphQLUpload from 'graphql-upload/GraphQLUpload.js';
+// eslint-disable-next-line import/extensions
 import FileUpload from 'graphql-upload/Upload.js';
 import { Prisma, User } from '@prisma/client';
 import { FileAuthenticationError, GenericError } from '../../errors';
@@ -44,6 +46,7 @@ export class UpdateSelfResolver {
       async (): Promise<Prisma.FileUpdateOneWithoutUserProfilePicturesNestedInput> => {
         // Validate image
         const { resolved, rejected } = await FileHandler.validateGraphQLUploads(
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           [profilePicture as any],
           {
             mimes: ['image/jpeg'],
@@ -52,13 +55,17 @@ export class UpdateSelfResolver {
         );
 
         if (Object.keys(rejected).length) {
-          throw FileAuthenticationError('Something went wrong with your file uploads', rejected);
+          throw FileAuthenticationError('Something went wrong with your file uploads', {
+            message: 'Something went wrong with your file uploads',
+            data: rejected,
+          });
         }
 
         // eslint-disable-next-line prefer-destructuring
         const profilePictureResolved = resolved[0];
-        if (!profilePictureResolved.buffer)
+        if (!profilePictureResolved.buffer) {
           throw GenericError('Something went wrong with your file uploads');
+        }
 
         // Store in bucket
         const url = await FileHandler.putImage(

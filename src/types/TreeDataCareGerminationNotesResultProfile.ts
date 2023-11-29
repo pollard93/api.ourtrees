@@ -1,6 +1,5 @@
-import { TREE_CARE_DIFFICULTY_TYPE } from '@prisma/client';
 import 'reflect-metadata';
-import { ObjectType, Field, ID } from 'type-graphql';
+import { ObjectType, Field } from 'type-graphql';
 import { TreeDataCareGerminationNotesContentProfile } from './TreeDataCareGerminationNotesContentProfile';
 
 @ObjectType()

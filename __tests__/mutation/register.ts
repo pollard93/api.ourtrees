@@ -46,7 +46,7 @@ test('should fail if email already exists', async () => {
     });
     throw new Error();
   } catch (error) {
-    // eslint-disable-next-line jest/no-conditional-expect, jest/no-try-expect
+    // eslint-disable-next-line jest/no-conditional-expect
     expect(error.response.errors[0].message).toEqual('User Already Exists');
   }
 });
@@ -61,7 +61,7 @@ test('should fail if email invalid', async () => {
     });
     throw new Error();
   } catch (error) {
-    // eslint-disable-next-line jest/no-conditional-expect, jest/no-try-expect
+    // eslint-disable-next-line jest/no-conditional-expect
     expect(error.response.errors[0].message).toEqual('Email Invalid');
   }
 });
@@ -76,7 +76,7 @@ test('should fail if password invalid', async () => {
     });
     throw new Error();
   } catch (error) {
-    // eslint-disable-next-line jest/no-conditional-expect, jest/no-try-expect
+    // eslint-disable-next-line jest/no-conditional-expect
     expect(error.response.errors[0].message).toEqual('Password Invalid');
   }
 });
