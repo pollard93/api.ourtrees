@@ -43,6 +43,7 @@ model User {
   following                             User[]                                  @relation("UserFollowingUser")
   createdAt                             DateTime                                @default(now())
   updatedAt                             DateTime                                @updatedAt
+  reportedAt                            DateTime?
 }
 
 model RefreshToken {
@@ -425,6 +426,7 @@ model Tree {
   followers       User[]        @relation("UserTreesFollowing")
   comments        TreeComment[]
   entries         TreeEntry[]
+  reportedAt      DateTime?
   createdAt       DateTime      @default(now())
   updatedAt       DateTime      @updatedAt
 }

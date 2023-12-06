@@ -21,6 +21,8 @@ export { ReportTreeDataCareGerminationNotesContentResolver } from './reportTreeD
 export { ReportTreeDataCareHowToPlantSeedsContentResolver } from './reportTreeDataCareHowToPlantSeedsContent';
 export { ReportTreeDataCareObtainingSeedsContentResolver } from './reportTreeDataCareObtainingSeedsContent';
 export { ReportTreeEntryCommentResolver } from './reportTreeEntryComment';
+export { ReportTreeResolver } from './reportTree';
+export { ReportUserResolver } from './reportUser';
 export { RequestPasswordResetResolver } from './requestPasswordReset';
 export { ResetPasswordResolver } from './resetPassword';
 export { UpdateEmailResolver } from './updateEmail';
