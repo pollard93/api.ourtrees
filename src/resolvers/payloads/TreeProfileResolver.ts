@@ -4,6 +4,7 @@ import { TreeProfile } from '../../types/TreeProfile';
 import { Context } from '../../utils/types';
 import { TreeDataProfile } from '../../types/TreeDataProfile';
 import { UserProfile } from '../../types/UserProfile';
+import { TokenType } from '../../modules/Auth/interfaces';
 
 @Resolver(() => TreeProfile)
 export class TreeProfileResolver {
@@ -15,5 +16,14 @@ export class TreeProfileResolver {
   @FieldResolver(() => UserProfile)
   creator(@Root() { id }: Tree, @Ctx() context: Context<null>) {
     return context.db.read.tree.findUnique({ where: { id } }).creator();
+  }
+
+  @FieldResolver(() => Boolean)
+  async following(@Root() { id }: Tree, @Ctx() context: Context<TokenType.GENERAL>) {
+    const { email } = context.accessToken.data;
+    const hasFollower = await context.db.read.tree
+      .findUnique({ where: { id } })
+      .followers({ where: { email } });
+    return hasFollower && hasFollower.length === 1;
   }
 }

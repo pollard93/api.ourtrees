@@ -7,6 +7,7 @@ const query = gql`
   mutation followTree($data: FollowTreeInput!) {
     followTree(data: $data) {
       id
+      following
     }
   }
 `;
@@ -28,18 +29,7 @@ test('should follow', async () => {
     { authorization: `Bearer ${user.token}` },
   );
 
-  expect(data?.followTree).toBeTruthy();
-
-  const treeAfter = await global.config.db.tree.findUnique({
-    where: {
-      id: tree.id,
-    },
-    include: {
-      followers: true,
-    },
-  });
-  expect(treeAfter?.followers.length).toEqual(1);
-  expect(treeAfter?.followers[0].id).toEqual(user.user.id);
+  expect(data?.followTree.following).toBeTruthy();
 });
 
 test('should unfollow', async () => {
@@ -63,15 +53,5 @@ test('should unfollow', async () => {
     { authorization: `Bearer ${user.token}` },
   );
 
-  expect(data?.followTree).toBeTruthy();
-
-  const treeAfter = await global.config.db.tree.findUnique({
-    where: {
-      id: tree.id,
-    },
-    include: {
-      followers: true,
-    },
-  });
-  expect(treeAfter?.followers.length).toEqual(0);
+  expect(data?.followTree.following).toBeFalsy();
 });

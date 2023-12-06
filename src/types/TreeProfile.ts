@@ -19,4 +19,7 @@ export class TreeProfile {
 
   @Field(() => UserProfile)
   creator: UserProfile;
+
+  @Field(() => Boolean)
+  following: boolean;
 }
