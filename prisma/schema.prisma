@@ -39,6 +39,8 @@ model User {
   treeComments                          TreeComment[]
   treeEntryComments                     TreeEntryComment[]
   filesAuthored                         File[]                                  @relation("FilesAuthored")
+  followers                             User[]                                  @relation("UserFollowingUser")
+  following                             User[]                                  @relation("UserFollowingUser")
   createdAt                             DateTime                                @default(now())
   updatedAt                             DateTime                                @updatedAt
 }

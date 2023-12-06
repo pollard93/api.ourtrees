@@ -2,8 +2,8 @@ import * as bcrypt from 'bcryptjs';
 import * as emailValidator from 'email-validator';
 import * as jwt from 'jsonwebtoken';
 import uuidv4 from 'uuid/v4';
-import { Context } from 'utils/types';
 import { User } from '@prisma/client';
+import { Context } from '../../utils/types';
 import { TokenType, TokenData, RefreshTokenType, TokenArgs } from './interfaces';
 
 export const validateEmail = (email: string) => emailValidator.validate(email);

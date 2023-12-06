@@ -1,8 +1,8 @@
 import { gql } from 'graphql-request';
 import * as jwt from 'jsonwebtoken';
 import '../../../global-variables';
+import { generateToken } from 'src/modules/Auth';
 import TestUtils from '../../utils';
-import { generateToken } from '../../../src/modules/Auth';
 import { RefreshTokenType, TokenArgs, TokenType } from '../../../src/modules/Auth/interfaces';
 import { LoginInput } from '../../../src/resolvers/mutation/login';
 import { AuthPayload } from '../../../src/types/AuthPayload';

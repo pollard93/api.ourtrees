@@ -12,4 +12,7 @@ export class UserProfile {
 
   @Field(() => FileProfile, { nullable: true })
   profilePicture: FileProfile;
+
+  @Field(() => Boolean)
+  following: boolean;
 }

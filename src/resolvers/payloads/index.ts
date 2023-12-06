@@ -11,4 +11,5 @@ export { TreeDataProfileResolver } from './TreeDataProfileResolver';
 export { TreeEntryCommentProfileResolver } from './TreeEntryCommentProfileResolver';
 export { TreeEntryProfileResolver } from './TreeEntryProfileResolver';
 export { TreeProfileResolver } from './TreeProfileResolver';
+export { UserProfileResolver } from './UserProfileResolver';
 export { UserSelfResolver } from './UserSelfResolver';
